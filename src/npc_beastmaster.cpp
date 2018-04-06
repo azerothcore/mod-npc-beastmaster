@@ -99,10 +99,10 @@ public:
     void CreatePet(Player *player, Creature * m_creature, uint32 entry)
     {
         // Get Pet Scale from config
-        const float PetScale = sConfigMgr->GetFloatDefault("BeastMaster.PetScale", 1.0);
+        const float PetScale = sConfigMgr->GetFloatDefault("BeastMasterNPC.PetScale", 1.0);
 
         // If enabled for Hunters only..
-        if (sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true))
+        if (sConfigMgr->GetBoolDefault("BeastMasterNPC.HunterOnly", true))
         {
             if (player->getClass() != CLASS_HUNTER)
             {
@@ -214,7 +214,7 @@ public:
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 54);
 
         // Allow Exotic Pets regardless of spec
-        if (sConfigMgr->GetBoolDefault("BeastMaster.ExoticNoSpec", true))
+        if (sConfigMgr->GetBoolDefault("BeastMasterNPC.ExoticNoSpec", true))
         {
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 53);
         }
@@ -531,9 +531,9 @@ public:
 		if (!reload) {
 			std::string conf_path = _CONF_DIR;
 			std::string cfg_file = conf_path + "Settings/modules/npc_beastmaster.conf";
-#ifdef WIN32
-			cfg_file = "Settings/modules/npc_beastmaster.conf";
-#endif
+                        #ifdef WIN32
+			    cfg_file = "Settings/modules/npc_beastmaster.conf";
+                        #endif
 			std::string cfg_def_file = cfg_file + ".dist";
 			sConfigMgr->LoadMore(cfg_def_file.c_str());
 
