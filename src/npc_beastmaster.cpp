@@ -1,11 +1,7 @@
 /*
-
 # BeastMaster NPC #
-
 #### A module for AzerothCore by [StygianTheBest](https://github.com/StygianTheBest/AzerothCore-Content/tree/master/Modules)
 ------------------------------------------------------------------------------------------------------------------
-
-
 ### Description ###
 ------------------------------------------------------------------------------------------------------------------
 WhiteFang is a Beastmaster NPC that howls! This NPC allows any player, or only Hunters, to adopt and use pets. He
@@ -14,8 +10,6 @@ depending on how you've configured the NPC. For each pet I use a model for a rar
 they all look cool. He also sells a great selection of pet food for every level of pet. Hunters can access the
 stables as well. This has been a lot of fun for players on my server, and pets work great and just like they do
 on a Hunter in or out of dungeons.
-
-
 ### Features ###
 ------------------------------------------------------------------------------------------------------------------
 - Adds a Worgen BeastMaster NPC with sounds/emotes
@@ -25,13 +19,10 @@ on a Hunter in or out of dungeons.
 - Teaches Hunter abilities to the player
 - Sells pet food For all pet levels
 - Pet scale is configurable
-
-
 ### To-Do ###
 ------------------------------------------------------------------------------------------------------------------
 - If possible, create working stable for non-Hunter player
 - Fix pet spells disappearing from pet bar on relog/dismiss (Note: they persist if added back)
-
 ### Data ###
 ------------------------------------------------------------------------------------------------------------------
 - Type: NPC
@@ -43,8 +34,6 @@ on a Hunter in or out of dungeons.
     - Set Pet Scaling Factor
 - SQL: Yes
     - NPC ID: 601026
-
-
 ### Version ###
 ------------------------------------------------------------------------------------------------------------------
 - v2017.09.03 - Release
@@ -59,8 +48,6 @@ on a Hunter in or out of dungeons.
     - Updated pet models to rare spawn models
 - v2017.09.13 - Teaches additional hunter spells (Eagle Eye, Eyes of the Beast, Beast Lore)
 - v2017.09.30 - Add pet->InitLevelupSpellsForLevel(); recommended by Alistar
-
-
 ### Credits ###
 ------------------------------------------------------------------------------------------------------------------
 - [Blizzard Entertainment](http://blizzard.com)
@@ -75,18 +62,36 @@ on a Hunter in or out of dungeons.
 - [OregonCore](https://wiki.oregon-core.net/)
 - [Wowhead.com](http://wowhead.com)
 - [AoWoW](https://wotlk.evowow.com/)
-
-
 ### License ###
 ------------------------------------------------------------------------------------------------------------------
 - This code and content is released under the [GNU AGPL v3](https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3).
-
 */
 
-#include "Config.h"
+#include "Configuration/Config.h"
 #include "Pet.h"
 #include "ScriptPCH.h"
 #include "ScriptedGossip.h"
+
+class BeastMasterWorld : public WorldScript
+{
+public:
+	BeastMasterWorld() : WorldScript("BeastMasterWorld") { }
+
+	void OnBeforeConfigLoad(bool reload) override
+	{
+		if (!reload) {
+			std::string conf_path = _CONF_DIR;
+			std::string cfg_file = conf_path + "/npc_beastmaster.conf";
+                        #ifdef WIN32
+			    cfg_file = "npc_beastmaster.conf";
+                        #endif
+			std::string cfg_def_file = cfg_file + ".dist";
+			sConfigMgr->LoadMore(cfg_def_file.c_str());
+
+			sConfigMgr->LoadMore(cfg_file.c_str());
+		}
+	}
+};
 
 class BeastMasterAnnounce : public PlayerScript
 {
@@ -115,10 +120,10 @@ public:
     void CreatePet(Player *player, Creature * m_creature, uint32 entry)
     {
         // Get Pet Scale from config
-        const float PetScale = sConfigMgr->GetFloatDefault("BeastMaster.PetScale", 1.0);
+        const float PetScale = sConfigMgr->GetFloatDefault("BeastMasterNPC.PetScale", 1.0);
 
         // If enabled for Hunters only..
-        if (sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true))
+        if (sConfigMgr->GetBoolDefault("BeastMasterNPC.HunterOnly", true))
         {
             if (player->getClass() != CLASS_HUNTER)
             {
@@ -230,7 +235,7 @@ public:
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 54);
 
         // Allow Exotic Pets regardless of spec
-        if (sConfigMgr->GetBoolDefault("BeastMaster.ExoticNoSpec", true))
+        if (sConfigMgr->GetBoolDefault("BeastMasterNPC.ExoticNoSpec", true))
         {
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 53);
         }
@@ -546,10 +551,10 @@ public:
 	{
 		if (!reload) {
 			std::string conf_path = _CONF_DIR;
-			std::string cfg_file = conf_path + "Settings/modules/npc_beastmaster.conf";
-#ifdef WIN32
-			cfg_file = "Settings/modules/npc_beastmaster.conf";
-#endif
+			std::string cfg_file = conf_path + "/npc_beastmaster.conf";
+                        #ifdef WIN32
+			    cfg_file = "npc_beastmaster.conf";
+                        #endif
 			std::string cfg_def_file = cfg_file + ".dist";
 			sConfigMgr->LoadMore(cfg_def_file.c_str());
 
