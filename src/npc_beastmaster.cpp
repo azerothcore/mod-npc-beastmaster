@@ -89,7 +89,7 @@ on a Hunter in or out of dungeons.
 #include "Configuration/Config.h"
 #include "ScriptedGossip.h"
 
-std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 33976, 1002, 1462, 6197 };
+std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 48990, 1002, 1462, 6197 };
 bool BeastMasterAnnounceToPlayer;
 bool BeastMasterHunterOnly;
 bool BeastMasterExoticNoSpec;
@@ -191,8 +191,8 @@ public:
         pet->SavePetToDB(PET_SAVE_AS_CURRENT, 0);
 
         // Learn Hunter Abilities
-        // Assume player has already learned the spells if they have Eagle Eye
-        if (!player->HasSpell(6197))
+        // Assume player has already learned the spells if they have Call Pet
+        if (!player->HasSpell(883))
         {
             // player->learnSpell(13481);	// Tame Beast - Not working for non-hunter classes
             for (int i = 0; i < HunterSpells.size(); ++i)
@@ -224,19 +224,32 @@ public:
             }
         }
 
+        if (player->getLevel() < 10)
+        {
+            m_creature->MonsterWhisper("Pets are not for the inexperienced!", player, false);
+            m_creature->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
+            player->CLOSE_GOSSIP_MENU();
+            return false;
+        }
+
         // MAIN MENU
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, 51);
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 54);
+        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 70);
 
         // Allow Exotic Pets For hunters if they can tame
         if (!BeastMasterExoticNoSpec && player->getClass() == CLASS_HUNTER && player->HasSpell(53270))
         {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 53);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
         }
 
         // Allow Exotic Pets regardless of spec
-        if (BeastMasterExoticNoSpec)
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 53);
+        // Hunters should spec Beast Mastery, all other classes get it for free
+        if (BeastMasterExoticNoSpec && player->getClass() != CLASS_HUNTER)
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
+
+        // remove pet skills (not for hunters)
+        if (player->getClass() != CLASS_HUNTER)
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Remove Pet Skills", GOSSIP_SENDER_MAIN, 80);
 
         // Stables for hunters only - Doesn't seem to work for other classes
         if (player->getClass() == CLASS_HUNTER)
@@ -244,6 +257,7 @@ public:
 
         // Pet Food Vendor
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_MONEY_BAG, "Buy Pet Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
+
         player->PlayerTalkClass->SendGossipMenu(601026, m_creature->GetGUID());
 
         // Howl/Roar
@@ -262,22 +276,28 @@ public:
             // MAIN MENU
         case 50:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, 51);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 54);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 70);
 
             // Allow Exotics for all players
             // Allow Exotic Pets regardless of spec
             if (!BeastMasterExoticNoSpec && player->getClass() == CLASS_HUNTER && player->HasSpell(53270))
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 53);
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
 
-            if (BeastMasterExoticNoSpec)
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 53);
+            // Allow Exotic Pets regardless of spec
+            // Hunters should spec Beast Mastery, all other classes get it for free
+            if (BeastMasterExoticNoSpec && player->getClass() != CLASS_HUNTER)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
+
+            // remove pet skills (not for hunters)
+            if (player->getClass() != CLASS_HUNTER)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Remove Pet Skills", GOSSIP_SENDER_MAIN, 80);
 
             // Stables for hunters only - Doesn't seem to work for other classes
             if (player->getClass() == CLASS_HUNTER)
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TAXI, "Visit Stable", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_STABLEPET);
 
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_MONEY_BAG, "Buy Pet Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
-            player->PlayerTalkClass->SendGossipMenu(100001, m_creature->GetGUID());
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
             // PETS PAGE 1
@@ -297,13 +317,14 @@ public:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Hyena", GOSSIP_SENDER_MAIN, 5829);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Moth", GOSSIP_SENDER_MAIN, 25498);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Nether Ray", GOSSIP_SENDER_MAIN, 18285);
-            player->PlayerTalkClass->SendGossipMenu(100002, m_creature->GetGUID());
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
             // PETS PAGE 2
         case 52:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, 51);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, 53);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Owl", GOSSIP_SENDER_MAIN, 14343);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Raptor", GOSSIP_SENDER_MAIN, 9684);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Ravager", GOSSIP_SENDER_MAIN, 22123);
@@ -317,16 +338,24 @@ public:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wasp", GOSSIP_SENDER_MAIN, 18283);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wind Serpent", GOSSIP_SENDER_MAIN, 5834);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wolf", GOSSIP_SENDER_MAIN, 3825);
-            player->PlayerTalkClass->SendGossipMenu(100003, m_creature->GetGUID());
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
+            break;
+
+            // PETS PAGE 3
+        case 53:
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, 52);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Worg", GOSSIP_SENDER_MAIN, 24128);
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
             // EXOTIC BEASTS
-        case 53:
+        case 60:
 
             // Teach Beast Mastery or Spirit Beasts won't work properly
             if (!player->HasSpell(53270))
             {
-                player->learnSpell(53270);
+                player->addSpell(53270, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
                 messageLearn << "I have taught you the art of Beast Mastery " << player->GetName() << ".";
                 m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
@@ -338,20 +367,29 @@ public:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Devilsaur", GOSSIP_SENDER_MAIN, 32485);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Rhino", GOSSIP_SENDER_MAIN, 25487);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Silithid", GOSSIP_SENDER_MAIN, 6582);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Jormungar Worm", GOSSIP_SENDER_MAIN, 26360);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Jormungar Worm", GOSSIP_SENDER_MAIN, 30422);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Arcturis (Spirit Bear)", GOSSIP_SENDER_MAIN, 38453);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Gondria (Spirit Tiger)", GOSSIP_SENDER_MAIN, 33776);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Loque'nahak (Spirit Leopard)", GOSSIP_SENDER_MAIN, 32517);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Skoll (Spirit Worg)", GOSSIP_SENDER_MAIN, 35189);
-            player->PlayerTalkClass->SendGossipMenu(100003, m_creature->GetGUID());
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
             // RARE PETS
-        case 54:
+        case 70:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Mazzranache (Tallstrider)", GOSSIP_SENDER_MAIN, 3068);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Aotona (Bird)", GOSSIP_SENDER_MAIN, 32481);
-            player->PlayerTalkClass->SendGossipMenu(100004, m_creature->GetGUID());
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
+            break;
+
+            // remove pet and granted skills
+        case 80:
+            for (int i = 0; i < HunterSpells.size(); ++i)
+                player->removeSpell(HunterSpells[i], SPEC_MASK_ALL, false);
+
+            player->removeSpell(53270, SPEC_MASK_ALL, false);
+            player->CLOSE_GOSSIP_MENU();
             break;
 
             // STABLE
@@ -380,7 +418,11 @@ public:
     void OnBeforeConfigLoad(bool reload) override
     {
         if (!reload) {
-            std::string cfg_file = "npc_beastmaster.conf";
+            std::string conf_path = _CONF_DIR;
+            std::string cfg_file = conf_path+"/npc_beastmaster.conf";
+#ifdef WIN32
+            cfg_file = "npc_beastmaster.conf";
+#endif
             std::string cfg_def_file = cfg_file + ".dist";
 
             sConfigMgr->LoadMore(cfg_def_file.c_str());
