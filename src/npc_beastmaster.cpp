@@ -94,6 +94,7 @@ bool BeastMasterAnnounceToPlayer;
 bool BeastMasterHunterOnly;
 bool BeastMasterExoticNoSpec;
 uint32 BeastMasterPetScale;
+bool BeastMasterKeepPetHappy;
 
 class BeastMasterAnnounce : public PlayerScript
 {
@@ -142,18 +143,9 @@ public:
             return;
         }
 
-        // Summon Creature
-        Creature *creatureTarget = m_creature->SummonCreature(entry, player->GetPositionX(), player->GetPositionY() + 2, player->GetPositionZ(), player->GetOrientation(), TEMPSUMMON_CORPSE_TIMED_DESPAWN, 500);
-        if (!creatureTarget) { return; }
-
         // Create Tamed Creature
-        Pet* pet = player->CreateTamedPetFrom(creatureTarget, 0);
+        Pet* pet = player->CreateTamedPetFrom(entry, 883);
         if (!pet) { return; }
-
-        // Kill Original Creature
-        creatureTarget->setDeathState(JUST_DIED);
-        creatureTarget->RemoveCorpse();
-        creatureTarget->SetHealth(0);   // For Nice GM View
 
         // Set Pet Happiness
         pet->SetPower(POWER_HAPPINESS, 1048000);
@@ -190,13 +182,15 @@ public:
         pet->InitLevelupSpellsForLevel();
         pet->SavePetToDB(PET_SAVE_AS_CURRENT, 0);
 
-        // Learn Hunter Abilities
-        // Assume player has already learned the spells if they have Call Pet
-        if (!player->HasSpell(883))
+        // Learn Hunter Abilities (only for non-hunters)
+        if (player->getClass() != CLASS_HUNTER)
         {
-            // player->learnSpell(13481);	// Tame Beast - Not working for non-hunter classes
-            for (int i = 0; i < HunterSpells.size(); ++i)
-                player->learnSpell(HunterSpells[i]);
+            // Assume player has already learned the spells if they have Call Pet
+            if (!player->HasSpell(883))
+            {
+                for (int i = 0; i < HunterSpells.size(); ++i)
+                    player->learnSpell(HunterSpells[i]);
+            }
         }
 
         // Farewell
@@ -433,7 +427,30 @@ public:
             BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
             BeastMasterExoticNoSpec = sConfigMgr->GetBoolDefault("BeastMaster.ExoticNoSpec", true);
             BeastMasterPetScale = sConfigMgr->GetIntDefault("BeastMaster.PetScale", 1);
+            BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
 
+        }
+    }
+};
+
+class BeastMaster_UnitScript : public UnitScript
+{
+    public:
+    BeastMaster_UnitScript()
+        : UnitScript("BeastMaster_UnitScript", true)
+    {
+    }
+
+    void OnDamage(Unit* attacker, Unit* /*victim*/, uint32& /*damage*/) override
+    {
+        if (BeastMasterKeepPetHappy && attacker->IsControlledByPlayer() && attacker->IsPet())
+        {
+            Pet* pet = attacker->ToPet();
+
+            if (pet->getPetType() == HUNTER_PET)
+            {
+                pet->SetPower(POWER_HAPPINESS, 1048000);
+            }
         }
     }
 };
@@ -443,4 +460,5 @@ void AddBeastMasterScripts()
     new BeastMasterConf();
     new BeastMasterAnnounce();
     new BeastMaster();
+    new BeastMaster_UnitScript();
 }
