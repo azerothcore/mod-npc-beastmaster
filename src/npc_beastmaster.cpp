@@ -231,14 +231,14 @@ public:
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 70);
 
         // Allow Exotic Pets For hunters if they can tame
-        if (!BeastMasterExoticNoSpec && player->getClass() == CLASS_HUNTER && player->HasSpell(53270))
+        if (!BeastMasterExoticNoSpec && player->getClass() == CLASS_HUNTER && (player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
         {
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
         }
 
         // Allow Exotic Pets regardless of spec
         // Hunters should spec Beast Mastery, all other classes get it for free
-        if (BeastMasterExoticNoSpec && player->getClass() != CLASS_HUNTER)
+        if (BeastMasterExoticNoSpec && (player->getClass() != CLASS_HUNTER || player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
 
         // remove pet skills (not for hunters)
@@ -347,7 +347,7 @@ public:
         case 60:
 
             // Teach Beast Mastery or Spirit Beasts won't work properly
-            if (!player->HasSpell(53270))
+            if (! (player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
             {
                 player->addSpell(53270, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
