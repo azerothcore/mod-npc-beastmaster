@@ -4,10 +4,6 @@
 # CUSTOM
 #
 
-DB_CHARACTERS_CUSTOM_PATHS+=(
-	$MOD_NPCBEASTMASTER_ROOT"/data/sql/db-characters/"
-)
-
 DB_WORLD_CUSTOM_PATHS+=(
 	$MOD_NPCBEASTMASTER_ROOT"/data/sql/db-world/"
 )
@@ -15,10 +11,6 @@ DB_WORLD_CUSTOM_PATHS+=(
 #
 # UPDATES
 #
-
-DB_CHARACTERS_UPDATE_PATHS+=(
-	$MOD_NPCBEASTMASTER_ROOT"/data/sql/updates/char/"
-)
 
 DB_WORLD_UPDATE_PATHS+=(
 	$MOD_NPCBEASTMASTER_ROOT"/data/sql/updates/world/"
