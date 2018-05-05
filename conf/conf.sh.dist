@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+#
+# CUSTOM
+#
+
+DB_WORLD_CUSTOM_PATHS+=(
+	$MOD_NPCBEASTMASTER_ROOT"/data/sql/db-world/"
+)
+
+#
+# UPDATES
+#
+
+DB_WORLD_UPDATE_PATHS+=(
+	$MOD_NPCBEASTMASTER_ROOT"/data/sql/updates/world/"
+)
+
+
