@@ -1,0 +1,28 @@
+--- Pet.cpp	2018-05-11 00:49:59.129230836 +0200
++++ Pet.cpp.beastmaster	2018-05-11 11:43:30.088735926 +0200
+@@ -673,6 +673,7 @@
+     PetType petType = MAX_PET_TYPE;
+     if (IsPet() && m_owner->GetTypeId() == TYPEID_PLAYER)
+     {
++        /* use another check due to mod-npcbeastmaster
+         if (m_owner->getClass() == CLASS_WARLOCK ||
+             m_owner->getClass() == CLASS_SHAMAN ||          // Fire Elemental
+             m_owner->getClass() == CLASS_DEATH_KNIGHT ||    // Risen Ghoul
+@@ -685,6 +686,17 @@
+         }
+         else
+             sLog->outError("Unknown type pet %u is summoned by player class %u", GetEntry(), m_owner->getClass());
++        */
++        // better pet handling for mod-npcbeastmaster
++        if (cinfo->IsTameable(true))
++        {
++            petType = HUNTER_PET;
++            m_unitTypeMask |= UNIT_MASK_HUNTER_PET;
++        }
++        else
++        {
++            petType = SUMMON_PET;
++        }
+     }
+ 
+     uint32 creature_ID = (petType == HUNTER_PET) ? 1 : cinfo->Entry;
