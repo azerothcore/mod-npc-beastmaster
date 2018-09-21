@@ -433,19 +433,19 @@ public:
     }
 };
 
-class BeastMaster_UnitScript : public UnitScript
+class BeastMaster_PlayerScript : public PlayerScript
 {
     public:
-    BeastMaster_UnitScript()
-        : UnitScript("BeastMaster_UnitScript", true)
+    BeastMaster_PlayerScript()
+        : PlayerScript("BeastMaster_PlayerScript")
     {
     }
 
-    void OnDamage(Unit* attacker, Unit* /*victim*/, uint32& /*damage*/) override
+    void OnBeforeUpdate(Player* player, uint32 /*p_time*/) override
     {
-        if (BeastMasterKeepPetHappy && attacker->IsControlledByPlayer() && attacker->IsPet())
+        if (BeastMasterKeepPetHappy && player->GetPet())
         {
-            Pet* pet = attacker->ToPet();
+            Pet* pet = player->GetPet();
 
             if (pet->getPetType() == HUNTER_PET)
             {
@@ -460,5 +460,5 @@ void AddBeastMasterScripts()
     new BeastMasterConf();
     new BeastMasterAnnounce();
     new BeastMaster();
-    new BeastMaster_UnitScript();
+    new BeastMaster_PlayerScript();
 }
