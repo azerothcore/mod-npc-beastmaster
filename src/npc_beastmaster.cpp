@@ -90,6 +90,11 @@ on a Hunter in or out of dungeons.
 #include "ScriptedGossip.h"
 
 std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 48990, 1002, 1462, 6197 };
+std::map<std::string, uint32> petsPage1;
+std::map<std::string, uint32> petsPage2;
+std::map<std::string, uint32> petsPage3;
+std::map<std::string, uint32> exoticPetsPage1;
+std::map<std::string, uint32> rarePetsPage1;
 bool BeastMasterAnnounceToPlayer;
 bool BeastMasterHunterOnly;
 bool BeastMasterExoticNoSpec;
@@ -298,19 +303,7 @@ public:
         case 51:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, 52);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Bat", GOSSIP_SENDER_MAIN, 16180);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Bear", GOSSIP_SENDER_MAIN, 12037);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Boar", GOSSIP_SENDER_MAIN, 29996);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Cat", GOSSIP_SENDER_MAIN, 2175);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Carrion Bird", GOSSIP_SENDER_MAIN, 2931);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Crab", GOSSIP_SENDER_MAIN, 18241);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Crocolisk", GOSSIP_SENDER_MAIN, 1417);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Dragonhawk", GOSSIP_SENDER_MAIN, 8);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Gorilla", GOSSIP_SENDER_MAIN, 1559);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Hound", GOSSIP_SENDER_MAIN, 29452);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Hyena", GOSSIP_SENDER_MAIN, 5829);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Moth", GOSSIP_SENDER_MAIN, 25498);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Nether Ray", GOSSIP_SENDER_MAIN, 18285);
+            AddGossip(player, petsPage1);
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
@@ -319,19 +312,7 @@ public:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, 51);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, 53);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Owl", GOSSIP_SENDER_MAIN, 14343);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Raptor", GOSSIP_SENDER_MAIN, 9684);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Ravager", GOSSIP_SENDER_MAIN, 22123);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Scorpid", GOSSIP_SENDER_MAIN, 14476);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Serpent", GOSSIP_SENDER_MAIN, 28011);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Spider", GOSSIP_SENDER_MAIN, 12433);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Spore Bat", GOSSIP_SENDER_MAIN, 18280);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Tallstrider", GOSSIP_SENDER_MAIN, 22807);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Turtle", GOSSIP_SENDER_MAIN, 14223);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Warp Stalker", GOSSIP_SENDER_MAIN, 23163);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wasp", GOSSIP_SENDER_MAIN, 18283);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wind Serpent", GOSSIP_SENDER_MAIN, 5834);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wolf", GOSSIP_SENDER_MAIN, 3825);
+            AddGossip(player, petsPage2);
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
@@ -339,7 +320,7 @@ public:
         case 53:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, 52);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Worg", GOSSIP_SENDER_MAIN, 24128);
+            AddGossip(player, petsPage3);
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
@@ -356,24 +337,14 @@ public:
             }
 
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Chimaera", GOSSIP_SENDER_MAIN, 20932);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Core Hound", GOSSIP_SENDER_MAIN, 11671);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Devilsaur", GOSSIP_SENDER_MAIN, 32485);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Rhino", GOSSIP_SENDER_MAIN, 25487);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Silithid", GOSSIP_SENDER_MAIN, 6582);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Jormungar Worm", GOSSIP_SENDER_MAIN, 30422);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Arcturis (Spirit Bear)", GOSSIP_SENDER_MAIN, 38453);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Gondria (Spirit Tiger)", GOSSIP_SENDER_MAIN, 33776);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Loque'nahak (Spirit Leopard)", GOSSIP_SENDER_MAIN, 32517);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Skoll (Spirit Worg)", GOSSIP_SENDER_MAIN, 35189);
+            AddGossip(player, exoticPetsPage1);
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
             // RARE PETS
         case 70:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Mazzranache (Tallstrider)", GOSSIP_SENDER_MAIN, 3068);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Aotona (Bird)", GOSSIP_SENDER_MAIN, 32481);
+            AddGossip(player, rarePetsPage1);
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
@@ -402,6 +373,17 @@ public:
             CreatePet(player, m_creature, action);
         return true;
     }
+
+private:
+    static void AddGossip(Player *player, std::map<std::string, uint32> &petMap)
+    {
+        std::map<std::string, uint32>::iterator it;
+
+        for (it = petMap.begin(); it != petMap.end(); it++)
+        {
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, it->first, GOSSIP_SENDER_MAIN, it->second);
+        }
+    }
 };
 
 class BeastMasterConf : public WorldScript
@@ -429,6 +411,41 @@ public:
             BeastMasterPetScale = sConfigMgr->GetIntDefault("BeastMaster.PetScale", 1);
             BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
 
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.PetsPage1", ""), petsPage1);
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.PetsPage2", ""), petsPage2);
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.PetsPage3", ""), petsPage3);
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.ExoticPetsPage1", ""), exoticPetsPage1);
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RarePetsPage1", ""), rarePetsPage1);
+        }
+    }
+
+private:
+    static void LoadPets(std::string pets, std::map<std::string, uint32> &petMap)
+    {
+        std::string delimitedValue;
+        std::stringstream petsStringStream;
+        std::string petName;
+        int count = 0;
+
+        petsStringStream.str(pets);
+
+        while (std::getline(petsStringStream, delimitedValue, ','))
+        {
+            if (count % 2 == 0)
+            {
+                petName = delimitedValue;
+            }
+            else
+            {
+                uint32 petId = atoi(delimitedValue.c_str());
+
+                if (petId >= 0)
+                {
+                    petMap[petName] = petId;
+                }
+            }
+
+            count++;
         }
     }
 };
