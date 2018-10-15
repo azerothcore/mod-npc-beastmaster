@@ -25,7 +25,7 @@ BeastMaster.ExoticNoSpec = 1
 
 BeastMaster.PetScale = 1.00
 
-# Keep pet always happy when attacking (default: 0)
+# Keep pet always happy (default: 0)
 
 BeastMaster.KeepPetHappy = 0
 
