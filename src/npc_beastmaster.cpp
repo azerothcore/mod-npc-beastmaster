@@ -8,57 +8,70 @@
 
 ### Description ###
 ------------------------------------------------------------------------------------------------------------------
-WhiteFang is a Beastmaster NPC that howls! This NPC allows any player, or only Hunters, to adopt and use pets. He
-also teaches the player specific Hunter skills for use with their pets. A player can adopt normal or exotic pets
-depending on how you've configured the NPC. For each pet I use a model for a rare creature of the same type, so
-they all look cool. He also sells a great selection of pet food for every level of pet. Hunters can access the
-stables as well. This has been a lot of fun for players on my server, and pets work great and just like they do
+WhiteFang is a Beastmaster NPC that howls! This NPC allows any player, or only Hunters, to adopt and use beasts. He
+also teaches the player specific Hunter skills for use with their beasts. A player can adopt normal or exotic beasts
+depending on how you've configured the NPC. For each beast I use a model for a rare creature of the same type, so
+they all look cool. He also sells a great selection of beast food for every level of beast. Hunters can access the
+stables as well. This has been a lot of fun for players on my server, and beasts work great and just like they do
 on a Hunter in or out of dungeons.
 
 
 ### Features ###
 ------------------------------------------------------------------------------------------------------------------
 - Adds a Worgen BeastMaster NPC with sounds/emotes
-- Allows all classes, or Hunters only, to adopt new pets
-- Teaches Normal and Exotic Pets
-- Allows Exotic Beast acquisition with or without spec
-- Teaches Hunter abilities to the player
-- Sells pet food For all pet levels
-- Pet scale is configurable
+- Allows adopting of beasts by level, class, and ability
+- Teaches player all required Hunter abilities
+- Sells beast food For all levels
+- The scale of the beast is configurable
 
 
 ### To-Do ###
 ------------------------------------------------------------------------------------------------------------------
 - If possible, create working stable for non-Hunter player
-- Fix pet spells disappearing from pet bar on relog/dismiss (Note: they persist if added back)
+- Fix beast spells disappearing from beast bar on relog/dismiss (Note: they persist if added back)
+
 
 ### Data ###
 ------------------------------------------------------------------------------------------------------------------
 - Type: NPC
 - Script: BeastMaster
 - Config: Yes
-    - Enable Module Announce
-    - Enable For Hunter Only
-    - Enable Exotic Pet Adoption Without Spec (Teaches Beast Mastery)
-    - Set Pet Scaling Factor
+    - Module Announce
+    - CorePatch check
+    - Level Requirement
+    - Enabled for Hunter class only
+    - Require Beast Mastery talent
+    - Allow Exotic Beasts for all classes (Teaches Beast Mastery)
+    - Set Beast Scale Factor
 - SQL: Yes
     - NPC ID: 601026
 
 
 ### Version ###
 ------------------------------------------------------------------------------------------------------------------
-- v2017.09.03 - Release
-- v2017.09.04 - Fixed Spirit Beast persistence (teaches Beast Mastery to player)
-- v2017.09.08 - Created new Pet Food item list for all pet levels
+- v2018.12.06 - Restored missing files, Fixed a few bugs
+- v2018.12.01
+    - Merge AzerothCore repo
+    - Update functions
+    - Fix Worg model
+    - Change "pet" to "beast"
+    - Restore MOB name references
+    - Rename '.ExoticNoSpec' to '.AdoptExotic'
+    - Add '.MinLevel' config option
+    - Add '.TalentRequired' config option
+    - Add '.CorePatch' config option
+- v2017.09.30 - Add beast->InitLevelupSpellsForLevel(); recommended by Alistar
+- v2017.09.13 - Teaches additional hunter spells (Eagle Eye, Eyes of the Beast, Beast Lore)
 - v2017.09.11
     - Added Exotic Pet: Spirit Bear
     - Added Pet: Warp Stalker
     - Added Pet: Wind Serpent
     - Added Pet: Nether Ray
     - Added Pet: Spore Bat
-    - Updated pet models to rare spawn models
-- v2017.09.13 - Teaches additional hunter spells (Eagle Eye, Eyes of the Beast, Beast Lore)
-- v2017.09.30 - Add pet->InitLevelupSpellsForLevel(); recommended by Alistar
+    - Updated beast models to rare spawn models
+- v2017.09.08 - Created new Pet Food item list for all beast levels
+- v2017.09.04 - Fixed Spirit Beast persistence (teaches Beast Mastery to player)
+- v2017.09.03 - Release
 
 
 ### Credits ###
@@ -90,11 +103,53 @@ on a Hunter in or out of dungeons.
 #include "ScriptedGossip.h"
 
 std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 48990, 1002, 1462, 6197 };
-bool BeastMasterAnnounceToPlayer;
-bool BeastMasterHunterOnly;
-bool BeastMasterExoticNoSpec;
-uint32 BeastMasterPetScale;
-bool BeastMasterKeepPetHappy;
+uint32 BeastMasterMinLevel = 10;
+float BeastMasterBeastScale = 1.0;
+bool BeastMasterAnnounceToPlayer = 1;
+bool BeastMasterHunterOnly = 0;
+bool BeastMasterAdoptExotic = 1;
+bool BeastMasterTalentRequired = 0;
+bool BeastMasterKeepBeastHappy = 1;
+bool BeastMasterCorePatch = 1;
+
+class BeastMasterConf : public WorldScript
+{
+public:
+    BeastMasterConf() : WorldScript("BeastMasterConf_conf") { }
+
+    void OnBeforeConfigLoad(bool reload) override
+    {
+        if (!reload) {
+            std::string conf_path = _CONF_DIR;
+            std::string cfg_file = conf_path + "/npc_beastmaster.conf";
+#ifdef WIN32
+            cfg_file = "npc_beastmaster.conf";
+#endif
+            std::string cfg_def_file = cfg_file + ".dist";
+            sConfigMgr->LoadMore(cfg_def_file.c_str());
+            sConfigMgr->LoadMore(cfg_file.c_str());
+
+            BeastMasterAnnounceToPlayer = sConfigMgr->GetBoolDefault("BeastMaster.Announce", true);
+            BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
+            BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", false);
+            BeastMasterAdoptExotic = sConfigMgr->GetBoolDefault("BeastMaster.AdoptExotic", true);
+            BeastMasterTalentRequired = sConfigMgr->GetBoolDefault("BeastMaster.TalentRequired", false);
+            BeastMasterKeepBeastHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepBeastHappy", true);
+            BeastMasterBeastScale = sConfigMgr->GetFloatDefault("BeastMaster.BeastScale", 1.0);
+            BeastMasterCorePatch = sConfigMgr->GetBoolDefault("BeastMaster.CorePatch", false);
+
+            // Sanitize (just n' case ya'll)
+            if (BeastMasterMinLevel < 0 || BeastMasterMinLevel > 80)
+            {
+                BeastMasterMinLevel = 10;
+            }
+            if (BeastMasterBeastScale < 0.2 || BeastMasterBeastScale > 10)
+            {
+                BeastMasterBeastScale = 1.0;
+            }
+        }
+    }
+};
 
 class BeastMasterAnnounce : public PlayerScript
 {
@@ -108,7 +163,7 @@ public:
         // Announce Module
         if (BeastMasterAnnounceToPlayer)
         {
-            ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule");
+            ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule.");
         }
     }
 };
@@ -122,30 +177,26 @@ public:
 
     void CreatePet(Player *player, Creature * m_creature, uint32 entry)
     {
-
-        // If enabled for Hunters only..
-        if (BeastMasterHunterOnly)
-        {
-            if (player->getClass() != CLASS_HUNTER)
-            {
-                m_creature->MonsterWhisper("Silly fool, Pets are for Hunters!", player, false);
-                m_creature->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
-                player->CLOSE_GOSSIP_MENU();
-                return;
-            }
-        }
-
-        // Check if player already has a pet
+        // Does the player already have a beast?
         if (player->GetPet())
         {
-            m_creature->MonsterWhisper("First you must abandon or stable your current pet!", player, false);
+            m_creature->MonsterWhisper("First you must abandon or stable your current beast!", player, false);
             player->CLOSE_GOSSIP_MENU();
             return;
         }
 
+        // Summon Creature
+        Creature *creatureTarget = m_creature->SummonCreature(entry, player->GetPositionX(), player->GetPositionY() + 2, player->GetPositionZ(), player->GetOrientation(), TEMPSUMMON_CORPSE_TIMED_DESPAWN, 500);
+        if (!creatureTarget) { return; }
+
         // Create Tamed Creature
         Pet* pet = player->CreateTamedPetFrom(entry, 883);
         if (!pet) { return; }
+
+        // Kill Original Creature
+        creatureTarget->setDeathState(JUST_DIED);
+        creatureTarget->RemoveCorpse();
+        creatureTarget->SetHealth(0);                       // Nice for GM-Mode view
 
         // Set Pet Happiness
         pet->SetPower(POWER_HAPPINESS, 1048000);
@@ -171,7 +222,7 @@ public:
         }
 
         // Scale Pet
-        pet->SetObjectScale(BeastMasterPetScale);
+        pet->SetObjectScale(BeastMasterBeastScale);
 
         // Caster Pets?
         player->SetMinion(pet, true);
@@ -182,7 +233,7 @@ public:
         pet->InitLevelupSpellsForLevel();
         pet->SavePetToDB(PET_SAVE_AS_CURRENT, 0);
 
-        // Learn Hunter Abilities (only for non-hunters)
+        // Learn Hunter Abilities (only for non-hunter classes)
         if (player->getClass() != CLASS_HUNTER)
         {
             // Assume player has already learned the spells if they have Call Pet
@@ -206,58 +257,112 @@ public:
         // Howl
         m_creature->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
 
-        // If enabled for Hunters only..
-        if (BeastMasterHunterOnly)
+        // Check level requirement
+        if (player->getLevel() < BeastMasterMinLevel && BeastMasterMinLevel != 0)
         {
+            std::ostringstream messageExperience;
+            messageExperience << "Sorry " << player->GetName() << ", but you must reach Level " << BeastMasterMinLevel << " before adopting a beast.";
+            m_creature->MonsterWhisper(messageExperience.str().c_str(), player);
+            m_creature->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
+            return false;
+        }
+        else
+        {
+            // Are we only serving the Hunter class?
+            if (BeastMasterHunterOnly && player->getClass() != CLASS_HUNTER)
+            {
+                // Are there any core modifications to Pet.cpp?
+                if (BeastMasterCorePatch)
+                {
+                    std::ostringstream messageSorry;
+                    messageSorry << "Hail " << player->GetName() << ", take only memories, leave only footprints.";
+                    m_creature->MonsterWhisper(messageSorry.str().c_str(), player);
+                }
+                else
+                {
+                    std::ostringstream messageSorry;
+                    messageSorry << "Sorry " << player->GetName() << ", but your knowledge of the wilds leaves much to be desired.";
+                    m_creature->MonsterWhisper(messageSorry.str().c_str(), player);
+                    m_creature->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
+                }
+            }
+
+            // MAIN MENU
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Beasts", GOSSIP_SENDER_MAIN, 51);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Beasts", GOSSIP_SENDER_MAIN, 70);
+
+            // EXOTIC PETS can be adopted by anyone or only the hunter class with or without the Beast Mastery talent
+            if (BeastMasterAdoptExotic || player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec()))
+            {
+                // If player isn't a Hunter class, let them adopt exotic beasts.
+                if (player->getClass() != CLASS_HUNTER)
+                {
+
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Beasts", GOSSIP_SENDER_MAIN, 60);
+
+                    // Greet the player
+                    std::ostringstream messageSorry;
+                    messageSorry << "Hail " << player->GetName() << ", take only memories, leave only footprints.";
+                    m_creature->MonsterWhisper(messageSorry.str().c_str(), player);
+                }
+                else
+                {
+                    // Is the player a real beast master?
+                    if (player->HasTalent(53270, player->GetActiveSpec()))
+                    {
+                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Beasts", GOSSIP_SENDER_MAIN, 60);
+                        std::ostringstream messageAdopt;
+                        messageAdopt << "Greetings " << player->GetName() << ", it's an honor to meet a true Beast Master.";
+                        m_creature->MonsterWhisper(messageAdopt.str().c_str(), player);
+                        m_creature->HandleEmoteCommand(EMOTE_ONESHOT_POINT);
+                    }
+                    else
+                    {
+                        // If not, can hunters adopt exotic beasts without learning beast mastery first ?
+                        if (!BeastMasterTalentRequired)
+                        {
+                            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Beasts", GOSSIP_SENDER_MAIN, 60);
+                            std::ostringstream messageAdopt;
+                            messageAdopt << "How goes it " << player->GetName() << "? Have you seen my exotic beasts yet?";
+                            m_creature->MonsterWhisper(messageAdopt.str().c_str(), player);
+                            m_creature->HandleEmoteCommand(EMOTE_ONESHOT_POINT);
+                        }
+                        else
+                        {
+                            // Hunters must train beast mastery before adopting exotic beasts.
+                            std::ostringstream messageAdopt;
+                            messageAdopt << "Alas " << player->GetName() << ".. One must master the ways of the wilds to control exotic beasts.";
+                            m_creature->MonsterWhisper(messageAdopt.str().c_str(), player);
+                            m_creature->HandleEmoteCommand(EMOTE_ONESHOT_POINT);
+                        }
+                    }
+                }
+            }
+
+            // Remove Hunter abilties from non-Hunter characters
             if (player->getClass() != CLASS_HUNTER)
             {
-                m_creature->MonsterWhisper("Silly fool, Pets are for Hunters!", player, false);
-                m_creature->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
-                player->CLOSE_GOSSIP_MENU();
-                return false;
+                // Assume player has already learned the spells if they have Call Pet
+                if (player->HasSpell(883))
+                {
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TRAINER, "Unlearn Hunter Abilities", GOSSIP_SENDER_MAIN, 80);
+                }
+            }
+
+            // Stables for Hunters Only - Doesn't seem to work for other classes
+            if (player->getClass() == CLASS_HUNTER)
+            {
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TAXI, "Visit Stable", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_STABLEPET);
             }
         }
 
-        if (player->getLevel() < 10)
-        {
-            m_creature->MonsterWhisper("Pets are not for the inexperienced!", player, false);
-            m_creature->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
-            player->CLOSE_GOSSIP_MENU();
-            return false;
-        }
-
-        // MAIN MENU
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, 51);
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 70);
-
-        // Allow Exotic Pets For hunters if they can tame
-        if (!BeastMasterExoticNoSpec && player->getClass() == CLASS_HUNTER && (player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
-        {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
-        }
-
-        // Allow Exotic Pets regardless of spec
-        // Hunters should spec Beast Mastery, all other classes get it for free
-        if (BeastMasterExoticNoSpec && (player->getClass() != CLASS_HUNTER || player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
-
-        // remove pet skills (not for hunters)
-        if (player->getClass() != CLASS_HUNTER)
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Remove Pet Skills", GOSSIP_SENDER_MAIN, 80);
-
-        // Stables for hunters only - Doesn't seem to work for other classes
-        if (player->getClass() == CLASS_HUNTER)
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TAXI, "Visit Stable", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_STABLEPET);
-
-        // Pet Food Vendor
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_MONEY_BAG, "Buy Pet Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
-
+        // Buy Food
+        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_MONEY_BAG, "Buy Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
         player->PlayerTalkClass->SendGossipMenu(601026, m_creature->GetGUID());
 
         // Howl/Roar
         player->PlayDirectSound(9036);
         m_creature->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
-
         return true;
     }
 
@@ -267,79 +372,97 @@ public:
 
         switch (action)
         {
+
             // MAIN MENU
         case 50:
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, 51);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 70);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Beasts", GOSSIP_SENDER_MAIN, 51);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Beasts", GOSSIP_SENDER_MAIN, 70);
 
-            // Allow Exotics for all players
-            // Allow Exotic Pets regardless of spec
-            if (!BeastMasterExoticNoSpec && player->getClass() == CLASS_HUNTER && player->HasSpell(53270))
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
+            // EXOTIC BEASTS can be adopted by anyone or only the hunter class with or without the Beast Mastery talent
+            if (BeastMasterAdoptExotic || player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec()))
+            {
+                // Allow exotic beast adoption if not a Hunter class
+                if (player->getClass() != CLASS_HUNTER)
+                {
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Beasts", GOSSIP_SENDER_MAIN, 60);
+                }
+                else
+                {
+                    // Do Hunters need to learn Beast Mastery before adopting exotic beasts?
+                    if (!BeastMasterTalentRequired)
+                    {
+                        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Beasts", GOSSIP_SENDER_MAIN, 60);
+                    }
+                    else
+                    {
+                        // Of all the things I've lost, I miss my mind the most.
+                    }
+                }
+            }
 
-            // Allow Exotic Pets regardless of spec
-            // Hunters should spec Beast Mastery, all other classes get it for free
-            if (BeastMasterExoticNoSpec && player->getClass() != CLASS_HUNTER)
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
-
-            // remove pet skills (not for hunters)
+            // Remove Hunter abilities (for non-Hunter classes)
             if (player->getClass() != CLASS_HUNTER)
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Remove Pet Skills", GOSSIP_SENDER_MAIN, 80);
+            {
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Unlearn Hunter Abilities", GOSSIP_SENDER_MAIN, 80);
+            }
 
-            // Stables for hunters only - Doesn't seem to work for other classes
+            // Stables for Hunters only (Doesn't seem to work for other classes)
             if (player->getClass() == CLASS_HUNTER)
+            {
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TAXI, "Visit Stable", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_STABLEPET);
+            }
 
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_MONEY_BAG, "Buy Pet Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
+            // Buy Food
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_MONEY_BAG, "Buy Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
-            // PETS PAGE 1
+            // BEASTS PAGE 1
         case 51:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, 52);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Bat", GOSSIP_SENDER_MAIN, 16180);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Bear", GOSSIP_SENDER_MAIN, 12037);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Boar", GOSSIP_SENDER_MAIN, 29996);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Cat", GOSSIP_SENDER_MAIN, 2175);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Carrion Bird", GOSSIP_SENDER_MAIN, 2931);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Crab", GOSSIP_SENDER_MAIN, 18241);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Crocolisk", GOSSIP_SENDER_MAIN, 1417);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Dragonhawk", GOSSIP_SENDER_MAIN, 8);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Gorilla", GOSSIP_SENDER_MAIN, 1559);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Hound", GOSSIP_SENDER_MAIN, 29452);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Hyena", GOSSIP_SENDER_MAIN, 5829);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Moth", GOSSIP_SENDER_MAIN, 25498);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Nether Ray", GOSSIP_SENDER_MAIN, 18285);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Bat", GOSSIP_SENDER_MAIN, 16180);              // Shadikith The Glider
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Bear", GOSSIP_SENDER_MAIN, 12037);             // Ursollok
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Boar", GOSSIP_SENDER_MAIN, 29996);             // Armored Brown
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Cat", GOSSIP_SENDER_MAIN, 2175);               // Shadowclaw
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Carrion Bird", GOSSIP_SENDER_MAIN, 2931);      // Zaricotl
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Crab", GOSSIP_SENDER_MAIN, 18241);             // Crusty
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Crocolisk", GOSSIP_SENDER_MAIN, 1417);         // Izod Green
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Dragonhawk", GOSSIP_SENDER_MAIN, 8);           // Bloodfalcon
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Gorilla", GOSSIP_SENDER_MAIN, 1559);           // King Mukla
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Hound", GOSSIP_SENDER_MAIN, 29452);            // Darkhound - (Registers as Wolf Pre-Cata)
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Hyena", GOSSIP_SENDER_MAIN, 5829);             // Snort the Heckler
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Moth", GOSSIP_SENDER_MAIN, 25498);             // Aspatha the Broodmother
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Nether Ray", GOSSIP_SENDER_MAIN, 18285);       // Count Ungula
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
-            // PETS PAGE 2
+            // BEASTS PAGE 2
         case 52:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, 51);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, 53);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Owl", GOSSIP_SENDER_MAIN, 14343);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Raptor", GOSSIP_SENDER_MAIN, 9684);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Ravager", GOSSIP_SENDER_MAIN, 22123);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Scorpid", GOSSIP_SENDER_MAIN, 14476);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Serpent", GOSSIP_SENDER_MAIN, 28011);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Spider", GOSSIP_SENDER_MAIN, 12433);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Spore Bat", GOSSIP_SENDER_MAIN, 18280);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Tallstrider", GOSSIP_SENDER_MAIN, 22807);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Turtle", GOSSIP_SENDER_MAIN, 14223);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Warp Stalker", GOSSIP_SENDER_MAIN, 23163);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wasp", GOSSIP_SENDER_MAIN, 18283);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wind Serpent", GOSSIP_SENDER_MAIN, 5834);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wolf", GOSSIP_SENDER_MAIN, 3825);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Owl", GOSSIP_SENDER_MAIN, 14343);              // Olm the Wise
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Raptor", GOSSIP_SENDER_MAIN, 9684);            // Lar'korwi
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Ravager", GOSSIP_SENDER_MAIN, 22123);          // Rip-blade Ravager
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Scorpid", GOSSIP_SENDER_MAIN, 14476);          // Krellak
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Serpent", GOSSIP_SENDER_MAIN, 28011);          // Emperor Cobra
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Spider", GOSSIP_SENDER_MAIN, 12433);           // Krethis the Shadowspinner
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Spore Bat", GOSSIP_SENDER_MAIN, 18280);        // Sporewing
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Tallstrider", GOSSIP_SENDER_MAIN, 22807);      // Green/Purple
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Turtle", GOSSIP_SENDER_MAIN, 14223);           // Cranky Benj
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Warp Stalker", GOSSIP_SENDER_MAIN, 23163);     // Gezzarak the Huntress
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wasp", GOSSIP_SENDER_MAIN, 18283);             // Blacksting
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wind Serpent", GOSSIP_SENDER_MAIN, 5834);      // Azzere the Skyblade
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Wolf", GOSSIP_SENDER_MAIN, 3825);              // Ghostpaw Alpha
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
-            // PETS PAGE 3
+            // BEASTS PAGE 3
         case 53:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, 52);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Worg", GOSSIP_SENDER_MAIN, 24128);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Worg", GOSSIP_SENDER_MAIN, 25791);             // Oil-Stained Wolf
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
@@ -347,7 +470,7 @@ public:
         case 60:
 
             // Teach Beast Mastery or Spirit Beasts won't work properly
-            if (! (player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
+            if (!(player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
             {
                 player->addSpell(53270, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
@@ -356,33 +479,32 @@ public:
             }
 
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Chimaera", GOSSIP_SENDER_MAIN, 20932);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Core Hound", GOSSIP_SENDER_MAIN, 11671);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Devilsaur", GOSSIP_SENDER_MAIN, 32485);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Rhino", GOSSIP_SENDER_MAIN, 25487);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Silithid", GOSSIP_SENDER_MAIN, 6582);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Jormungar Worm", GOSSIP_SENDER_MAIN, 30422);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Arcturis (Spirit Bear)", GOSSIP_SENDER_MAIN, 38453);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Gondria (Spirit Tiger)", GOSSIP_SENDER_MAIN, 33776);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Loque'nahak (Spirit Leopard)", GOSSIP_SENDER_MAIN, 32517);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Skoll (Spirit Worg)", GOSSIP_SENDER_MAIN, 35189);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Chimaera", GOSSIP_SENDER_MAIN, 20932);                     // Nuramoc
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Core Hound", GOSSIP_SENDER_MAIN, 11671);                   // Lava/Fire (21108 - Fel/Fire)
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Devilsaur", GOSSIP_SENDER_MAIN, 32485);                    // King Krush
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Rhino", GOSSIP_SENDER_MAIN, 25487);                        // Wooly Rhino Matriarch Brown
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Silithid", GOSSIP_SENDER_MAIN, 6582);                      // Clutchmother Zavas
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Jormungar Worm", GOSSIP_SENDER_MAIN, 30422);               // Rattlebore
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Arcturis (Spirit Bear)", GOSSIP_SENDER_MAIN, 38453);       // Arcturis 
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Gondria (Spirit Tiger)", GOSSIP_SENDER_MAIN, 33776);       // Gondria
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Loque'nahak (Spirit Leopard)", GOSSIP_SENDER_MAIN, 32517); // Loque'nahak
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Skoll (Spirit Worg)", GOSSIP_SENDER_MAIN, 35189);          // (Skoll
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
-            // RARE PETS
+            // RARE Beasts
         case 70:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Mazzranache (Tallstrider)", GOSSIP_SENDER_MAIN, 3068);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Aotona (Bird)", GOSSIP_SENDER_MAIN, 32481);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Mazzranache (Tallstrider)", GOSSIP_SENDER_MAIN, 3068);     // Mazzranache
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, "Aotona (Bird)", GOSSIP_SENDER_MAIN, 32481);                // Aotona
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
             break;
 
-            // remove pet and granted skills
+            // REMOVE PET SKILLS
         case 80:
             for (int i = 0; i < HunterSpells.size(); ++i)
-                player->removeSpell(HunterSpells[i], SPEC_MASK_ALL, false);
-
-            player->removeSpell(53270, SPEC_MASK_ALL, false);
+                player->removeSpell(HunterSpells[i], SPEC_MASK_ALL, false); // Remove Hunter Abilities
+            player->removeSpell(53270, SPEC_MASK_ALL, false); // Remove Beast Mastery Talent
             player->CLOSE_GOSSIP_MENU();
             break;
 
@@ -402,54 +524,26 @@ public:
             CreatePet(player, m_creature, action);
         return true;
     }
+
 };
 
-class BeastMasterConf : public WorldScript
-{
-public:
-    BeastMasterConf() : WorldScript("BeastMasterConf") { }
-
-    void OnBeforeConfigLoad(bool reload) override
-    {
-        if (!reload) {
-            std::string conf_path = _CONF_DIR;
-            std::string cfg_file = conf_path+"/npc_beastmaster.conf";
-#ifdef WIN32
-            cfg_file = "npc_beastmaster.conf";
-#endif
-            std::string cfg_def_file = cfg_file + ".dist";
-
-            sConfigMgr->LoadMore(cfg_def_file.c_str());
-
-            sConfigMgr->LoadMore(cfg_file.c_str());
-
-            BeastMasterAnnounceToPlayer = sConfigMgr->GetBoolDefault("BeastMaster.Announce", true);
-            BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
-            BeastMasterExoticNoSpec = sConfigMgr->GetBoolDefault("BeastMaster.ExoticNoSpec", true);
-            BeastMasterPetScale = sConfigMgr->GetIntDefault("BeastMaster.PetScale", 1);
-            BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
-
-        }
-    }
-};
-
+// Infinite Beast Happiness
 class BeastMaster_PlayerScript : public PlayerScript
 {
-    public:
+public:
     BeastMaster_PlayerScript()
         : PlayerScript("BeastMaster_PlayerScript")
-    {
-    }
+    {}
 
     void OnBeforeUpdate(Player* player, uint32 /*p_time*/) override
     {
-        if (BeastMasterKeepPetHappy && player->GetPet())
+        if (BeastMasterKeepBeastHappy && player->GetPet())
         {
-            Pet* pet = player->GetPet();
+            Pet* beast = player->GetPet();
 
-            if (pet->getPetType() == HUNTER_PET)
+            if (beast->getPetType() == HUNTER_PET)
             {
-                pet->SetPower(POWER_HAPPINESS, 1048000);
+                beast->SetPower(POWER_HAPPINESS, 1048000);
             }
         }
     }

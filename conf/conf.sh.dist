@@ -16,4 +16,3 @@ DB_WORLD_UPDATE_PATHS+=(
 	$MOD_NPCBEASTMASTER_ROOT"/data/sql/updates/world/"
 )
 
-
