@@ -9,6 +9,11 @@
 BeastMaster.Announce = 1
 
 # Enable only for the Hunter class?
+# (If this option is set to 0 you can also apply the following patch for better pet handling:
+# patch -l src/server/game/Entities/Pet/Pet.cpp <modules/mod-npcbeastmaster/Pet.cpp.beastmaster.patch
+# In order to revert the patch use this command:
+# patch -lR src/server/game/Entities/Pet/Pet.cpp <modules/mod-npcbeastmaster/Pet.cpp.beastmaster.patch
+# Please take into account that this patch changes the core functionality, so use at your own risk!)
 
 BeastMaster.HunterOnly = 0
 
@@ -19,3 +24,7 @@ BeastMaster.ExoticNoSpec = 1
 # Pet Scale Value (float - default: 1.00)
 
 BeastMaster.PetScale = 1.00
+
+# Keep pet always happy when attacking (default: 0)
+
+BeastMaster.KeepPetHappy = 0
