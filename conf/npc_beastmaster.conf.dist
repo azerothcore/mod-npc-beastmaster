@@ -8,14 +8,30 @@
 
 BeastMaster.Announce = 1
 
-# Enable only for the Hunter class?
+# Is the core Pet.cpp modified? (default: 0)
+ 
+BeastMaster.CorePatch = 0
+
+# Require level to adopt beasts. (default: 10, 0 = disable)
+
+BeastMaster.MinLevel = 10
+
+# Enable only for the Hunter class? (default: 0)
 
 BeastMaster.HunterOnly = 0
 
-# Allow Exotic Beast Taming without spec?
+# Hunters are required to heave beast mastery to adopt exotic pets. (default: 0)
 
-BeastMaster.ExoticNoSpec = 1
+BeastMaster.TalentRequired = 0
 
-# Pet Scale Value (float - default: 1.00)
+# Allow adoption of exotic beasts (Spirit Beast) without Beast Mastery talent. (default: 1)
 
-BeastMaster.PetScale = 1.00
+BeastMaster.AdoptExotic = 1
+
+# Beast's are always happy! (default: 1)
+
+BeastMaster.KeepBeastHappy = 1
+
+# Make your beasts larger or smaller (default: 1.00)
+
+BeastMaster.BeastScale = 1.00
