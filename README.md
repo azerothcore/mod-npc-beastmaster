@@ -34,7 +34,7 @@ As GM:
 
 Import SQL automatically:
 ```
-bash apps/db_assembler/db_assembler.sh
+bash <AC>/apps/db_assembler/db_assembler.sh
 ```
 choose 8)
 
