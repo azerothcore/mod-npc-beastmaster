@@ -15,11 +15,11 @@ The module can be configured to be restricted for hunters only. In this mode it 
 ## How to use ingame
 
 As GM:
-- add permanently:
+- add NPC permanently:
  ```
  .npc add 601026
  ```
-- add temporarily:
+- add NPC temporarily:
  ```
  .npc add temp 601026
  ```
