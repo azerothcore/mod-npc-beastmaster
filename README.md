@@ -9,7 +9,7 @@ This module allows each class (even Warlocks and Death Knights) to use hunter pe
 - food for the pets
 - stables (only for hunters)
 
-The module can be configured to also be restricted for hunters only. In this mode it can serve as a source for rare pets specified in the config file.
+The module can be configured to be restricted for hunters only. In this mode it can serve as a source for rare pets specified in the config file.
 
 
 ## How to use ingame
