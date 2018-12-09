@@ -62,3 +62,7 @@ If you need to change the module configuration, go to your server configuration 
 * [StygianTheBest](http://stygianthebest.github.io): original author (this module is based on v2017.09.03)
 
 AzerothCore: [repository](https://github.com/azerothcore) - [website](http://azerothcore.org/) - [discord chat community](https://discord.gg/PaqQRkd)
+
+
+## License
+This code and content is released under the [GNU AGPL v3](https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3).
