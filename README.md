@@ -32,20 +32,29 @@ As GM:
 
 ## Installation
 
+Clone Git repository:
+
+```
+cd <ACdir>
+git clone https://github.com/azerothcore/mod-npcbeastmaster.git modules/mod-npcbeastmaster
+```
+
 Import SQL automatically:
 ```
-bash <ACdir>/apps/db_assembler/db_assembler.sh
+cd <ACdir>
+bash apps/db_assembler/db_assembler.sh
 ```
 choose 8)
 
 Import SQL manually:
 ```
-bash <ACdir>/apps/db_assembler/db_assembler.sh
+cd <ACdir>
+bash apps/db_assembler/db_assembler.sh
 ```
 choose 4)
 ```
-cd <ACdir>/env/dist/sql
-mysql -P <DBport> -u <DPuser> --password=<DBpassword> world <world_custom.sql
+cd <ACdir>
+mysql -P <DBport> -u <DPuser> --password=<DBpassword> world <env/dist/sql/world_custom.sql
 ```
 
 Patch Pet.cpp (recommended; otherwise you'll get errors in the logs and the Death Knight will be unable to use hunter pets)
