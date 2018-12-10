@@ -34,21 +34,30 @@ As GM:
 
 Import SQL automatically:
 ```
-bash <AC>/apps/db_assembler/db_assembler.sh
+bash <ACdir>/apps/db_assembler/db_assembler.sh
 ```
 choose 8)
 
 Import SQL manually:
 ```
-bash <AC>/apps/db_assembler/db_assembler.sh
+bash <ACdir>/apps/db_assembler/db_assembler.sh
 ```
 choose 4)
 ```
-cd <AC>/env/dist/sql
+cd <ACdir>/env/dist/sql
 mysql -P <DBport> -u <DPuser> --password=<DBpassword> world <world_custom.sql
 ```
 
-
+Patch Pet.cpp (recommended; otherwise you'll get errors in the logs and the Death Knight will be unable to use hunter pets)
+```
+cd <ACdir>
+patch -l src/server/game/Entities/Pet/Pet.cpp <modules/mod-npcbeastmaster/Pet.cpp.beastmaster.patch
+```
+You can revert the patch as follows:
+```
+cd <ACdir>
+patch -lR src/server/game/Entities/Pet/Pet.cpp <modules/mod-npcbeastmaster/Pet.cpp.beastmaster.patch
+```
 ## Edit module configuration (optional)
 
 If you need to change the module configuration, go to your server configuration folder (where your `worldserver` or `worldserver.exe` is), copy `npc_beastmaster.conf.dist` to `npc_beastmaster.conf` and edit that new file.
