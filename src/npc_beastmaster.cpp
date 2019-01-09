@@ -8,10 +8,10 @@ std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 48990, 1002, 1462, 61
 std::map<std::string, uint32> pets;
 std::map<std::string, uint32> exoticPets;
 std::map<std::string, uint32> rarePets;
+std::map<std::string, uint32> rareExoticPets;
 bool BeastMasterAnnounceToPlayer;
 bool BeastMasterHunterOnly;
 bool BeastMasterAllowExotic;
-float BeastMasterPetScale;
 bool BeastMasterKeepPetHappy;
 bool BeastMasterCorePatch;
 uint32 BeastMasterMinLevel;
@@ -19,15 +19,16 @@ bool BeastMasterHunterBeastMasteryRequired;
 
 enum PetGossip
 {
-    PET_BEASTMASTER_HOWL       =   9036,
-    PET_PAGE_SIZE              =     13,
-    PET_PAGE_START_PETS        =    501,
-    PET_PAGE_START_EXOTIC_PETS =    601,
-    PET_PAGE_START_RARE_PETS   =    701,
-    PET_PAGE_MAX               =    801,
-    PET_MAIN_MENU              =     50,
-    PET_REMOVE_SKILLS          =     80,
-    PET_GOSSIP_HELLO           = 601026
+    PET_BEASTMASTER_HOWL            =   9036,
+    PET_PAGE_SIZE                   =     13,
+    PET_PAGE_START_PETS             =    501,
+    PET_PAGE_START_EXOTIC_PETS      =    601,
+    PET_PAGE_START_RARE_PETS        =    701,
+    PET_PAGE_START_RARE_EXOTIC_PETS =    801,
+    PET_PAGE_MAX                    =    901,
+    PET_MAIN_MENU                   =     50,
+    PET_REMOVE_SKILLS               =     80,
+    PET_GOSSIP_HELLO                = 601026
 };
 
 enum PetSpells
@@ -101,9 +102,6 @@ public:
             pet->UpdateAllStats();
         }
 
-        // Scale Pet
-        pet->SetObjectScale(BeastMasterPetScale);
-
         // Caster Pets?
         player->SetMinion(pet, true);
 
@@ -163,10 +161,12 @@ public:
             if (player->getClass() != CLASS_HUNTER)
             {
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
             }
             else if (!BeastMasterHunterBeastMasteryRequired || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
             {
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
             }
         }
 
@@ -204,10 +204,12 @@ public:
                 if (player->getClass() != CLASS_HUNTER)
                 {
                     player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
                 }
                 else if (!BeastMasterHunterBeastMasteryRequired || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
                 {
                     player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
                 }
             }
 
@@ -263,7 +265,7 @@ public:
             AddGossip(player, exoticPets, page);
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
         }
-        else if (action >= PET_PAGE_START_RARE_PETS && action < PET_PAGE_MAX)
+        else if (action >= PET_PAGE_START_RARE_PETS && action < PET_PAGE_START_RARE_EXOTIC_PETS)
         {
             // RARE PETS
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
@@ -277,6 +279,31 @@ public:
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_PETS + page);
 
             AddGossip(player, rarePets, page);
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
+        }
+        else if (action >= PET_PAGE_START_RARE_EXOTIC_PETS && action < PET_PAGE_MAX)
+        {
+            // RARE EXOTIC BEASTS
+            // Teach Beast Mastery or Spirit Beasts won't work properly
+            if (! (player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec())))
+            {
+                player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
+                std::ostringstream messageLearn;
+                messageLearn << "I have taught you the art of Beast Mastery " << player->GetName() << ".";
+                m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
+            }
+
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
+            int page = action - PET_PAGE_START_RARE_EXOTIC_PETS + 1;
+            int maxPage = rareExoticPets.size() / PET_PAGE_SIZE + (rareExoticPets.size() % PET_PAGE_SIZE != 0);
+
+            if (page > 1)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS + page - 2);
+
+            if (page < maxPage)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS + page);
+
+            AddGossip(player, rareExoticPets, page);
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
         }
         else if (action == PET_REMOVE_SKILLS)
@@ -343,7 +370,6 @@ public:
             BeastMasterAnnounceToPlayer = sConfigMgr->GetBoolDefault("BeastMaster.Announce", true);
             BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
             BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", true);
-            BeastMasterPetScale = sConfigMgr->GetFloatDefault("BeastMaster.PetScale", 1.0);
             BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
             BeastMasterCorePatch = sConfigMgr->GetBoolDefault("BeastMaster.CorePatch", false);
             BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
@@ -353,14 +379,11 @@ public:
             {
                 BeastMasterMinLevel = 10;
             }
-            if (BeastMasterPetScale < 0.2 || BeastMasterPetScale > 10)
-            {
-                BeastMasterPetScale = 1.0;
-            }
 
             LoadPets(sConfigMgr->GetStringDefault("BeastMaster.Pets", ""), pets);
             LoadPets(sConfigMgr->GetStringDefault("BeastMaster.ExoticPets", ""), exoticPets);
             LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RarePets", ""), rarePets);
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RareExoticPets", ""), rareExoticPets);
         }
     }
 
