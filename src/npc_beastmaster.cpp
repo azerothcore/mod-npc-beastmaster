@@ -5,16 +5,38 @@
 #include "ScriptedGossip.h"
 
 std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 48990, 1002, 1462, 6197 };
-std::map<std::string, uint32> petsPage1;
-std::map<std::string, uint32> petsPage2;
-std::map<std::string, uint32> petsPage3;
-std::map<std::string, uint32> exoticPetsPage1;
-std::map<std::string, uint32> rarePetsPage1;
+std::map<std::string, uint32> pets;
+std::map<std::string, uint32> exoticPets;
+std::map<std::string, uint32> rarePets;
+std::map<std::string, uint32> rareExoticPets;
 bool BeastMasterAnnounceToPlayer;
 bool BeastMasterHunterOnly;
-bool BeastMasterExoticNoSpec;
-uint32 BeastMasterPetScale;
+bool BeastMasterAllowExotic;
 bool BeastMasterKeepPetHappy;
+bool BeastMasterCorePatch;
+uint32 BeastMasterMinLevel;
+bool BeastMasterHunterBeastMasteryRequired;
+
+enum PetGossip
+{
+    PET_BEASTMASTER_HOWL            =   9036,
+    PET_PAGE_SIZE                   =     13,
+    PET_PAGE_START_PETS             =    501,
+    PET_PAGE_START_EXOTIC_PETS      =    601,
+    PET_PAGE_START_RARE_PETS        =    701,
+    PET_PAGE_START_RARE_EXOTIC_PETS =    801,
+    PET_PAGE_MAX                    =    901,
+    PET_MAIN_MENU                   =     50,
+    PET_REMOVE_SKILLS               =     80,
+    PET_GOSSIP_HELLO                = 601026
+};
+
+enum PetSpells
+{
+    PET_SPELL_CALL_PET      =     883,
+    PET_SPELL_BEAST_MASTERY =   53270,
+    PET_MAX_HAPPINESS       = 1048000
+};
 
 class BeastMasterAnnounce : public PlayerScript
 {
@@ -28,7 +50,10 @@ public:
         // Announce Module
         if (BeastMasterAnnounceToPlayer)
         {
-            ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule");
+            if (BeastMasterCorePatch)
+                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule with core patch.");
+            else
+                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule without core patch.");
         }
     }
 };
@@ -42,19 +67,6 @@ public:
 
     void CreatePet(Player *player, Creature * m_creature, uint32 entry)
     {
-
-        // If enabled for Hunters only..
-        if (BeastMasterHunterOnly)
-        {
-            if (player->getClass() != CLASS_HUNTER)
-            {
-                m_creature->MonsterWhisper("Silly fool, Pets are for Hunters!", player, false);
-                m_creature->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
-                player->CLOSE_GOSSIP_MENU();
-                return;
-            }
-        }
-
         // Check if player already has a pet
         if (player->GetPet())
         {
@@ -64,11 +76,11 @@ public:
         }
 
         // Create Tamed Creature
-        Pet* pet = player->CreateTamedPetFrom(entry, 883);
+        Pet* pet = player->CreateTamedPetFrom(entry, PET_SPELL_CALL_PET);
         if (!pet) { return; }
 
         // Set Pet Happiness
-        pet->SetPower(POWER_HAPPINESS, 1048000);
+        pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
 
         // Initialize Pet
         pet->AddUInt64Value(UNIT_FIELD_CREATEDBY, player->GetGUID());
@@ -90,9 +102,6 @@ public:
             pet->UpdateAllStats();
         }
 
-        // Scale Pet
-        pet->SetObjectScale(BeastMasterPetScale);
-
         // Caster Pets?
         player->SetMinion(pet, true);
 
@@ -106,7 +115,7 @@ public:
         if (player->getClass() != CLASS_HUNTER)
         {
             // Assume player has already learned the spells if they have Call Pet
-            if (!player->HasSpell(883))
+            if (!player->HasSpell(PET_SPELL_CALL_PET))
             {
                 for (int i = 0; i < HunterSpells.size(); ++i)
                     player->learnSpell(HunterSpells[i]);
@@ -118,52 +127,52 @@ public:
         messageAdopt << "A fine choice " << player->GetName() << "! Your " << pet->GetName() << " shall know no law but that of the club and fang.";
         m_creature->MonsterWhisper(messageAdopt.str().c_str(), player);
         player->CLOSE_GOSSIP_MENU();
-        m_creature->HandleEmoteCommand(EMOTE_ONESHOT_POINT);
     }
 
     bool OnGossipHello(Player *player, Creature * m_creature)
     {
-        // Howl
-        m_creature->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
-
         // If enabled for Hunters only..
         if (BeastMasterHunterOnly)
         {
             if (player->getClass() != CLASS_HUNTER)
             {
-                m_creature->MonsterWhisper("Silly fool, Pets are for Hunters!", player, false);
-                m_creature->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
+                m_creature->MonsterWhisper("Silly fool, pets are for hunters!", player, false);
                 player->CLOSE_GOSSIP_MENU();
                 return false;
             }
         }
 
-        if (player->getLevel() < 10)
+        // Check level requirement
+        if (player->getLevel() < BeastMasterMinLevel && BeastMasterMinLevel != 0)
         {
-            m_creature->MonsterWhisper("Pets are not for the inexperienced!", player, false);
-            m_creature->HandleEmoteCommand(EMOTE_ONESHOT_LAUGH);
+            std::ostringstream messageExperience;
+            messageExperience << "Sorry " << player->GetName() << ", but you must reach level " << BeastMasterMinLevel << " before adopting a pet.";
+            m_creature->MonsterWhisper(messageExperience.str().c_str(), player);
             player->CLOSE_GOSSIP_MENU();
             return false;
         }
 
         // MAIN MENU
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, 51);
-        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 70);
+        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_PETS);
+        player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_PETS);
 
-        // Allow Exotic Pets For hunters if they can tame
-        if (!BeastMasterExoticNoSpec && player->getClass() == CLASS_HUNTER && (player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
+        if (BeastMasterAllowExotic || player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
         {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
+            if (player->getClass() != CLASS_HUNTER)
+            {
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
+            }
+            else if (!BeastMasterHunterBeastMasteryRequired || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
+            {
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
+            }
         }
 
-        // Allow Exotic Pets regardless of spec
-        // Hunters should spec Beast Mastery, all other classes get it for free
-        if (BeastMasterExoticNoSpec && (player->getClass() != CLASS_HUNTER || player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
-
         // remove pet skills (not for hunters)
-        if (player->getClass() != CLASS_HUNTER)
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Remove Pet Skills", GOSSIP_SENDER_MAIN, 80);
+        if (player->getClass() != CLASS_HUNTER && player->HasSpell(PET_SPELL_CALL_PET))
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Unlearn Hunter Abilities", GOSSIP_SENDER_MAIN, PET_REMOVE_SKILLS);
 
         // Stables for hunters only - Doesn't seem to work for other classes
         if (player->getClass() == CLASS_HUNTER)
@@ -172,11 +181,10 @@ public:
         // Pet Food Vendor
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_MONEY_BAG, "Buy Pet Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
 
-        player->PlayerTalkClass->SendGossipMenu(601026, m_creature->GetGUID());
+        player->PlayerTalkClass->SendGossipMenu(PET_GOSSIP_HELLO, m_creature->GetGUID());
 
-        // Howl/Roar
-        player->PlayDirectSound(9036);
-        m_creature->HandleEmoteCommand(EMOTE_ONESHOT_ROAR);
+        // Howl
+        player->PlayDirectSound(PET_BEASTMASTER_HOWL);
 
         return true;
     }
@@ -185,102 +193,137 @@ public:
     {
         player->PlayerTalkClass->ClearMenus();
 
-        switch (action)
+        if (action == PET_MAIN_MENU)
         {
             // MAIN MENU
-        case 50:
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, 51);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, 70);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_PETS);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_PETS);
 
-            // Allow Exotics for all players
-            // Allow Exotic Pets regardless of spec
-            if (!BeastMasterExoticNoSpec && player->getClass() == CLASS_HUNTER && player->HasSpell(53270))
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
-
-            // Allow Exotic Pets regardless of spec
-            // Hunters should spec Beast Mastery, all other classes get it for free
-            if (BeastMasterExoticNoSpec && player->getClass() != CLASS_HUNTER)
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, 60);
+            if (BeastMasterAllowExotic || player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
+            {
+                if (player->getClass() != CLASS_HUNTER)
+                {
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
+                }
+                else if (!BeastMasterHunterBeastMasteryRequired || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
+                {
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
+                    player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
+                }
+            }
 
             // remove pet skills (not for hunters)
-            if (player->getClass() != CLASS_HUNTER)
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Remove Pet Skills", GOSSIP_SENDER_MAIN, 80);
+            if (player->getClass() != CLASS_HUNTER && player->HasSpell(PET_SPELL_CALL_PET))
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, "Unlearn Hunter Abilities", GOSSIP_SENDER_MAIN, PET_REMOVE_SKILLS);
 
             // Stables for hunters only - Doesn't seem to work for other classes
             if (player->getClass() == CLASS_HUNTER)
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TAXI, "Visit Stable", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_STABLEPET);
 
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_MONEY_BAG, "Buy Pet Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
-            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
-            break;
+            player->PlayerTalkClass->SendGossipMenu(PET_GOSSIP_HELLO, m_creature->GetGUID());
+        }
+        else if (action >= PET_PAGE_START_PETS && action < PET_PAGE_START_EXOTIC_PETS)
+        {
+            // PETS
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
+            int page = action - PET_PAGE_START_PETS + 1;
+            int maxPage = pets.size() / PET_PAGE_SIZE + (pets.size() % PET_PAGE_SIZE != 0);
 
-            // PETS PAGE 1
-        case 51:
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, 52);
-            AddGossip(player, petsPage1);
-            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
-            break;
+            if (page > 1)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, PET_PAGE_START_PETS + page - 2);
 
-            // PETS PAGE 2
-        case 52:
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, 51);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, 53);
-            AddGossip(player, petsPage2);
-            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
-            break;
+            if (page < maxPage)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_PETS + page);
 
-            // PETS PAGE 3
-        case 53:
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, 52);
-            AddGossip(player, petsPage3);
+            AddGossip(player, pets, page);
             player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
-            break;
-
+        }
+        else if (action >= PET_PAGE_START_EXOTIC_PETS && action < PET_PAGE_START_RARE_PETS)
+        {
             // EXOTIC BEASTS
-        case 60:
-
             // Teach Beast Mastery or Spirit Beasts won't work properly
-            if (! (player->HasSpell(53270) || player->HasTalent(53270, player->GetActiveSpec())))
+            if (! (player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec())))
             {
-                player->addSpell(53270, SPEC_MASK_ALL, false);
+                player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
                 messageLearn << "I have taught you the art of Beast Mastery " << player->GetName() << ".";
                 m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
             }
 
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
-            AddGossip(player, exoticPetsPage1);
-            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
-            break;
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
+            int page = action - PET_PAGE_START_EXOTIC_PETS + 1;
+            int maxPage = exoticPets.size() / PET_PAGE_SIZE + (exoticPets.size() % PET_PAGE_SIZE != 0);
 
+            if (page > 1)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS + page - 2);
+
+            if (page < maxPage)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS + page);
+
+            AddGossip(player, exoticPets, page);
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
+        }
+        else if (action >= PET_PAGE_START_RARE_PETS && action < PET_PAGE_START_RARE_EXOTIC_PETS)
+        {
             // RARE PETS
-        case 70:
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, 50);
-            AddGossip(player, rarePetsPage1);
-            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
-            break;
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
+            int page = action - PET_PAGE_START_RARE_PETS + 1;
+            int maxPage = rarePets.size() / PET_PAGE_SIZE + (rarePets.size() % PET_PAGE_SIZE != 0);
 
+            if (page > 1)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_PETS + page - 2);
+
+            if (page < maxPage)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_PETS + page);
+
+            AddGossip(player, rarePets, page);
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
+        }
+        else if (action >= PET_PAGE_START_RARE_EXOTIC_PETS && action < PET_PAGE_MAX)
+        {
+            // RARE EXOTIC BEASTS
+            // Teach Beast Mastery or Spirit Beasts won't work properly
+            if (! (player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec())))
+            {
+                player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
+                std::ostringstream messageLearn;
+                messageLearn << "I have taught you the art of Beast Mastery " << player->GetName() << ".";
+                m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
+            }
+
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
+            int page = action - PET_PAGE_START_RARE_EXOTIC_PETS + 1;
+            int maxPage = rareExoticPets.size() / PET_PAGE_SIZE + (rareExoticPets.size() % PET_PAGE_SIZE != 0);
+
+            if (page > 1)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS + page - 2);
+
+            if (page < maxPage)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS + page);
+
+            AddGossip(player, rareExoticPets, page);
+            player->PlayerTalkClass->SendGossipMenu(DEFAULT_GOSSIP_MESSAGE, m_creature->GetGUID());
+        }
+        else if (action == PET_REMOVE_SKILLS)
+        {
             // remove pet and granted skills
-        case 80:
             for (int i = 0; i < HunterSpells.size(); ++i)
                 player->removeSpell(HunterSpells[i], SPEC_MASK_ALL, false);
 
-            player->removeSpell(53270, SPEC_MASK_ALL, false);
+            player->removeSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
             player->CLOSE_GOSSIP_MENU();
-            break;
-
+        }
+        else if (action == GOSSIP_OPTION_STABLEPET)
+        {
             // STABLE
-        case GOSSIP_OPTION_STABLEPET:
             player->GetSession()->SendStablePet(m_creature->GetGUID());
-            break;
-
+        }
+        else if (action == GOSSIP_OPTION_VENDOR)
+        {
             // VENDOR
-        case GOSSIP_OPTION_VENDOR:
             player->GetSession()->SendListInventory(m_creature->GetGUID());
-            break;
         }
 
         // BEASTS
@@ -290,13 +333,17 @@ public:
     }
 
 private:
-    static void AddGossip(Player *player, std::map<std::string, uint32> &petMap)
+    static void AddGossip(Player *player, std::map<std::string, uint32> &petMap, int page)
     {
         std::map<std::string, uint32>::iterator it;
+        int count = 1;
 
         for (it = petMap.begin(); it != petMap.end(); it++)
         {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, it->first, GOSSIP_SENDER_MAIN, it->second);
+            if (count > (page - 1) * PET_PAGE_SIZE && count <= page * PET_PAGE_SIZE)
+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_VENDOR, it->first, GOSSIP_SENDER_MAIN, it->second);
+
+            count++;
         }
     }
 };
@@ -322,15 +369,21 @@ public:
 
             BeastMasterAnnounceToPlayer = sConfigMgr->GetBoolDefault("BeastMaster.Announce", true);
             BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
-            BeastMasterExoticNoSpec = sConfigMgr->GetBoolDefault("BeastMaster.ExoticNoSpec", true);
-            BeastMasterPetScale = sConfigMgr->GetIntDefault("BeastMaster.PetScale", 1);
+            BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", true);
             BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
+            BeastMasterCorePatch = sConfigMgr->GetBoolDefault("BeastMaster.CorePatch", false);
+            BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
+            BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", false);
 
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.PetsPage1", ""), petsPage1);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.PetsPage2", ""), petsPage2);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.PetsPage3", ""), petsPage3);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.ExoticPetsPage1", ""), exoticPetsPage1);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RarePetsPage1", ""), rarePetsPage1);
+            if (BeastMasterMinLevel < 0 || BeastMasterMinLevel > 80)
+            {
+                BeastMasterMinLevel = 10;
+            }
+
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.Pets", ""), pets);
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.ExoticPets", ""), exoticPets);
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RarePets", ""), rarePets);
+            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RareExoticPets", ""), rareExoticPets);
         }
     }
 
@@ -381,7 +434,7 @@ class BeastMaster_PlayerScript : public PlayerScript
 
             if (pet->getPetType() == HUNTER_PET)
             {
-                pet->SetPower(POWER_HAPPINESS, 1048000);
+                pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
             }
         }
     }
