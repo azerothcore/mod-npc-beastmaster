@@ -248,7 +248,7 @@ public:
             {
                 player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
-                messageLearn << "I have taught you the art of Beast Mastery " << player->GetName() << ".";
+                messageLearn << "I have taught you the art of Beast Mastery, " << player->GetName() << ".";
                 m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
             }
 
@@ -289,7 +289,7 @@ public:
             {
                 player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
-                messageLearn << "I have taught you the art of Beast Mastery " << player->GetName() << ".";
+                messageLearn << "I have taught you the art of Beast Mastery, " << player->GetName() << ".";
                 m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
             }
 
