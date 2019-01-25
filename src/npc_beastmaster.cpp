@@ -124,7 +124,7 @@ public:
 
         // Farewell
         std::ostringstream messageAdopt;
-        messageAdopt << "A fine choice " << player->GetName() << "! Your " << pet->GetName() << " shall know no law but that of the club and fang.";
+        messageAdopt << "A fine choice " << player->GetName() << "! Take good care of your " << pet->GetName() << " and you will never face your enemies alone.";
         m_creature->MonsterWhisper(messageAdopt.str().c_str(), player);
         player->CLOSE_GOSSIP_MENU();
     }
@@ -136,7 +136,7 @@ public:
         {
             if (player->getClass() != CLASS_HUNTER)
             {
-                m_creature->MonsterWhisper("Silly fool, pets are for hunters!", player, false);
+                m_creature->MonsterWhisper("I am sorry, but pets are for hunters only.", player, false);
                 player->CLOSE_GOSSIP_MENU();
                 return false;
             }
