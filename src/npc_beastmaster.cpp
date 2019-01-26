@@ -353,27 +353,25 @@ class BeastMasterConf : public WorldScript
 public:
     BeastMasterConf() : WorldScript("BeastMasterConf") { }
 
-    void OnBeforeConfigLoad(bool reload) override
+    void OnBeforeConfigLoad(bool /*reload*/) override
     {
-        if (!reload) {
-            BeastMasterAnnounceToPlayer = sConfigMgr->GetBoolDefault("BeastMaster.Announce", true);
-            BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
-            BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", true);
-            BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
-            BeastMasterCorePatch = sConfigMgr->GetBoolDefault("BeastMaster.CorePatch", false);
-            BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
-            BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", false);
+        BeastMasterAnnounceToPlayer = sConfigMgr->GetBoolDefault("BeastMaster.Announce", true);
+        BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
+        BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", true);
+        BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
+        BeastMasterCorePatch = sConfigMgr->GetBoolDefault("BeastMaster.CorePatch", false);
+        BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
+        BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", false);
 
-            if (BeastMasterMinLevel < 0 || BeastMasterMinLevel > 80)
-            {
-                BeastMasterMinLevel = 10;
-            }
-
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.Pets", ""), pets);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.ExoticPets", ""), exoticPets);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RarePets", ""), rarePets);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RareExoticPets", ""), rareExoticPets);
+        if (BeastMasterMinLevel < 0 || BeastMasterMinLevel > 80)
+        {
+            BeastMasterMinLevel = 10;
         }
+
+        LoadPets(sConfigMgr->GetStringDefault("BeastMaster.Pets", ""), pets);
+        LoadPets(sConfigMgr->GetStringDefault("BeastMaster.ExoticPets", ""), exoticPets);
+        LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RarePets", ""), rarePets);
+        LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RareExoticPets", ""), rareExoticPets);
     }
 
 private:
