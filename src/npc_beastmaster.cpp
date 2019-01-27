@@ -124,7 +124,7 @@ public:
 
         // Farewell
         std::ostringstream messageAdopt;
-        messageAdopt << "A fine choice " << player->GetName() << "! Your " << pet->GetName() << " shall know no law but that of the club and fang.";
+        messageAdopt << "A fine choice " << player->GetName() << "! Take good care of your " << pet->GetName() << " and you will never face your enemies alone.";
         m_creature->MonsterWhisper(messageAdopt.str().c_str(), player);
         player->CLOSE_GOSSIP_MENU();
     }
@@ -136,7 +136,7 @@ public:
         {
             if (player->getClass() != CLASS_HUNTER)
             {
-                m_creature->MonsterWhisper("Silly fool, pets are for hunters!", player, false);
+                m_creature->MonsterWhisper("I am sorry, but pets are for hunters only.", player, false);
                 player->CLOSE_GOSSIP_MENU();
                 return false;
             }
@@ -248,7 +248,7 @@ public:
             {
                 player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
-                messageLearn << "I have taught you the art of Beast Mastery " << player->GetName() << ".";
+                messageLearn << "I have taught you the art of Beast Mastery, " << player->GetName() << ".";
                 m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
             }
 
@@ -289,7 +289,7 @@ public:
             {
                 player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
-                messageLearn << "I have taught you the art of Beast Mastery " << player->GetName() << ".";
+                messageLearn << "I have taught you the art of Beast Mastery, " << player->GetName() << ".";
                 m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
             }
 
@@ -353,38 +353,25 @@ class BeastMasterConf : public WorldScript
 public:
     BeastMasterConf() : WorldScript("BeastMasterConf") { }
 
-    void OnBeforeConfigLoad(bool reload) override
+    void OnBeforeConfigLoad(bool /*reload*/) override
     {
-        if (!reload) {
-            std::string conf_path = _CONF_DIR;
-            std::string cfg_file = conf_path+"/npc_beastmaster.conf";
-#ifdef WIN32
-            cfg_file = "npc_beastmaster.conf";
-#endif
-            std::string cfg_def_file = cfg_file + ".dist";
+        BeastMasterAnnounceToPlayer = sConfigMgr->GetBoolDefault("BeastMaster.Announce", true);
+        BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
+        BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", true);
+        BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
+        BeastMasterCorePatch = sConfigMgr->GetBoolDefault("BeastMaster.CorePatch", false);
+        BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
+        BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", false);
 
-            sConfigMgr->LoadMore(cfg_def_file.c_str());
-
-            sConfigMgr->LoadMore(cfg_file.c_str());
-
-            BeastMasterAnnounceToPlayer = sConfigMgr->GetBoolDefault("BeastMaster.Announce", true);
-            BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
-            BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", true);
-            BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
-            BeastMasterCorePatch = sConfigMgr->GetBoolDefault("BeastMaster.CorePatch", false);
-            BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
-            BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", false);
-
-            if (BeastMasterMinLevel < 0 || BeastMasterMinLevel > 80)
-            {
-                BeastMasterMinLevel = 10;
-            }
-
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.Pets", ""), pets);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.ExoticPets", ""), exoticPets);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RarePets", ""), rarePets);
-            LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RareExoticPets", ""), rareExoticPets);
+        if (BeastMasterMinLevel < 0 || BeastMasterMinLevel > 80)
+        {
+            BeastMasterMinLevel = 10;
         }
+
+        LoadPets(sConfigMgr->GetStringDefault("BeastMaster.Pets", ""), pets);
+        LoadPets(sConfigMgr->GetStringDefault("BeastMaster.ExoticPets", ""), exoticPets);
+        LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RarePets", ""), rarePets);
+        LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RareExoticPets", ""), rareExoticPets);
     }
 
 private:
