@@ -368,6 +368,11 @@ public:
             BeastMasterMinLevel = 10;
         }
 
+        pets.clear();
+        exoticPets.clear();
+        rarePets.clear();
+        rareExoticPets.clear();
+
         LoadPets(sConfigMgr->GetStringDefault("BeastMaster.Pets", ""), pets);
         LoadPets(sConfigMgr->GetStringDefault("BeastMaster.ExoticPets", ""), exoticPets);
         LoadPets(sConfigMgr->GetStringDefault("BeastMaster.RarePets", ""), rarePets);
