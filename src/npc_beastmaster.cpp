@@ -363,7 +363,7 @@ public:
         BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
         BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", false);
 
-        if (BeastMasterMinLevel < 0 || BeastMasterMinLevel > 80)
+        if (BeastMasterMinLevel > 80)
         {
             BeastMasterMinLevel = 10;
         }
@@ -398,11 +398,7 @@ private:
             else
             {
                 uint32 petId = atoi(delimitedValue.c_str());
-
-                if (petId >= 0)
-                {
-                    petMap[petName] = petId;
-                }
+                petMap[petName] = petId;
             }
 
             count++;
