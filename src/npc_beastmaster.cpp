@@ -1,7 +1,8 @@
+#include "ScriptMgr.h"
+#include "Player.h"
+#include "Chat.h"
 #include "Config.h"
 #include "Pet.h"
-#include "ScriptPCH.h"
-#include "Configuration/Config.h"
 #include "ScriptedGossip.h"
 
 std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 48990, 1002, 1462, 6197 };
