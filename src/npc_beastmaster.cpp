@@ -118,7 +118,7 @@ public:
             // Assume player has already learned the spells if they have Call Pet
             if (!player->HasSpell(PET_SPELL_CALL_PET))
             {
-                for (int i = 0; i < HunterSpells.size(); ++i)
+                for (std::size_t i = 0; i < HunterSpells.size(); ++i)
                     player->learnSpell(HunterSpells[i]);
             }
         }
