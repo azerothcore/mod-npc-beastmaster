@@ -36,7 +36,7 @@ Clone Git repository:
 
 ```
 cd <ACdir>
-git clone https://github.com/azerothcore/mod-npcbeastmaster.git modules/mod-npcbeastmaster
+git clone https://github.com/azerothcore/mod-npc-beastmaster.git modules/mod-npc-beastmaster
 ```
 
 Import SQL automatically:
@@ -60,12 +60,12 @@ mysql -P <DBport> -u <DPuser> --password=<DBpassword> world <env/dist/sql/world_
 Patch Pet.cpp (recommended; otherwise you'll get errors in the logs and the Death Knight will be unable to use hunter pets)
 ```
 cd <ACdir>
-patch -l src/server/game/Entities/Pet/Pet.cpp <modules/mod-npcbeastmaster/Pet.cpp.beastmaster.patch
+patch -l src/server/game/Entities/Pet/Pet.cpp <modules/mod-npc-beastmaster/Pet.cpp.beastmaster.patch
 ```
 You can revert the patch as follows:
 ```
 cd <ACdir>
-patch -lR src/server/game/Entities/Pet/Pet.cpp <modules/mod-npcbeastmaster/Pet.cpp.beastmaster.patch
+patch -lR src/server/game/Entities/Pet/Pet.cpp <modules/mod-npc-beastmaster/Pet.cpp.beastmaster.patch
 ```
 ## Edit module configuration (optional)
 
