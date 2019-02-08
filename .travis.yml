@@ -45,7 +45,7 @@ before_install:
 install:
   - cd ..
   - git clone --depth=1 --branch=master https://github.com/azerothcore/azerothcore-wotlk.git azerothcore
-  - mv mod-npcbeastmaster azerothcore/modules
+  - mv mod-npc-beastmaster azerothcore/modules
   - cd azerothcore
 
   # install OS deps (apt-get)
