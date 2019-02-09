@@ -16,9 +16,6 @@ services:
 git:
   depth: 1
 
-env:
-  - CACHE_NAME=MOD_NPC_BEASTMASTER
-
 matrix:
   include:
     - os: linux
@@ -27,6 +24,7 @@ matrix:
           packages:
             - clang-3.8
       env:
+        - CACHE_NAME=MOD_NPC_BEASTMASTER_CLANG_3.8
         - CCOMPILERC="clang-3.8"
         - CCOMPILERCXX="clang++-3.8"
 
@@ -38,6 +36,7 @@ matrix:
           packages:
             - clang-7
       env:
+        - CACHE_NAME=MOD_NPC_BEASTMASTER_CLANG_7
         - CCOMPILERC="clang-7"
         - CCOMPILERCXX="clang++-7"
 
