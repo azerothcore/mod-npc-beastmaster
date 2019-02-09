@@ -16,6 +16,9 @@ services:
 git:
   depth: 1
 
+env:
+  - CACHE_NAME=MOD_NPC_BEASTMASTER
+
 matrix:
   include:
     - os: linux
