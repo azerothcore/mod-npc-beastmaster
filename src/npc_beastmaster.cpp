@@ -118,7 +118,7 @@ public:
             // Assume player has already learned the spells if they have Call Pet
             if (!player->HasSpell(PET_SPELL_CALL_PET))
             {
-                for (int i = 0; i < HunterSpells.size(); ++i)
+                for (std::size_t i = 0; i < HunterSpells.size(); ++i)
                     player->learnSpell(HunterSpells[i]);
             }
         }
@@ -190,7 +190,7 @@ public:
         return true;
     }
 
-    bool OnGossipSelect(Player *player, Creature * m_creature, uint32 sender, uint32 action)
+    bool OnGossipSelect(Player *player, Creature * m_creature, uint32 /*sender*/, uint32 action)
     {
         player->PlayerTalkClass->ClearMenus();
 
@@ -310,7 +310,7 @@ public:
         else if (action == PET_REMOVE_SKILLS)
         {
             // remove pet and granted skills
-            for (int i = 0; i < HunterSpells.size(); ++i)
+            for (std::size_t i = 0; i < HunterSpells.size(); ++i)
                 player->removeSpell(HunterSpells[i], SPEC_MASK_ALL, false);
 
             player->removeSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);

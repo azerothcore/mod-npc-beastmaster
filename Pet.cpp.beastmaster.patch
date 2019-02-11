@@ -4,7 +4,7 @@
          return false;
  
      // DK Pet exception
-+    /* no exception due to mod-npcbeastmaster
++    /* no exception due to mod-npc-beastmaster
      if (owner->getClass() == CLASS_DEATH_KNIGHT && !owner->CanSeeDKPet())
          return false;
 +    */
@@ -15,7 +15,7 @@
      PetType petType = MAX_PET_TYPE;
      if (IsPet() && m_owner->GetTypeId() == TYPEID_PLAYER)
      {
-+        /* use another check due to mod-npcbeastmaster
++        /* use another check due to mod-npc-beastmaster
          if (m_owner->getClass() == CLASS_WARLOCK ||
              m_owner->getClass() == CLASS_SHAMAN ||          // Fire Elemental
              m_owner->getClass() == CLASS_DEATH_KNIGHT ||    // Risen Ghoul
@@ -24,7 +24,7 @@
          else
              sLog->outError("Unknown type pet %u is summoned by player class %u", GetEntry(), m_owner->getClass());
 +        */
-+        // better pet handling for mod-npcbeastmaster
++        // better pet handling for mod-npc-beastmaster
 +        if (cinfo->IsTameable(true))
 +        {
 +            petType = HUNTER_PET;
