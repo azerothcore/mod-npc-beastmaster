@@ -1,5 +1,6 @@
 # BeastMaster NPC
 
+[![Build Status](https://travis-ci.org/azerothcore/mod-npc-beastmaster.svg?branch=master)](https://travis-ci.org/azerothcore/mod-npc-beastmaster)
 
 ## Description
 
