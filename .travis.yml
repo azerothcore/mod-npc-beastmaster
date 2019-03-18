@@ -13,6 +13,9 @@ addons:
 services:
   - mysql
 
+git:
+  depth: 1
+
 stages:
   - prepare_cache
   - run
