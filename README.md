@@ -7,7 +7,7 @@
 
 You have to use at least this AzerothCore commit:
 
-https://github.com/azerothcore/azerothcore-wotlk/commit/b6cb9247ba96a862ee274c0765004e6d2e66e9e4
+<https://github.com/azerothcore/azerothcore-wotlk/commit/b6cb9247ba96a862ee274c0765004e6d2e66e9e4>
 
 
 ## Description
