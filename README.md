@@ -2,6 +2,14 @@
 
 - Latest build status with azerothcore: [![Build Status](https://travis-ci.org/azerothcore/mod-npc-beastmaster.svg?branch=master)](https://travis-ci.org/azerothcore/mod-npc-beastmaster)
 
+
+## Important notes
+
+You have to use at least this AzerothCore commit:
+
+<https://github.com/azerothcore/azerothcore-wotlk/commit/b6cb9247ba96a862ee274c0765004e6d2e66e9e4>
+
+
 ## Description
 
 This module allows each class (even Warlocks and Death Knights) to use hunter pets by adding a special NPC. This NPC provides the following options:
