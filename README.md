@@ -1,95 +1,88 @@
 # BeastMaster NPC
 
-- Latest build status with azerothcore: [![Build Status](https://travis-ci.org/azerothcore/mod-npc-beastmaster.svg?branch=master)](https://travis-ci.org/azerothcore/mod-npc-beastmaster)
+_This module was created for [StygianCore](https://rebrand.ly/stygiancoreproject). A World of Warcraft 3.3.5a Solo/LAN repack by StygianTheBest | [GitHub](https://rebrand.ly/stygiangithub) | [Website](https://rebrand.ly/stygianthebest))_
+_This module has now being ported to AzerothCore by gtao725 (https://github.com/gtao725/)._
 
+### Description
 
-## Important notes
+WhiteFang is a Beastmaster NPC that howls! This NPC allows any player, or only Hunters, to adopt and use beasts.
+He also teaches the player specific Hunter skills for use with their beasts. A player can adopt normal or exotic
+beasts depending on how you've configured the NPC. For each type of beast I use a rare spawn model of a creature
+of the same type, so they all look cool. He also sells a great selection of grub for every level of beast. Hunters
+can access the stables as well. He can also attract the player using configurable emote options.
 
-You have to use at least this AzerothCore commit:
+### Features
 
-<https://github.com/azerothcore/azerothcore-wotlk/commit/b6cb9247ba96a862ee274c0765004e6d2e66e9e4>
+- Adds a Worgen BeastMaster NPC with sounds/emotes
+- Allows adopting of beasts by level, class, and ability
+- Teaches player all required Hunter abilities
+- Sells beast food For all levels
+- Attracts the player using configurable emotes
+- Config:
+    - Module Announce
+    - Emote Options
+    - CorePatch check
+    - Level Requirement
+    - Enable for Hunter class only
+    - Require Beast Mastery talent
+    - Allow Exotic Beasts for all classes (Teaches Beast Mastery)
+    - Set Beast Scale Factor
 
+### To-Do
 
-## Description
+- Fix beast spells disappearing from beast bar on relog/dismiss (Note: they persist if added back)
+- If possible, create working stable for non-Hunter player
+- If possible, show the player's pet on the login screen for non-Hunter classes
 
-This module allows each class (even Warlocks and Death Knights) to use hunter pets by adding a special NPC. This NPC provides the following options:
-- teach the necessary hunter skills
-- provide different pets (even exotic) which can be customized in the config file
-- food for the pets
-- stables (only for hunters)
+### Data
 
-The module can be configured to be restricted to hunters only. In this mode it can serve as a source for rare pets specified in the config file.
+- Type: NPC
+- Script: BeastMaster
+- Config: Yes
+- SQL: Yes
+    - NPC ID: 601026
 
+### Version
 
-## How to use ingame
+- v2019.04.15 - Ported to AC by gtao725 (https://github.com/gtao725/)
+- v2019.02.13 - Added Phrases/Emotes, Add Config Options, Updated AI
+- v2019.01.23 - Bugfixes, Pets Added to Config, Merged AC repo
+- v2019.01.08 - Added "Better Pet Handling" & "PetAlwaysHappy" config options
+- v2017.09.30 - Add pet->InitLevelupSpellsForLevel(); recommended by Alistar
+- v2017.09.13 - Teaches additional hunter spells (Eagle Eye, Eyes of the Beast, Beast Lore)
+- v2017.09.11
+    - Added Exotic Pet: Spirit Bear
+    - Added Pet: Warp Stalker
+    - Added Pet: Wind Serpent
+    - Added Pet: Nether Ray
+    - Added Pet: Spore Bat
+    - Updated pet models to rare spawn models
+- v2017.09.08 - Created new Pet Food item list for all pet levels
+- v2017.09.04 - Fixed Spirit Beast persistence (teaches Beast Mastery to player)
+- v2017.09.03 - Release
 
-As GM:
-- add NPC permanently:
- ```
- .npc add 601026
- ```
-- add NPC temporarily:
- ```
- .npc add temp 601026
- ```
+### CREDITS
 
+![Styx](https://stygianthebest.github.io/assets/img/avatar/avatar-128.jpg "Styx")
+![StygianCore](https://stygianthebest.github.io/assets/img/projects/stygiancore/StygianCore.png "StygianCore")
 
-## Requirements
+##### This module was created for [StygianCore](https://rebrand.ly/stygiancoreproject). A World of Warcraft 3.3.5a Solo/LAN repack by StygianTheBest | [GitHub](https://rebrand.ly/stygiangithub) | [Website](https://rebrand.ly/stygianthebest))
 
-- AzerothCore v1.0.4+
+#### Additional Credits
 
+- [Blizzard Entertainment](http://blizzard.com)
+- [StoaBrogga](https://github.com/Stoabrogga)
+- [TrinityCore](https://github.com/TrinityCore/TrinityCore/blob/3.3.5/THANKS)
+- [SunwellCore](http://www.azerothcore.org/pages/sunwell.pl/)
+- [AzerothCore](https://github.com/AzerothCore/azerothcore-wotlk/graphs/contributors)
+- [OregonCore](https://wiki.oregon-core.net/)
+- [Wowhead.com](http://wowhead.com)
+- [OwnedCore](http://ownedcore.com/)
+- [ModCraft.io](http://modcraft.io/)
+- [MMO Society](https://www.mmo-society.com/)
+- [AoWoW](https://wotlk.evowow.com/)
+- [More credits are cited in the sources](https://github.com/StygianTheBest)
 
-## Installation
+### LICENSE
 
-Clone Git repository:
-
-```
-cd <ACdir>
-git clone https://github.com/azerothcore/mod-npc-beastmaster.git modules/mod-npc-beastmaster
-```
-
-Import SQL automatically:
-```
-cd <ACdir>
-bash apps/db_assembler/db_assembler.sh
-```
-choose 8)
-
-Import SQL manually:
-```
-cd <ACdir>
-bash apps/db_assembler/db_assembler.sh
-```
-choose 4)
-```
-cd <ACdir>
-mysql -P <DBport> -u <DPuser> --password=<DBpassword> world <env/dist/sql/world_custom.sql
-```
-
-Patch Pet.cpp (recommended; otherwise you'll get errors in the logs and the Death Knight will be unable to use hunter pets)
-```
-cd <ACdir>
-patch -l src/server/game/Entities/Pet/Pet.cpp <modules/mod-npc-beastmaster/Pet.cpp.beastmaster.patch
-```
-You can revert the patch as follows:
-```
-cd <ACdir>
-patch -lR src/server/game/Entities/Pet/Pet.cpp <modules/mod-npc-beastmaster/Pet.cpp.beastmaster.patch
-```
-## Edit module configuration (optional)
-
-If you need to change the module configuration, go to your server configuration folder (where your `worldserver` or `worldserver.exe` is), copy `npc_beastmaster.conf.dist` to `npc_beastmaster.conf` and edit that new file.
-
-
-## Credits
-
-* [Stoabrogga](https://github.com/Stoabrogga): further development
-* [Talamortis](https://github.com/talamortis): further development
-* [BarbzYHOOL](https://github.com/barbzyhool): support
-* [StygianTheBest](http://stygianthebest.github.io): original author (this module is based on v2017.09.03)
-
-AzerothCore: [repository](https://github.com/azerothcore) - [website](http://azerothcore.org/) - [discord chat community](https://discord.gg/PaqQRkd)
-
-
-## License
 This code and content is released under the [GNU AGPL v3](https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3).
