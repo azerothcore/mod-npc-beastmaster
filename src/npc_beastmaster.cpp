@@ -4,6 +4,7 @@
 #include "Config.h"
 #include "Pet.h"
 #include "ScriptedGossip.h"
+#include "ScriptedCreature.h"
 
 std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 48990, 1002, 1462, 6197 };
 std::map<std::string, uint32> pets;
@@ -331,6 +332,34 @@ public:
         if (action > 1000)
             CreatePet(player, m_creature, action);
         return true;
+    }
+
+    struct beastmasterAI : public ScriptedAI
+    {
+        beastmasterAI(Creature* creature) : ScriptedAI(creature) { }
+
+        uint32 timer;
+
+        void Reset()
+        {
+            timer = urand(30000, 90000);
+        }
+
+        void UpdateAI(const uint32 diff)
+        {
+            if (timer <= diff)
+            {
+                me->HandleEmoteCommand(EMOTE_ONESHOT_EAT_NO_SHEATHE);
+                timer = urand(30000, 90000);
+            }
+            else
+                timer -= diff;
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new beastmasterAI(creature);
     }
 
 private:
