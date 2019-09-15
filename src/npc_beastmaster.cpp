@@ -47,7 +47,7 @@ public:
 
     BeastMasterAnnounce() : PlayerScript("BeastMasterAnnounce") {}
 
-    void OnLogin(Player* player)
+    void OnLogin(Player* player) override
     {
         // Announce Module
         if (BeastMasterAnnounceToPlayer)
@@ -131,7 +131,7 @@ public:
         CloseGossipMenuFor(player);
     }
 
-    bool OnGossipHello(Player *player, Creature * m_creature)
+    bool OnGossipHello(Player *player, Creature * m_creature) override
     {
         // If enabled for Hunters only..
         if (BeastMasterHunterOnly)
@@ -191,7 +191,7 @@ public:
         return true;
     }
 
-    bool OnGossipSelect(Player *player, Creature * m_creature, uint32 /*sender*/, uint32 action)
+    bool OnGossipSelect(Player *player, Creature * m_creature, uint32 /*sender*/, uint32 action) override
     {
         player->PlayerTalkClass->ClearMenus();
 
@@ -340,12 +340,12 @@ public:
 
         uint32 timer;
 
-        void Reset()
+        void Reset() override
         {
             timer = urand(30000, 90000);
         }
 
-        void UpdateAI(const uint32 diff)
+        void UpdateAI(uint32 diff) override
         {
             if (timer <= diff)
             {
@@ -357,7 +357,7 @@ public:
         }
     };
 
-    CreatureAI* GetAI(Creature* creature) const
+    CreatureAI* GetAI(Creature* creature) const override
     {
         return new beastmasterAI(creature);
     }
