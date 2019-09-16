@@ -4,6 +4,7 @@
 #include "Config.h"
 #include "Pet.h"
 #include "ScriptedGossip.h"
+#include "ScriptedCreature.h"
 
 std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 48990, 1002, 1462, 6197 };
 std::map<std::string, uint32> pets;
@@ -46,7 +47,7 @@ public:
 
     BeastMasterAnnounce() : PlayerScript("BeastMasterAnnounce") {}
 
-    void OnLogin(Player* player)
+    void OnLogin(Player* player) override
     {
         // Announce Module
         if (BeastMasterAnnounceToPlayer)
@@ -66,71 +67,7 @@ public:
 
     BeastMaster() : CreatureScript("BeastMaster") { }
 
-    void CreatePet(Player *player, Creature * m_creature, uint32 entry)
-    {
-        // Check if player already has a pet
-        if (player->GetPet())
-        {
-            m_creature->MonsterWhisper("First you must abandon or stable your current pet!", player, false);
-            CloseGossipMenuFor(player);
-            return;
-        }
-
-        // Create Tamed Creature
-        Pet* pet = player->CreateTamedPetFrom(entry, PET_SPELL_CALL_PET);
-        if (!pet) { return; }
-
-        // Set Pet Happiness
-        pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
-
-        // Initialize Pet
-        pet->AddUInt64Value(UNIT_FIELD_CREATEDBY, player->GetGUID());
-        pet->SetUInt32Value(UNIT_FIELD_FACTIONTEMPLATE, player->getFaction());
-        pet->SetUInt32Value(UNIT_FIELD_LEVEL, player->getLevel());
-
-        // Prepare Level-Up Visual
-        pet->SetUInt32Value(UNIT_FIELD_LEVEL, player->getLevel() - 1);
-        pet->GetMap()->AddToMap(pet->ToCreature());
-
-        // Visual Effect for Level-Up
-        pet->SetUInt32Value(UNIT_FIELD_LEVEL, player->getLevel());
-
-        // Initialize Pet Stats
-        pet->InitTalentForLevel();
-        if (!pet->InitStatsForLevel(player->getLevel()))
-        {
-            // sLog->outError("Pet Create fail: no init stats for entry %u", entry);
-            pet->UpdateAllStats();
-        }
-
-        // Caster Pets?
-        player->SetMinion(pet, true);
-
-        // Save Pet
-        pet->GetCharmInfo()->SetPetNumber(sObjectMgr->GeneratePetNumber(), true);
-        player->PetSpellInitialize();
-        pet->InitLevelupSpellsForLevel();
-        pet->SavePetToDB(PET_SAVE_AS_CURRENT, 0);
-
-        // Learn Hunter Abilities (only for non-hunters)
-        if (player->getClass() != CLASS_HUNTER)
-        {
-            // Assume player has already learned the spells if they have Call Pet
-            if (!player->HasSpell(PET_SPELL_CALL_PET))
-            {
-                for (std::size_t i = 0; i < HunterSpells.size(); ++i)
-                    player->learnSpell(HunterSpells[i]);
-            }
-        }
-
-        // Farewell
-        std::ostringstream messageAdopt;
-        messageAdopt << "A fine choice " << player->GetName() << "! Take good care of your " << pet->GetName() << " and you will never face your enemies alone.";
-        m_creature->MonsterWhisper(messageAdopt.str().c_str(), player);
-        CloseGossipMenuFor(player);
-    }
-
-    bool OnGossipHello(Player *player, Creature * m_creature)
+    bool OnGossipHello(Player *player, Creature * m_creature) override
     {
         // If enabled for Hunters only..
         if (BeastMasterHunterOnly)
@@ -190,7 +127,7 @@ public:
         return true;
     }
 
-    bool OnGossipSelect(Player *player, Creature * m_creature, uint32 /*sender*/, uint32 action)
+    bool OnGossipSelect(Player *player, Creature * m_creature, uint32 /*sender*/, uint32 action) override
     {
         player->PlayerTalkClass->ClearMenus();
 
@@ -333,7 +270,99 @@ public:
         return true;
     }
 
+    struct beastmasterAI : public ScriptedAI
+    {
+        beastmasterAI(Creature* creature) : ScriptedAI(creature) { }
+
+        uint32 timer;
+
+        void Reset() override
+        {
+            timer = urand(30000, 90000);
+        }
+
+        void UpdateAI(uint32 diff) override
+        {
+            if (timer <= diff)
+            {
+                me->HandleEmoteCommand(EMOTE_ONESHOT_EAT_NO_SHEATHE);
+                timer = urand(30000, 90000);
+            }
+            else
+                timer -= diff;
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return new beastmasterAI(creature);
+    }
+
 private:
+    static void CreatePet(Player *player, Creature * m_creature, uint32 entry)
+    {
+        // Check if player already has a pet
+        if (player->GetPet())
+        {
+            m_creature->MonsterWhisper("First you must abandon or stable your current pet!", player, false);
+            CloseGossipMenuFor(player);
+            return;
+        }
+
+        // Create Tamed Creature
+        Pet* pet = player->CreateTamedPetFrom(entry, PET_SPELL_CALL_PET);
+        if (!pet) { return; }
+
+        // Set Pet Happiness
+        pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
+
+        // Initialize Pet
+        pet->AddUInt64Value(UNIT_FIELD_CREATEDBY, player->GetGUID());
+        pet->SetUInt32Value(UNIT_FIELD_FACTIONTEMPLATE, player->getFaction());
+        pet->SetUInt32Value(UNIT_FIELD_LEVEL, player->getLevel());
+
+        // Prepare Level-Up Visual
+        pet->SetUInt32Value(UNIT_FIELD_LEVEL, player->getLevel() - 1);
+        pet->GetMap()->AddToMap(pet->ToCreature());
+
+        // Visual Effect for Level-Up
+        pet->SetUInt32Value(UNIT_FIELD_LEVEL, player->getLevel());
+
+        // Initialize Pet Stats
+        pet->InitTalentForLevel();
+        if (!pet->InitStatsForLevel(player->getLevel()))
+        {
+            // sLog->outError("Pet Create fail: no init stats for entry %u", entry);
+            pet->UpdateAllStats();
+        }
+
+        // Caster Pets?
+        player->SetMinion(pet, true);
+
+        // Save Pet
+        pet->GetCharmInfo()->SetPetNumber(sObjectMgr->GeneratePetNumber(), true);
+        player->PetSpellInitialize();
+        pet->InitLevelupSpellsForLevel();
+        pet->SavePetToDB(PET_SAVE_AS_CURRENT, 0);
+
+        // Learn Hunter Abilities (only for non-hunters)
+        if (player->getClass() != CLASS_HUNTER)
+        {
+            // Assume player has already learned the spells if they have Call Pet
+            if (!player->HasSpell(PET_SPELL_CALL_PET))
+            {
+                for (std::size_t i = 0; i < HunterSpells.size(); ++i)
+                    player->learnSpell(HunterSpells[i]);
+            }
+        }
+
+        // Farewell
+        std::ostringstream messageAdopt;
+        messageAdopt << "A fine choice " << player->GetName() << "! Take good care of your " << pet->GetName() << " and you will never face your enemies alone.";
+        m_creature->MonsterWhisper(messageAdopt.str().c_str(), player);
+        CloseGossipMenuFor(player);
+    }
+
     static void AddGossip(Player *player, std::map<std::string, uint32> &petMap, int page)
     {
         std::map<std::string, uint32>::iterator it;
