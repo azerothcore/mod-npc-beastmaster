@@ -40,6 +40,11 @@ enum PetSpells
     PET_MAX_HAPPINESS       = 1048000
 };
 
+enum BeastMasterEvents
+{
+    BEASTMASTER_EVENT_EAT = 1
+};
+
 class BeastMasterAnnounce : public PlayerScript
 {
 
@@ -274,22 +279,24 @@ public:
     {
         beastmasterAI(Creature* creature) : ScriptedAI(creature) { }
 
-        uint32 timer;
+        EventMap events;
 
         void Reset() override
         {
-            timer = urand(30000, 90000);
+            events.ScheduleEvent(BEASTMASTER_EVENT_EAT, urand(30000, 90000));
         }
 
         void UpdateAI(uint32 diff) override
         {
-            if (timer <= diff)
+            events.Update(diff);
+
+            switch (events.ExecuteEvent())
             {
-                me->HandleEmoteCommand(EMOTE_ONESHOT_EAT_NO_SHEATHE);
-                timer = urand(30000, 90000);
+                case BEASTMASTER_EVENT_EAT:
+                    me->HandleEmoteCommand(EMOTE_ONESHOT_EAT_NO_SHEATHE);
+                    events.ScheduleEvent(BEASTMASTER_EVENT_EAT, urand(30000, 90000));
+                    break;
             }
-            else
-                timer -= diff;
         }
     };
 
