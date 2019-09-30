@@ -1,6 +1,6 @@
 --- Pet.cpp	2018-09-22 22:07:12.923347056 +0000
 +++ Pet.cpp.beastmaster	2018-10-13 22:33:16.325393243 +0000
-@@ -104,8 +104,10 @@
+@@ -153,8 +153,10 @@
          return false;
  
      // DK Pet exception
@@ -11,7 +11,7 @@
  
      uint32 ownerid = owner->GetGUIDLow();
      PreparedStatement* stmt;
-@@ -673,6 +675,7 @@
+@@ -722,6 +724,7 @@
      PetType petType = MAX_PET_TYPE;
      if (IsPet() && m_owner->GetTypeId() == TYPEID_PLAYER)
      {
@@ -19,7 +19,7 @@
          if (m_owner->getClass() == CLASS_WARLOCK ||
              m_owner->getClass() == CLASS_SHAMAN ||          // Fire Elemental
              m_owner->getClass() == CLASS_DEATH_KNIGHT ||    // Risen Ghoul
-@@ -685,6 +688,17 @@
+@@ -734,6 +737,17 @@
          }
          else
              sLog->outError("Unknown type pet %u is summoned by player class %u", GetEntry(), m_owner->getClass());
