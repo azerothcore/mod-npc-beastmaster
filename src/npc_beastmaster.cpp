@@ -45,32 +45,12 @@ enum BeastMasterEvents
     BEASTMASTER_EVENT_EAT = 1
 };
 
-class BeastMasterAnnounce : public PlayerScript
+class BeastMaster_CreatureScript : public CreatureScript
 {
 
 public:
 
-    BeastMasterAnnounce() : PlayerScript("BeastMasterAnnounce") {}
-
-    void OnLogin(Player* player) override
-    {
-        // Announce Module
-        if (BeastMasterAnnounceToPlayer)
-        {
-            if (BeastMasterCorePatch)
-                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule with core patch.");
-            else
-                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule without core patch.");
-        }
-    }
-};
-
-class BeastMaster : public CreatureScript
-{
-
-public:
-
-    BeastMaster() : CreatureScript("BeastMaster") { }
+    BeastMaster_CreatureScript() : CreatureScript("BeastMaster") { }
 
     bool OnGossipHello(Player *player, Creature * m_creature) override
     {
@@ -80,8 +60,7 @@ public:
             if (player->getClass() != CLASS_HUNTER)
             {
                 m_creature->MonsterWhisper("I am sorry, but pets are for hunters only.", player, false);
-                CloseGossipMenuFor(player);
-                return false;
+                return true;
             }
         }
 
@@ -91,8 +70,7 @@ public:
             std::ostringstream messageExperience;
             messageExperience << "Sorry " << player->GetName() << ", but you must reach level " << BeastMasterMinLevel << " before adopting a pet.";
             m_creature->MonsterWhisper(messageExperience.str().c_str(), player);
-            CloseGossipMenuFor(player);
-            return false;
+            return true;
         }
 
         // MAIN MENU
@@ -270,7 +248,7 @@ public:
         }
 
         // BEASTS
-        if (action > 1000)
+        if (action >= PET_PAGE_MAX)
             CreatePet(player, m_creature, action);
         return true;
     }
@@ -317,7 +295,7 @@ private:
         }
 
         // Create Tamed Creature
-        Pet* pet = player->CreateTamedPetFrom(entry, PET_SPELL_CALL_PET);
+        Pet* pet = player->CreateTamedPetFrom(entry - PET_PAGE_MAX, PET_SPELL_CALL_PET);
         if (!pet) { return; }
 
         // Set Pet Happiness
@@ -339,7 +317,6 @@ private:
         pet->InitTalentForLevel();
         if (!pet->InitStatsForLevel(player->getLevel()))
         {
-            // sLog->outError("Pet Create fail: no init stats for entry %u", entry);
             pet->UpdateAllStats();
         }
 
@@ -378,17 +355,17 @@ private:
         for (it = petMap.begin(); it != petMap.end(); it++)
         {
             if (count > (page - 1) * PET_PAGE_SIZE && count <= page * PET_PAGE_SIZE)
-                AddGossipItemFor(player, GOSSIP_ICON_VENDOR, it->first, GOSSIP_SENDER_MAIN, it->second);
+                AddGossipItemFor(player, GOSSIP_ICON_VENDOR, it->first, GOSSIP_SENDER_MAIN, it->second + PET_PAGE_MAX);
 
             count++;
         }
     }
 };
 
-class BeastMasterConf : public WorldScript
+class BeastMaster_WorldScript : public WorldScript
 {
 public:
-    BeastMasterConf() : WorldScript("BeastMasterConf") { }
+    BeastMaster_WorldScript() : WorldScript("BeastMaster_WorldScript") { }
 
     void OnBeforeConfigLoad(bool /*reload*/) override
     {
@@ -446,9 +423,18 @@ private:
 class BeastMaster_PlayerScript : public PlayerScript
 {
     public:
-    BeastMaster_PlayerScript()
-        : PlayerScript("BeastMaster_PlayerScript")
+    BeastMaster_PlayerScript() : PlayerScript("BeastMaster_PlayerScript") { }
+
+    void OnLogin(Player* player) override
     {
+        // Announce Module
+        if (BeastMasterAnnounceToPlayer)
+        {
+            if (BeastMasterCorePatch)
+                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule with core patch.");
+            else
+                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule without core patch.");
+        }
     }
 
     void OnBeforeUpdate(Player* player, uint32 /*p_time*/) override
@@ -467,8 +453,7 @@ class BeastMaster_PlayerScript : public PlayerScript
 
 void AddBeastMasterScripts()
 {
-    new BeastMasterConf();
-    new BeastMasterAnnounce();
-    new BeastMaster();
+    new BeastMaster_WorldScript();
+    new BeastMaster_CreatureScript();
     new BeastMaster_PlayerScript();
 }
