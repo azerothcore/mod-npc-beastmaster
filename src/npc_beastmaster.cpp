@@ -449,6 +449,23 @@ class BeastMaster_PlayerScript : public PlayerScript
             }
         }
     }
+
+    void OnBeforeLoadPetFromDB(Player* /*player*/, uint32& /*petentry*/, uint32& /*petnumber*/, bool& /*current*/, bool& forceLoadFromDB) override
+    {
+        forceLoadFromDB = true;
+    }
+
+    void OnBeforeGuardianInitStatsForLevel(Player* /*player*/, Guardian* /*guardian*/, CreatureTemplate const* cinfo, PetType& petType) override
+    {
+        if (cinfo->IsTameable(true))
+        {
+            petType = HUNTER_PET;
+        }
+        else
+        {
+            petType = SUMMON_PET;
+        }
+    }
 };
 
 void AddBeastMasterScripts()

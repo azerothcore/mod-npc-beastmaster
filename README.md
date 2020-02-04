@@ -5,9 +5,7 @@
 
 ## Important notes
 
-You have to use at least this AzerothCore commit:
-
-<https://github.com/azerothcore/azerothcore-wotlk/commit/b6cb9247ba96a862ee274c0765004e6d2e66e9e4>
+You have to use at least AzerothCore commit [3f0739f](https://github.com/azerothcore/azerothcore-wotlk/commit/3f0739f1c9a5289444ff9d62834b7ceb38879ba9).
 
 
 ## Description
@@ -32,11 +30,6 @@ As GM:
  ```
  .npc add temp 601026
  ```
-
-
-## Requirements
-
-- AzerothCore v1.0.4+
 
 
 ## Installation
@@ -66,16 +59,7 @@ cd <ACdir>
 mysql -P <DBport> -u <DPuser> --password=<DBpassword> world <env/dist/sql/world_custom.sql
 ```
 
-Patch Pet.cpp (recommended; otherwise you'll get errors in the logs and the Death Knight will be unable to use hunter pets)
-```
-cd <ACdir>
-patch -l src/server/game/Entities/Pet/Pet.cpp <modules/mod-npc-beastmaster/Pet.cpp.beastmaster.patch
-```
-You can revert the patch as follows:
-```
-cd <ACdir>
-patch -lR src/server/game/Entities/Pet/Pet.cpp <modules/mod-npc-beastmaster/Pet.cpp.beastmaster.patch
-```
+
 ## Edit module configuration (optional)
 
 If you need to change the module configuration, go to your server configuration folder (where your `worldserver` or `worldserver.exe` is), copy `npc_beastmaster.conf.dist` to `npc_beastmaster.conf` and edit that new file.
