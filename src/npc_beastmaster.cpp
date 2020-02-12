@@ -36,6 +36,7 @@ enum PetGossip
 enum PetSpells
 {
     PET_SPELL_CALL_PET      =     883,
+    PET_SPELL_TAME_BEAST    =   13481,
     PET_SPELL_BEAST_MASTERY =   53270,
     PET_MAX_HAPPINESS       = 1048000
 };
@@ -295,7 +296,7 @@ private:
         }
 
         // Create Tamed Creature
-        Pet* pet = player->CreateTamedPetFrom(entry - PET_PAGE_MAX, PET_SPELL_CALL_PET);
+        Pet* pet = player->CreateTamedPetFrom(entry - PET_PAGE_MAX, PET_SPELL_TAME_BEAST);
         if (!pet) { return; }
 
         // Set Pet Happiness
