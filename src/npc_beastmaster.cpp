@@ -15,7 +15,6 @@ bool BeastMasterAnnounceToPlayer;
 bool BeastMasterHunterOnly;
 bool BeastMasterAllowExotic;
 bool BeastMasterKeepPetHappy;
-bool BeastMasterCorePatch;
 uint32 BeastMasterMinLevel;
 bool BeastMasterHunterBeastMasteryRequired;
 
@@ -374,7 +373,6 @@ public:
         BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
         BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", true);
         BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
-        BeastMasterCorePatch = sConfigMgr->GetBoolDefault("BeastMaster.CorePatch", false);
         BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
         BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", false);
 
@@ -431,10 +429,7 @@ class BeastMaster_PlayerScript : public PlayerScript
         // Announce Module
         if (BeastMasterAnnounceToPlayer)
         {
-            if (BeastMasterCorePatch)
-                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule with core patch.");
-            else
-                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule without core patch.");
+            ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule.");
         }
     }
 

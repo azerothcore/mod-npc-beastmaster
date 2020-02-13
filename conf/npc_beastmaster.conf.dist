@@ -17,10 +17,6 @@ BeastMaster.Announce = 1
 
 BeastMaster.HunterOnly = 0
 
-# Is the core Pet.cpp modified? (default: 0)
-
-BeastMaster.CorePatch = 0
-
 # Required level to adopt pets. (default: 10, 0 = disable)
 
 BeastMaster.MinLevel = 10
