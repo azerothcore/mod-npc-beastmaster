@@ -15,7 +15,6 @@ bool BeastMasterAnnounceToPlayer;
 bool BeastMasterHunterOnly;
 bool BeastMasterAllowExotic;
 bool BeastMasterKeepPetHappy;
-bool BeastMasterCorePatch;
 uint32 BeastMasterMinLevel;
 bool BeastMasterHunterBeastMasteryRequired;
 
@@ -36,6 +35,7 @@ enum PetGossip
 enum PetSpells
 {
     PET_SPELL_CALL_PET      =     883,
+    PET_SPELL_TAME_BEAST    =   13481,
     PET_SPELL_BEAST_MASTERY =   53270,
     PET_MAX_HAPPINESS       = 1048000
 };
@@ -295,7 +295,7 @@ private:
         }
 
         // Create Tamed Creature
-        Pet* pet = player->CreateTamedPetFrom(entry - PET_PAGE_MAX, PET_SPELL_CALL_PET);
+        Pet* pet = player->CreateTamedPetFrom(entry - PET_PAGE_MAX, PET_SPELL_TAME_BEAST);
         if (!pet) { return; }
 
         // Set Pet Happiness
@@ -373,7 +373,6 @@ public:
         BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
         BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", true);
         BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
-        BeastMasterCorePatch = sConfigMgr->GetBoolDefault("BeastMaster.CorePatch", false);
         BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
         BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", false);
 
@@ -430,10 +429,7 @@ class BeastMaster_PlayerScript : public PlayerScript
         // Announce Module
         if (BeastMasterAnnounceToPlayer)
         {
-            if (BeastMasterCorePatch)
-                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule with core patch.");
-            else
-                ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule without core patch.");
+            ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BeastMasterNPC |rmodule.");
         }
     }
 
