@@ -295,7 +295,7 @@ private:
         }
 
         // Create Tamed Creature
-        Pet* pet = player->CreateTamedPetFrom(entry - PET_PAGE_MAX, PET_SPELL_TAME_BEAST);
+        Pet* pet = player->CreateTamedPetFrom(entry - PET_PAGE_MAX, player->getClass() == CLASS_HUNTER ? PET_SPELL_TAME_BEAST : PET_SPELL_CALL_PET);
         if (!pet) { return; }
 
         // Set Pet Happiness
