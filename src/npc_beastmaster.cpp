@@ -371,10 +371,10 @@ public:
     {
         BeastMasterAnnounceToPlayer = sConfigMgr->GetBoolDefault("BeastMaster.Announce", true);
         BeastMasterHunterOnly = sConfigMgr->GetBoolDefault("BeastMaster.HunterOnly", true);
-        BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", true);
+        BeastMasterAllowExotic = sConfigMgr->GetBoolDefault("BeastMaster.AllowExotic", false);
         BeastMasterKeepPetHappy = sConfigMgr->GetBoolDefault("BeastMaster.KeepPetHappy", false);
         BeastMasterMinLevel = sConfigMgr->GetIntDefault("BeastMaster.MinLevel", 10);
-        BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", false);
+        BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetIntDefault("BeastMaster.HunterBeastMasteryRequired", true);
 
         if (BeastMasterMinLevel > 80)
         {
