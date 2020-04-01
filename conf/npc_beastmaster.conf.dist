@@ -9,13 +9,8 @@
 BeastMaster.Announce = 1
 
 # Enable only for the hunter class?
-# (If this option is set to 0 you can also apply the following patch for better pet handling:
-# patch -l src/server/game/Entities/Pet/Pet.cpp <modules/mod-npc-beastmaster/Pet.cpp.beastmaster.patch
-# In order to revert the patch use this command:
-# patch -lR src/server/game/Entities/Pet/Pet.cpp <modules/mod-npc-beastmaster/Pet.cpp.beastmaster.patch
-# Please take into account that this patch changes the core functionality, so use at your own risk!)
 
-BeastMaster.HunterOnly = 0
+BeastMaster.HunterOnly = 1
 
 # Required level to adopt pets. (default: 10, 0 = disable)
 
@@ -23,11 +18,11 @@ BeastMaster.MinLevel = 10
 
 # Hunters are required to have Beast Mastery to adopt exotic pets. (default: 0)
 
-BeastMaster.HunterBeastMasteryRequired = 0
+BeastMaster.HunterBeastMasteryRequired = 1
 
 # Allow exotic pets for non-hunters (default: 1)
 
-BeastMaster.AllowExotic = 1
+BeastMaster.AllowExotic = 0
 
 # Keep pet always happy (default: 0)
 
