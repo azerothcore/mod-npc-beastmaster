@@ -457,10 +457,6 @@ class BeastMaster_PlayerScript : public PlayerScript
         {
             petType = HUNTER_PET;
         }
-        else
-        {
-            petType = SUMMON_PET;
-        }
     }
 };
 
