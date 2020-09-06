@@ -64,6 +64,7 @@ mysql -P <DBport> -u <DPuser> --password=<DBpassword> world <env/dist/sql/world_
 
 If you need to change the module configuration, go to your server configuration folder (where your `worldserver` or `worldserver.exe` is), copy `npc_beastmaster.conf.dist` to `npc_beastmaster.conf` and edit that new file.
 
+(If using Docker, place the `npc_beastmaster.conf` file into your `azerothcore-wotlk\docker\worldserver\etc` folder.)
 
 ## Credits
 
