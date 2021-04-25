@@ -302,7 +302,7 @@ private:
         pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
 
         // Initialize Pet
-        pet->AddUInt64Value(UNIT_FIELD_CREATEDBY, player->GetGUID());
+        pet->SetGuidValue(UNIT_FIELD_CREATEDBY, player->GetGUID());
         pet->SetUInt32Value(UNIT_FIELD_FACTIONTEMPLATE, player->getFaction());
         pet->SetUInt32Value(UNIT_FIELD_LEVEL, player->getLevel());
 
