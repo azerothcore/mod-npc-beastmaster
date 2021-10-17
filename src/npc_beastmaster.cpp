@@ -59,7 +59,7 @@ public:
         {
             if (player->getClass() != CLASS_HUNTER)
             {
-                m_creature->MonsterWhisper("I am sorry, but pets are for hunters only.", player, false);
+                m_creature->Whisper("I am sorry, but pets are for hunters only.", LANG_UNIVERSAL, player);
                 return true;
             }
         }
@@ -69,7 +69,7 @@ public:
         {
             std::ostringstream messageExperience;
             messageExperience << "Sorry " << player->GetName() << ", but you must reach level " << BeastMasterMinLevel << " before adopting a pet.";
-            m_creature->MonsterWhisper(messageExperience.str().c_str(), player);
+            m_creature->Whisper(messageExperience.str().c_str(), LANG_UNIVERSAL, player);
             return true;
         }
 
@@ -170,7 +170,7 @@ public:
                 player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
                 messageLearn << "I have taught you the art of Beast Mastery, " << player->GetName() << ".";
-                m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
+                m_creature->Whisper(messageLearn.str().c_str(), LANG_UNIVERSAL, player);
             }
 
             AddGossipItemFor(player, GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
@@ -211,7 +211,7 @@ public:
                 player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
                 std::ostringstream messageLearn;
                 messageLearn << "I have taught you the art of Beast Mastery, " << player->GetName() << ".";
-                m_creature->MonsterWhisper(messageLearn.str().c_str(), player);
+                m_creature->Whisper(messageLearn.str().c_str(), LANG_UNIVERSAL, player);
             }
 
             AddGossipItemFor(player, GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
@@ -289,7 +289,7 @@ private:
         // Check if player already has a pet
         if (player->GetPet())
         {
-            m_creature->MonsterWhisper("First you must abandon or stable your current pet!", player, false);
+            m_creature->Whisper("First you must abandon or stable your current pet!", LANG_UNIVERSAL, player);
             CloseGossipMenuFor(player);
             return;
         }
@@ -343,7 +343,7 @@ private:
         // Farewell
         std::ostringstream messageAdopt;
         messageAdopt << "A fine choice " << player->GetName() << "! Take good care of your " << pet->GetName() << " and you will never face your enemies alone.";
-        m_creature->MonsterWhisper(messageAdopt.str().c_str(), player);
+        m_creature->Whisper(messageAdopt.str().c_str(), LANG_UNIVERSAL, player);
         CloseGossipMenuFor(player);
     }
 
