@@ -303,7 +303,7 @@ private:
 
         // Initialize Pet
         pet->SetGuidValue(UNIT_FIELD_CREATEDBY, player->GetGUID());
-        pet->SetUInt32Value(UNIT_FIELD_FACTIONTEMPLATE, player->getFaction());
+        pet->SetUInt32Value(UNIT_FIELD_FACTIONTEMPLATE, player->GetFaction());
         pet->SetUInt32Value(UNIT_FIELD_LEVEL, player->getLevel());
 
         // Prepare Level-Up Visual
