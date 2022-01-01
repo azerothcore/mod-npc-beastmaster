@@ -327,7 +327,7 @@ private:
         pet->GetCharmInfo()->SetPetNumber(sObjectMgr->GeneratePetNumber(), true);
         player->PetSpellInitialize();
         pet->InitLevelupSpellsForLevel();
-        pet->SavePetToDB(PET_SAVE_AS_CURRENT, 0);
+        pet->SavePetToDB(PET_SAVE_AS_CURRENT);
 
         // Learn Hunter Abilities (only for non-hunters)
         if (player->getClass() != CLASS_HUNTER)
