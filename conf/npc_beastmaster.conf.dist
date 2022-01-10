@@ -4,10 +4,6 @@
 #	BEASTMASTER NPC
 ###################################################################################################
 
-# Announce the module when the player logs in?
-
-BeastMaster.Announce = 1
-
 # Enable only for the hunter class?
 
 BeastMaster.HunterOnly = 1
