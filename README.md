@@ -29,7 +29,26 @@ As GM:
  ```
  .npc add temp 601026
  ```
+## Notice:
 
+Due to the uniquiness of the module you will get this message on the worldconsole, but nothing is broken.
+It is due to the npc not exactly having a gossip menu in the database, the script handles the gossip menu.
+
+![image](https://user-images.githubusercontent.com/16887899/154327532-612b03d8-64f0-460e-8f4b-7cbfd31a7381.png)
+
+Please add the adjustment to the conf to have that error message not show up:
+```
+#    Creatures.CustomIDs
+#        Description: The list of custom creatures with gossip dialogues hardcoded in core,
+#                     divided by "," without spaces.
+#                     It is implied that you do not use for these NPC dialogs data from "gossip_menu" table.
+#                     Server will skip these IDs during the definitions validation process.
+#        Example:     Creatures.CustomIDs = "190010,55005,999991,25462,98888,601026" - Npcs for Transmog, Guild-zone, 1v1-arena modules
+#                                                                               Skip Dk Module, Racial Trait Swap Modules
+#        Default:     ""
+
+Creatures.CustomIDs = "190010,55005,999991,25462,98888,601026"
+```
 
 ## Installation
 
