@@ -68,7 +68,7 @@ namespace
     return &instance;
 }
 
-void NpcBeastmaster::LoadSystem(bool reload /*= false*/)
+void NpcBeastmaster::LoadSystem(bool /*reload = false*/)
 {
     BeastMasterHunterOnly = sConfigMgr->GetOption<bool>("BeastMaster.HunterOnly", true);
     BeastMasterAllowExotic = sConfigMgr->GetOption<bool>("BeastMaster.AllowExotic", false);
