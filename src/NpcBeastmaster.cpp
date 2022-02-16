@@ -327,7 +327,7 @@ void NpcBeastmaster::CreatePet(Player* player, Creature* creature, uint32 action
 
 void NpcBeastmaster::AddPetsToGossip(Player* player, PetsStore const& petsStore, uint32 page)
 {
-    int count = 1;
+    uint count = 1;
 
     for (auto const& [petName, petEntry] : petsStore)
     {
