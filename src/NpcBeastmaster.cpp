@@ -52,7 +52,8 @@ namespace
         PET_PAGE_MAX = 901,
         PET_MAIN_MENU = 50,
         PET_REMOVE_SKILLS = 80,
-        PET_GOSSIP_HELLO = 601026
+        PET_GOSSIP_HELLO = 601026,
+        PET_GOSSIP_BROWSE = 601027
     };
 
     // PetSpells
@@ -193,7 +194,7 @@ void NpcBeastmaster::GossipSelect(Player* player, Creature* creature, uint32 act
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_PETS + page);
 
         AddPetsToGossip(player, pets, page);
-        SendGossipMenuFor(player, DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+        SendGossipMenuFor(player, PET_GOSSIP_BROWSE, creature->GetGUID());
     }
     else if (action >= PET_PAGE_START_EXOTIC_PETS && action < PET_PAGE_START_RARE_PETS)
     {
@@ -218,7 +219,7 @@ void NpcBeastmaster::GossipSelect(Player* player, Creature* creature, uint32 act
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS + page);
 
         AddPetsToGossip(player, exoticPets, page);
-        SendGossipMenuFor(player, DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+        SendGossipMenuFor(player, PET_GOSSIP_BROWSE, creature->GetGUID());
     }
     else if (action >= PET_PAGE_START_RARE_PETS && action < PET_PAGE_START_RARE_EXOTIC_PETS)
     {
@@ -234,7 +235,7 @@ void NpcBeastmaster::GossipSelect(Player* player, Creature* creature, uint32 act
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_PETS + page);
 
         AddPetsToGossip(player, rarePets, page);
-        SendGossipMenuFor(player, DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+        SendGossipMenuFor(player, PET_GOSSIP_BROWSE, creature->GetGUID());
     }
     else if (action >= PET_PAGE_START_RARE_EXOTIC_PETS && action < PET_PAGE_MAX)
     {
@@ -259,7 +260,7 @@ void NpcBeastmaster::GossipSelect(Player* player, Creature* creature, uint32 act
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS + page);
 
         AddPetsToGossip(player, rareExoticPets, page);
-        SendGossipMenuFor(player, DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+        SendGossipMenuFor(player, PET_GOSSIP_BROWSE, creature->GetGUID());
     }
     else if (action == PET_REMOVE_SKILLS)
     {
