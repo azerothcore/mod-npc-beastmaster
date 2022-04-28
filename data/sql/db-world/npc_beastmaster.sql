@@ -7,7 +7,7 @@ SET
 @Name       := "White Fang",
 @Title      := "BeastMaster",
 @Icon       := "Speak",
-@GossipMenu := 0,
+@GossipMenu := 60102,
 @MinLevel   := 80,
 @MaxLevel   := 80,
 @Faction    := 35,
