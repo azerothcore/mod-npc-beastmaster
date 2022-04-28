@@ -35,6 +35,10 @@ INSERT INTO `npc_text` (`ID`, `text0_0`) VALUES
 (601026, 'Greetings, $N.$b$bIf you\'re looking for a trustful companion to take on your travels, you have come to the right place. I can offer you a variety of tamed pets to choose from. I can also supply you with food so that you can take good care of your new friend.'),
 (601027, 'What kind of pet are you interested in?');
 
+-- GOSSIP MENU
+DELETE FROM `gossip_menu` WHERE `MenuID` = 60102;
+INSERT INTO `gossip_menu` VALUES (60102, 68); -- Dummy gossip menu to prevent errors. Not used.
+
 -- NPC ITEMS
 DELETE FROM npc_vendor WHERE entry = @Entry;
 INSERT INTO npc_vendor (entry, item) VALUES 
