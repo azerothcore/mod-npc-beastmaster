@@ -101,7 +101,7 @@ void NpcBeastmaster::ShowMainMenu(Player* player, Creature* creature)
     }
 
     // Check level requirement
-    if (player->getLevel() < BeastMasterMinLevel && BeastMasterMinLevel != 0)
+    if (player->GetLevel() < BeastMasterMinLevel && BeastMasterMinLevel != 0)
     {
         std::string messageExperience = Acore::StringFormatFmt("Sorry {}, but you must reach level {} before adopting a pet.", player->GetName(), BeastMasterMinLevel);
         creature->Whisper(messageExperience.c_str(), LANG_UNIVERSAL, player);
