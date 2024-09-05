@@ -103,7 +103,7 @@ void NpcBeastmaster::ShowMainMenu(Player* player, Creature* creature)
     // Check level requirement
     if (player->GetLevel() < BeastMasterMinLevel && BeastMasterMinLevel != 0)
     {
-        std::string messageExperience = Acore::StringFormatFmt("Sorry {}, but you must reach level {} before adopting a pet.", player->GetName(), BeastMasterMinLevel);
+        std::string messageExperience = Acore::StringFormat("Sorry {}, but you must reach level {} before adopting a pet.", player->GetName(), BeastMasterMinLevel);
         creature->Whisper(messageExperience.c_str(), LANG_UNIVERSAL, player);
         return;
     }
@@ -321,7 +321,7 @@ void NpcBeastmaster::CreatePet(Player* player, Creature* creature, uint32 action
     }
 
     // Farewell
-    std::string messageAdopt = Acore::StringFormatFmt("A fine choice {}! Take good care of your {} and you will never face your enemies alone.", player->GetName(), pet->GetName());
+    std::string messageAdopt = Acore::StringFormat("A fine choice {}! Take good care of your {} and you will never face your enemies alone.", player->GetName(), pet->GetName());
     creature->Whisper(messageAdopt.c_str(), LANG_UNIVERSAL, player);
     CloseGossipMenuFor(player);
 }
