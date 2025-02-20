@@ -88,17 +88,17 @@ class BeastMaster_PlayerScript : public PlayerScript
 public:
     BeastMaster_PlayerScript() : PlayerScript("BeastMaster_PlayerScript") { }
 
-    void OnBeforeUpdate(Player* player, uint32 /*p_time*/) override
+    void OnPlayerBeforeUpdate(Player* player, uint32 /*p_time*/) override
     {
         sNpcBeastMaster->PlayerUpdate(player);
     }
 
-    void OnBeforeLoadPetFromDB(Player* /*player*/, uint32& /*petentry*/, uint32& /*petnumber*/, bool& /*current*/, bool& forceLoadFromDB) override
+    void OnPlayerBeforeLoadPetFromDB(Player* /*player*/, uint32& /*petentry*/, uint32& /*petnumber*/, bool& /*current*/, bool& forceLoadFromDB) override
     {
         forceLoadFromDB = true;
     }
 
-    void OnBeforeGuardianInitStatsForLevel(Player* /*player*/, Guardian* /*guardian*/, CreatureTemplate const* cinfo, PetType& petType) override
+    void OnPlayerBeforeGuardianInitStatsForLevel(Player* /*player*/, Guardian* /*guardian*/, CreatureTemplate const* cinfo, PetType& petType) override
     {
         if (cinfo->IsTameable(true))
         {
