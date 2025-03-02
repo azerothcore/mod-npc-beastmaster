@@ -21,8 +21,8 @@
 #include "Player.h"
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
-#include "StringFormat.h"
 #include "StringConvert.h"
+#include "StringFormat.h"
 #include <map>
 #include <vector>
 
@@ -78,9 +78,7 @@ void NpcBeastmaster::LoadSystem(bool /*reload = false*/)
     BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetOption<uint32>("BeastMaster.HunterBeastMasteryRequired", true);
 
     if (BeastMasterMinLevel > 80)
-    {
         BeastMasterMinLevel = 10;
-    }
 
     LoadPets(sConfigMgr->GetOption<std::string>("BeastMaster.Pets", ""), pets);
     LoadPets(sConfigMgr->GetOption<std::string>("BeastMaster.ExoticPets", ""), exoticPets);
@@ -368,8 +366,6 @@ void NpcBeastmaster::PlayerUpdate(Player* player)
         Pet* pet = player->GetPet();
 
         if (pet->getPetType() == HUNTER_PET)
-        {
             pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
-        }
     }
 }
