@@ -17,7 +17,7 @@ SET
 @Type       := 7,
 @TypeFlags  := 0,
 @FlagsExtra := 2,
-@AIName     := "SmartAI",
+@AIName     := "",
 @Script     := "BeastMaster";
 
 -- NPC
