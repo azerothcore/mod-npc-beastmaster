@@ -16,9 +16,9 @@
  */
 
 #include "NpcBeastmaster.h"
-#include "ScriptMgr.h"
-#include "ScriptedGossip.h"
 #include "ScriptedCreature.h"
+#include "ScriptedGossip.h"
+#include "ScriptMgr.h"
 
  // BeastMasterEvents
 constexpr auto BEASTMASTER_EVENT_EAT = 1;
@@ -75,7 +75,9 @@ public:
 class BeastMaster_WorldScript : public WorldScript
 {
 public:
-    BeastMaster_WorldScript() : WorldScript("BeastMaster_WorldScript") { }
+    BeastMaster_WorldScript() : WorldScript("BeastMaster_WorldScript", {
+        WORLDHOOK_ON_BEFORE_CONFIG_LOAD
+    }) { }
 
     void OnBeforeConfigLoad(bool /*reload*/) override
     {
@@ -86,7 +88,11 @@ public:
 class BeastMaster_PlayerScript : public PlayerScript
 {
 public:
-    BeastMaster_PlayerScript() : PlayerScript("BeastMaster_PlayerScript") { }
+    BeastMaster_PlayerScript() : PlayerScript("BeastMaster_PlayerScript", {
+        PLAYERHOOK_ON_BEFORE_UPDATE,
+        PLAYERHOOK_ON_BEFORE_LOAD_PET_FROM_DB,
+        PLAYERHOOK_ON_BEFORE_GUARDIAN_INIT_STATS_FOR_LEVEL
+    }) { }
 
     void OnPlayerBeforeUpdate(Player* player, uint32 /*p_time*/) override
     {
@@ -101,9 +107,7 @@ public:
     void OnPlayerBeforeGuardianInitStatsForLevel(Player* /*player*/, Guardian* /*guardian*/, CreatureTemplate const* cinfo, PetType& petType) override
     {
         if (cinfo->IsTameable(true))
-        {
             petType = HUNTER_PET;
-        }
     }
 };
 
