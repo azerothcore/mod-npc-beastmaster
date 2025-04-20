@@ -6,7 +6,7 @@
  * Free Software Foundation; either version 3 of the License, or (at your
  * option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but without
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
  * more details.
@@ -23,23 +23,84 @@
 #include "ScriptedGossip.h"
 #include "StringConvert.h"
 #include "StringFormat.h"
+#include "DatabaseEnv.h"
+#include "Chat.h"
 #include <map>
 #include <vector>
+#include <sstream>
+#include <fstream>
+#include <nlohmann/json.hpp> // You must add this header-only library to your module
+#include <regex>
+#include <unordered_set>
+#include <locale>
+#include <unordered_map>
+#include <mutex>
+#include <sys/stat.h>
+
+using json = nlohmann::json;
+
+namespace BeastmasterDB
+{
+    // Handles all database operations related to the Beastmaster module.
+    bool TrackTamedPet(Player *player, uint32 creatureEntry, std::string const &petName)
+    {
+        // Prevent duplicate entries for the same player and pet entry
+        QueryResult result = CharacterDatabase.PQuery(
+            "SELECT 1 FROM beastmaster_tamed_pets WHERE owner_guid = %u AND entry = %u AND name = '%s' LIMIT 1",
+            player->GetGUID().GetCounter(), creatureEntry, petName.c_str());
+
+        if (result)
+            return false; // Already tracked
+
+        if (CharacterDatabase.PExecute(
+                "INSERT INTO beastmaster_tamed_pets (owner_guid, entry, name) VALUES (%u, %u, '%s')",
+                player->GetGUID().GetCounter(), creatureEntry, petName.c_str()))
+        {
+            return true;
+        }
+        else
+        {
+            // Log error if needed
+            TC_LOG_ERROR("module", "BeastmasterDB: Failed to insert tamed pet for player %u", player->GetGUID().GetCounter());
+            return false;
+        }
+    }
+}
 
 namespace
 {
-    std::vector<uint32> HunterSpells = { 883, 982, 2641, 6991, 48990, 1002, 1462, 6197 };
+    // List of hunter spells to grant/remove for non-hunters adopting pets.
+    std::vector<uint32> HunterSpells = {883, 982, 2641, 6991, 48990, 1002, 1462, 6197};
 
-    PetsStore pets;
-    PetsStore exoticPets;
-    PetsStore rarePets;
-    PetsStore rareExoticPets;
+    struct PetInfo
+    {
+        std::string name;
+        uint32 entry;
+        uint32 family;
+        std::string rarity;
+    };
 
-    bool BeastMasterHunterOnly;
-    bool BeastMasterAllowExotic;
-    bool BeastMasterKeepPetHappy;
-    uint32 BeastMasterMinLevel;
-    bool BeastMasterHunterBeastMasteryRequired;
+    using PetList = std::vector<PetInfo>;
+
+    PetList allPets;
+    PetList normalPets;
+    PetList exoticPets;
+    PetList rarePets;
+    PetList rareExoticPets;
+
+    std::set<uint32> rarePetEntries;
+    std::set<uint32> rareExoticPetEntries;
+
+    // Cached config options for performance and consistency.
+    struct BeastmasterConfig
+    {
+        bool hunterOnly = true;
+        bool allowExotic = false;
+        bool keepPetHappy = false;
+        uint32 minLevel = 10;
+        bool hunterBeastMasteryRequired = true;
+        bool trackTamedPets = false;
+    } beastmasterConfig;
 
     enum PetGossip
     {
@@ -53,7 +114,8 @@ namespace
         PET_MAIN_MENU = 50,
         PET_REMOVE_SKILLS = 80,
         PET_GOSSIP_HELLO = 601026,
-        PET_GOSSIP_BROWSE = 601027
+        PET_GOSSIP_BROWSE = 601027,
+        PET_TRACKED_PETS_MENU = 1000 // New action for tracked pets menu
     };
 
     // PetSpells
@@ -61,129 +123,310 @@ namespace
     constexpr auto PET_SPELL_TAME_BEAST = 13481;
     constexpr auto PET_SPELL_BEAST_MASTERY = 53270;
     constexpr auto PET_MAX_HAPPINESS = 1048000;
+
+    std::unordered_map<uint32, PetInfo> allPetsByEntry;
+
+    // Mutex for thread safety when accessing/modifying global pet lists/maps
+    std::mutex petsMutex;
 }
 
-/*static*/ NpcBeastmaster* NpcBeastmaster::instance()
+// Add these new actions for tracked pets
+enum TrackedPetActions
+{
+    PET_TRACKED_SUMMON = 2000,
+    PET_TRACKED_RENAME = 3000,
+    PET_TRACKED_DELETE = 4000,
+    PET_TRACKED_PAGE_SIZE = 10
+};
+
+// Add a new enum for rename dialog
+enum
+{
+    PET_TRACKED_RENAME_PROMPT = 5000
+};
+
+// Global profanity list and last modification time
+static std::unordered_set<std::string> sProfanityList;
+static time_t sProfanityListMTime = 0;
+
+// --- Session cache for tracked pets (optional, clear on update) ---
+static std::unordered_map<uint64, std::vector<std::tuple<uint32, std::string, std::string>>> trackedPetsCache;
+
+// Utility to clear tracked pets cache for a player
+static void ClearTrackedPetsCache(Player *player)
+{
+    trackedPetsCache.erase(player->GetGUID().GetRawValue());
+}
+
+// Helper to get file modification time
+static time_t GetFileMTime(const std::string &path)
+{
+    struct stat statbuf;
+    if (stat(path.c_str(), &statbuf) == 0)
+        return statbuf.st_mtime;
+    return 0;
+}
+
+// Load or reload profanity words from conf/profanity.txt if changed
+static void LoadProfanityListIfNeeded()
+{
+    const std::string path = "modules/mod-npc-beastmaster/conf/profanity.txt";
+    time_t mtime = GetFileMTime(path);
+    if (mtime == 0)
+        return; // file missing
+
+    if (mtime == sProfanityListMTime && !sProfanityList.empty())
+        return; // already loaded and unchanged
+
+    sProfanityList.clear();
+    std::ifstream f(path);
+    if (!f.is_open())
+    {
+        TC_LOG_WARN("module", "Beastmaster: Could not open profanity.txt, skipping profanity filter.");
+        return;
+    }
+    std::string word;
+    while (std::getline(f, word))
+    {
+        std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+        if (!word.empty())
+            sProfanityList.insert(word);
+    }
+    sProfanityListMTime = mtime;
+    // Only log once per reload, not per word
+    TC_LOG_INFO("module", "Beastmaster: Loaded %zu profane words (mtime=%ld)", sProfanityList.size(), long(mtime));
+}
+
+// Enhanced profanity check: any profane substring, always up-to-date
+static bool IsProfane(const std::string &name)
+{
+    LoadProfanityListIfNeeded();
+    std::string lower = name;
+    std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+    for (auto const &bad : sProfanityList)
+        if (lower.find(bad) != std::string::npos)
+            return true;
+    return false;
+}
+
+// Enhanced pet name validator:
+// - 2–16 chars
+// - Letters, spaces and dashes only
+// - No leading/trailing spaces
+static bool IsValidPetName(const std::string &name)
+{
+    if (name.size() < 2 || name.size() > 16)
+        return false;
+    // no leading/trailing spaces
+    if (std::isspace(name.front()) || std::isspace(name.back()))
+        return false;
+    // match allowed chars
+    static const std::regex allowed("^[A-Za-z][A-Za-z \\-']*[A-Za-z]$");
+    return std::regex_match(name, allowed);
+}
+
+// Helper to load rare pet IDs from config
+static std::set<uint32>
+ParseEntryList(const std::string &csv)
+{
+    std::set<uint32> result;
+    std::stringstream ss(csv);
+    std::string item;
+    while (std::getline(ss, item, ','))
+    {
+        try
+        {
+            result.insert(std::stoul(item));
+        }
+        catch (...)
+        {
+        }
+    }
+    return result;
+}
+
+// Helper to get PetInfo from entry
+static const PetInfo *FindPetInfo(uint32 entry)
+{
+    std::lock_guard<std::mutex> lock(petsMutex);
+    auto it = allPetsByEntry.find(entry);
+    return it != allPetsByEntry.end() ? &it->second : nullptr;
+}
+
+/*static*/ NpcBeastmaster *NpcBeastmaster::instance()
 {
     static NpcBeastmaster instance;
     return &instance;
 }
 
+// Loads all configuration options and pets from JSON and config.
 void NpcBeastmaster::LoadSystem(bool /*reload = false*/)
 {
-    BeastMasterHunterOnly = sConfigMgr->GetOption<bool>("BeastMaster.HunterOnly", true);
-    BeastMasterAllowExotic = sConfigMgr->GetOption<bool>("BeastMaster.AllowExotic", false);
-    BeastMasterKeepPetHappy = sConfigMgr->GetOption<bool>("BeastMaster.KeepPetHappy", false);
-    BeastMasterMinLevel = sConfigMgr->GetOption<uint32>("BeastMaster.MinLevel", 10);
-    BeastMasterHunterBeastMasteryRequired = sConfigMgr->GetOption<uint32>("BeastMaster.HunterBeastMasteryRequired", true);
+    std::lock_guard<std::mutex> lock(petsMutex); // Lock during reload
 
-    if (BeastMasterMinLevel > 80)
-        BeastMasterMinLevel = 10;
+    beastmasterConfig.hunterOnly = sConfigMgr->GetOption<bool>("BeastMaster.HunterOnly", true);
+    beastmasterConfig.allowExotic = sConfigMgr->GetOption<bool>("BeastMaster.AllowExotic", false);
+    beastmasterConfig.keepPetHappy = sConfigMgr->GetOption<bool>("BeastMaster.KeepPetHappy", false);
+    beastmasterConfig.minLevel = sConfigMgr->GetOption<uint32>("BeastMaster.MinLevel", 10);
+    beastmasterConfig.hunterBeastMasteryRequired = sConfigMgr->GetOption<uint32>("BeastMaster.HunterBeastMasteryRequired", true);
+    beastmasterConfig.trackTamedPets = sConfigMgr->GetOption<bool>("BeastMaster.TrackTamedPets", false);
 
-    LoadPets(sConfigMgr->GetOption<std::string>("BeastMaster.Pets", ""), pets);
-    LoadPets(sConfigMgr->GetOption<std::string>("BeastMaster.ExoticPets", ""), exoticPets);
-    LoadPets(sConfigMgr->GetOption<std::string>("BeastMaster.RarePets", ""), rarePets);
-    LoadPets(sConfigMgr->GetOption<std::string>("BeastMaster.RareExoticPets", ""), rareExoticPets);
-}
+    // Parse rare pet entry lists from config
+    rarePetEntries = ParseEntryList(sConfigMgr->GetOption<std::string>("BeastMaster.RarePets", ""));
+    rareExoticPetEntries = ParseEntryList(sConfigMgr->GetOption<std::string>("BeastMaster.RareExoticPets", ""));
 
-void NpcBeastmaster::ShowMainMenu(Player* player, Creature* creature)
-{
-    // If enabled for Hunters only..
-    if (BeastMasterHunterOnly)
+    // Load pets from tames.json
+    allPets.clear();
+    normalPets.clear();
+    exoticPets.clear();
+    rarePets.clear();
+    rareExoticPets.clear();
+    allPetsByEntry.clear();
+
+    std::ifstream file("modules/mod-npc-beastmaster/conf/tames.json");
+    if (!file.is_open())
     {
-        if (player->getClass() != CLASS_HUNTER)
-        {
-            creature->Whisper("I am sorry, but pets are for hunters only.", LANG_UNIVERSAL, player);
-            return;
-        }
+        TC_LOG_ERROR("module", "Beastmaster: Could not open tames.json!");
+        return;
     }
 
-    // Check level requirement
-    if (player->GetLevel() < BeastMasterMinLevel && BeastMasterMinLevel != 0)
+    json j;
+    try
     {
-        std::string messageExperience = Acore::StringFormat("Sorry {}, but you must reach level {} before adopting a pet.", player->GetName(), BeastMasterMinLevel);
+        file >> j;
+    }
+    catch (const std::exception &e)
+    {
+        TC_LOG_ERROR("module", "Beastmaster: Failed to parse tames.json: %s", e.what());
+        return;
+    }
+
+    if (!j.contains("rows") || !j["rows"].is_array())
+    {
+        TC_LOG_ERROR("module", "Beastmaster: tames.json missing 'rows' array.");
+        return;
+    }
+
+    const auto &rows = j["rows"];
+    size_t petCount = rows.size();
+
+    allPets.clear();
+    normalPets.clear();
+    exoticPets.clear();
+    rarePets.clear();
+    rareExoticPets.clear();
+    allPetsByEntry.clear();
+
+    // Reserve vector capacity for efficiency
+    allPets.reserve(petCount);
+    normalPets.reserve(petCount);
+    exoticPets.reserve(petCount);
+    rarePets.reserve(petCount);
+    rareExoticPets.reserve(petCount);
+
+    for (const auto &pet : rows)
+    {
+        if (!pet.contains("entry") || !pet.contains("name") || !pet.contains("family") || !pet.contains("rarity"))
+        {
+            TC_LOG_WARN("module", "Beastmaster: Skipping pet with missing fields in tames.json");
+            continue;
+        }
+
+        PetInfo info;
+        info.entry = pet["entry"].get<uint32_t>();
+        info.name = pet["name"].get<std::string>();
+        info.family = pet["family"].get<uint32_t>();
+        info.rarity = pet["rarity"].get<std::string>();
+
+        allPets.push_back(info);
+        allPetsByEntry[info.entry] = info;
+
+        // Classify
+        if (rarePetEntries.count(info.entry))
+            rarePets.push_back(info);
+        else if (rareExoticPetEntries.count(info.entry))
+            rareExoticPets.push_back(info);
+        else if (info.rarity == "exotic")
+            exoticPets.push_back(info);
+        else
+            normalPets.push_back(info);
+    }
+}
+
+// Shows the main gossip menu to the player.
+void NpcBeastmaster::ShowMainMenu(Player *player, Creature *creature)
+{
+    // Restrict to hunters if configured.
+    if (beastmasterConfig.hunterOnly && player->getClass() != CLASS_HUNTER)
+    {
+        creature->Whisper("I am sorry, but pets are for hunters only.", LANG_UNIVERSAL, player);
+        return;
+    }
+
+    // Enforce minimum level requirement.
+    if (player->GetLevel() < beastmasterConfig.minLevel && beastmasterConfig.minLevel != 0)
+    {
+        std::string messageExperience = Acore::StringFormat("Sorry {}, but you must reach level {} before adopting a pet.", player->GetName(), beastmasterConfig.minLevel);
         creature->Whisper(messageExperience.c_str(), LANG_UNIVERSAL, player);
         return;
     }
 
     ClearGossipMenuFor(player);
 
-    // MAIN MENU
+    // Main menu options.
     AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_PETS);
     AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_PETS);
 
-    if (BeastMasterAllowExotic || player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
+    // Exotic pets menu logic.
+    if (beastmasterConfig.allowExotic || player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
     {
         if (player->getClass() != CLASS_HUNTER)
         {
             AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
             AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
         }
-        else if (!BeastMasterHunterBeastMasteryRequired || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
+        else if (!beastmasterConfig.hunterBeastMasteryRequired || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
         {
             AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
             AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
         }
     }
 
-    // remove pet skills (not for hunters)
+    // Remove pet skills (not for hunters).
     if (player->getClass() != CLASS_HUNTER && player->HasSpell(PET_SPELL_CALL_PET))
         AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Unlearn Hunter Abilities", GOSSIP_SENDER_MAIN, PET_REMOVE_SKILLS);
 
-    // Stables for hunters only - Doesn't seem to work for other classes
+    // Add tracked pets menu if enabled (for all classes now)
+    if (beastmasterConfig.trackTamedPets)
+        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "My Tamed Pets", GOSSIP_SENDER_MAIN, PET_TRACKED_PETS_MENU);
+
+    // Stables for hunters only.
     if (player->getClass() == CLASS_HUNTER)
         AddGossipItemFor(player, GOSSIP_ICON_TAXI, "Visit Stable", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_STABLEPET);
 
-    // Pet Food Vendor
+    // Pet Food Vendor.
     AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, "Buy Pet Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
 
     SendGossipMenuFor(player, PET_GOSSIP_HELLO, creature->GetGUID());
 
-    // Howl
+    // Play sound effect.
     player->PlayDirectSound(PET_BEASTMASTER_HOWL);
 }
 
-void NpcBeastmaster::GossipSelect(Player* player, Creature* creature, uint32 action)
+// Handles gossip menu selections.
+void NpcBeastmaster::GossipSelect(Player *player, Creature *creature, uint32 action)
 {
     ClearGossipMenuFor(player);
 
     if (action == PET_MAIN_MENU)
     {
-        // MAIN MENU
-        AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_PETS);
-        AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Rare Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_PETS);
-
-        if (BeastMasterAllowExotic || player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
-        {
-            if (player->getClass() != CLASS_HUNTER)
-            {
-                AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
-                AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
-            }
-            else if (!BeastMasterHunterBeastMasteryRequired || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec()))
-            {
-                AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_EXOTIC_PETS);
-                AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Browse Rare Exotic Pets", GOSSIP_SENDER_MAIN, PET_PAGE_START_RARE_EXOTIC_PETS);
-            }
-        }
-
-        // remove pet skills (not for hunters)
-        if (player->getClass() != CLASS_HUNTER && player->HasSpell(PET_SPELL_CALL_PET))
-            AddGossipItemFor(player, GOSSIP_ICON_BATTLE, "Unlearn Hunter Abilities", GOSSIP_SENDER_MAIN, PET_REMOVE_SKILLS);
-
-        // Stables for hunters only - Doesn't seem to work for other classes
-        if (player->getClass() == CLASS_HUNTER)
-            AddGossipItemFor(player, GOSSIP_ICON_TAXI, "Visit Stable", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_STABLEPET);
-
-        AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, "Buy Pet Food", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
-        SendGossipMenuFor(player, PET_GOSSIP_HELLO, creature->GetGUID());
+        ShowMainMenu(player, creature);
     }
     else if (action >= PET_PAGE_START_PETS && action < PET_PAGE_START_EXOTIC_PETS)
     {
-        // PETS
         AddGossipItemFor(player, GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
         int page = action - PET_PAGE_START_PETS + 1;
-        int maxPage = pets.size() / PET_PAGE_SIZE + (pets.size() % PET_PAGE_SIZE != 0);
+        int maxPage = normalPets.size() / PET_PAGE_SIZE + (normalPets.size() % PET_PAGE_SIZE != 0);
 
         if (page > 1)
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "Previous..", GOSSIP_SENDER_MAIN, PET_PAGE_START_PETS + page - 2);
@@ -191,13 +434,11 @@ void NpcBeastmaster::GossipSelect(Player* player, Creature* creature, uint32 act
         if (page < maxPage)
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "Next..", GOSSIP_SENDER_MAIN, PET_PAGE_START_PETS + page);
 
-        AddPetsToGossip(player, pets, page);
+        AddPetsToGossip(player, normalPets, page);
         SendGossipMenuFor(player, PET_GOSSIP_BROWSE, creature->GetGUID());
     }
     else if (action >= PET_PAGE_START_EXOTIC_PETS && action < PET_PAGE_START_RARE_PETS)
     {
-        // EXOTIC BEASTS
-        // Teach Beast Mastery or Spirit Beasts won't work properly
         if (!(player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec())))
         {
             player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
@@ -221,7 +462,6 @@ void NpcBeastmaster::GossipSelect(Player* player, Creature* creature, uint32 act
     }
     else if (action >= PET_PAGE_START_RARE_PETS && action < PET_PAGE_START_RARE_EXOTIC_PETS)
     {
-        // RARE PETS
         AddGossipItemFor(player, GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
         int page = action - PET_PAGE_START_RARE_PETS + 1;
         int maxPage = rarePets.size() / PET_PAGE_SIZE + (rarePets.size() % PET_PAGE_SIZE != 0);
@@ -237,8 +477,6 @@ void NpcBeastmaster::GossipSelect(Player* player, Creature* creature, uint32 act
     }
     else if (action >= PET_PAGE_START_RARE_EXOTIC_PETS && action < PET_PAGE_MAX)
     {
-        // RARE EXOTIC BEASTS
-        // Teach Beast Mastery or Spirit Beasts won't work properly
         if (!(player->HasSpell(PET_SPELL_BEAST_MASTERY) || player->HasTalent(PET_SPELL_BEAST_MASTERY, player->GetActiveSpec())))
         {
             player->addSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
@@ -262,32 +500,77 @@ void NpcBeastmaster::GossipSelect(Player* player, Creature* creature, uint32 act
     }
     else if (action == PET_REMOVE_SKILLS)
     {
-        // remove pet and granted skills
-        for (std::size_t i = 0; i < HunterSpells.size(); ++i)
-            player->removeSpell(HunterSpells[i], SPEC_MASK_ALL, false);
+        // Remove pet and granted skills for non-hunters.
+        for (auto spell : HunterSpells)
+            player->removeSpell(spell, SPEC_MASK_ALL, false);
 
         player->removeSpell(PET_SPELL_BEAST_MASTERY, SPEC_MASK_ALL, false);
         CloseGossipMenuFor(player);
     }
     else if (action == GOSSIP_OPTION_STABLEPET)
     {
-        // STABLE
+        // Open stable window.
         player->GetSession()->SendStablePet(creature->GetGUID());
     }
     else if (action == GOSSIP_OPTION_VENDOR)
     {
-        // VENDOR
+        // Open vendor window.
         player->GetSession()->SendListInventory(creature->GetGUID());
     }
+    else if (action >= PET_TRACKED_PETS_MENU && action < PET_TRACKED_SUMMON)
+    {
+        uint32 page = action - PET_TRACKED_PETS_MENU + 1;
+        ShowTrackedPetsMenu(player, creature, page);
+        return;
+    }
+    else if (action >= PET_TRACKED_SUMMON && action < PET_TRACKED_RENAME)
+    {
+        uint32 entry = action - PET_TRACKED_SUMMON;
+        // Summon logic: create the pet for the player
+        if (player->IsExistPet())
+        {
+            creature->Whisper("First you must abandon or stable your current pet!", LANG_UNIVERSAL, player);
+        }
+        else
+        {
+            Pet *pet = player->CreatePet(entry, PET_SPELL_CALL_PET);
+            if (pet)
+            {
+                pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
+                creature->Whisper("Your tracked pet has been summoned!", LANG_UNIVERSAL, player);
+            }
+            else
+            {
+                creature->Whisper("Failed to summon pet.", LANG_UNIVERSAL, player);
+            }
+        }
+        CloseGossipMenuFor(player);
+        return;
+    }
+    else if (action >= PET_TRACKED_RENAME && action < PET_TRACKED_DELETE)
+    {
+        uint32 entry = action - PET_TRACKED_RENAME;
+        HandleRenamePet(player, creature, entry);
+        CloseGossipMenuFor(player);
+        return;
+    }
+    else if (action >= PET_TRACKED_DELETE && action < PET_TRACKED_DELETE + 1000)
+    {
+        uint32 entry = action - PET_TRACKED_DELETE;
+        HandleDeletePet(player, creature, entry);
+        CloseGossipMenuFor(player);
+        return;
+    }
 
-    // BEASTS
+    // Adopt pet if action is in the correct range.
     if (action >= PET_PAGE_MAX)
         CreatePet(player, creature, action);
 }
 
-void NpcBeastmaster::CreatePet(Player* player, Creature* creature, uint32 action)
+// Handles the creation/adoption of a pet for the player.
+void NpcBeastmaster::CreatePet(Player *player, Creature *creature, uint32 action)
 {
-    // Check if player already has a pet
+    // Check if player already has a pet.
     if (player->IsExistPet())
     {
         creature->Whisper("First you must abandon or stable your current pet!", LANG_UNIVERSAL, player);
@@ -295,77 +578,248 @@ void NpcBeastmaster::CreatePet(Player* player, Creature* creature, uint32 action
         return;
     }
 
-    // Create tamed creature
-    Pet* pet = player->CreatePet(action - PET_PAGE_MAX, player->getClass() == CLASS_HUNTER ? PET_SPELL_TAME_BEAST : PET_SPELL_CALL_PET);
+    // Create tamed creature.
+    Pet *pet = player->CreatePet(action - PET_PAGE_MAX, player->getClass() == CLASS_HUNTER ? PET_SPELL_TAME_BEAST : PET_SPELL_CALL_PET);
     if (!pet)
     {
         creature->Whisper("First you must abandon or stable your current pet!", LANG_UNIVERSAL, player);
         return;
     }
 
-    // Set Pet Happiness
+    // Track tamed pet if enabled in config.
+    if (beastmasterConfig.trackTamedPets)
+        BeastmasterDB::TrackTamedPet(player, action - PET_PAGE_MAX, pet->GetName());
+
+    // Set Pet Happiness.
     pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
 
-    // Learn Hunter Abilities (only for non-hunters)
+    // Learn Hunter Abilities (only for non-hunters).
     if (player->getClass() != CLASS_HUNTER)
     {
-        // Assume player has already learned the spells if they have Call Pet
         if (!player->HasSpell(PET_SPELL_CALL_PET))
         {
-            for (auto const& _spell : HunterSpells)
-                if (!player->HasSpell(_spell))
-                    player->learnSpell(_spell);
+            for (auto const &spell : HunterSpells)
+                if (!player->HasSpell(spell))
+                    player->learnSpell(spell);
         }
     }
 
-    // Farewell
+    // Farewell message.
     std::string messageAdopt = Acore::StringFormat("A fine choice {}! Take good care of your {} and you will never face your enemies alone.", player->GetName(), pet->GetName());
     creature->Whisper(messageAdopt.c_str(), LANG_UNIVERSAL, player);
     CloseGossipMenuFor(player);
 }
 
-void NpcBeastmaster::AddPetsToGossip(Player* player, PetsStore const& petsStore, uint32 page)
+// Adds pets to the gossip menu for the given page.
+void NpcBeastmaster::AddPetsToGossip(Player *player, PetList const &pets, uint32 page)
 {
     uint32 count = 1;
-
-    for (auto const& [petName, petEntry] : petsStore)
+    for (const auto &pet : pets)
     {
         if (count > (page - 1) * PET_PAGE_SIZE && count <= page * PET_PAGE_SIZE)
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, petName, GOSSIP_SENDER_MAIN, petEntry + PET_PAGE_MAX);
-
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, pet.name, GOSSIP_SENDER_MAIN, pet.entry + PET_PAGE_MAX);
         count++;
     }
 }
 
-void NpcBeastmaster::LoadPets(std::string pets, PetsStore& petMap)
+// Show the tracked pets menu for the player, with pagination and actions
+void NpcBeastmaster::ShowTrackedPetsMenu(Player *player, Creature *creature, uint32 page /*= 1*/)
 {
-    petMap.clear();
+    ClearGossipMenuFor(player);
 
-    std::string delimitedValue;
-    std::stringstream petsStringStream;
-    std::string petName;
-    int count = 0;
+    uint64 guid = player->GetGUID().GetRawValue();
+    std::vector<std::tuple<uint32, std::string, std::string>> *trackedPetsPtr = nullptr;
 
-    petsStringStream.str(pets);
-
-    while (std::getline(petsStringStream, delimitedValue, ','))
+    auto it = trackedPetsCache.find(guid);
+    if (it != trackedPetsCache.end())
     {
-        if (count % 2 == 0)
-            petName = delimitedValue;
+        trackedPetsPtr = &it->second;
+    }
+    else
+    {
+        std::vector<std::tuple<uint32, std::string, std::string>> trackedPets;
+        QueryResult result = CharacterDatabase.PQuery(
+            "SELECT entry, name, date_tamed FROM beastmaster_tamed_pets WHERE owner_guid = %u ORDER BY date_tamed DESC",
+            player->GetGUID().GetCounter());
+
+        if (result)
+        {
+            do
+            {
+                Field *fields = result->Fetch();
+                uint32 entry = fields[0].GetUInt32();
+                std::string name = fields[1].GetString();
+                std::string date = fields[2].GetString();
+                trackedPets.emplace_back(entry, name, date);
+            } while (result->NextRow());
+        }
+        trackedPetsCache[guid] = std::move(trackedPets);
+        trackedPetsPtr = &trackedPetsCache[guid];
+    }
+
+    const auto &trackedPets = *trackedPetsPtr;
+    uint32 total = trackedPets.size();
+    uint32 offset = (page - 1) * PET_TRACKED_PAGE_SIZE;
+    uint32 shown = 0;
+
+    for (uint32 i = offset; i < total && shown < PET_TRACKED_PAGE_SIZE; ++i, ++shown)
+    {
+        const auto &petTuple = trackedPets[i];
+        uint32 entry = std::get<0>(petTuple);
+        const std::string &name = std::get<1>(petTuple);
+        const std::string &date = std::get<2>(petTuple);
+        const PetInfo *info = FindPetInfo(entry);
+
+        std::string label;
+        if (info)
+            label = Acore::StringFormat("{} ({}) | Family: {} | Rarity: {}", name, date, info->family, info->rarity);
         else
-            petMap[petName] = *Acore::StringTo<uint32>(delimitedValue);
+            label = Acore::StringFormat("{} ({})", name, date);
 
-        count++;
+        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Summon: " + label, GOSSIP_SENDER_MAIN, PET_TRACKED_SUMMON + entry);
+        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Rename: " + label, GOSSIP_SENDER_MAIN, PET_TRACKED_RENAME + entry);
+        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Delete: " + label, GOSSIP_SENDER_MAIN, PET_TRACKED_DELETE + entry);
     }
+
+    // Pagination controls
+    if (page > 1)
+        AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "Previous Page", GOSSIP_SENDER_MAIN, PET_TRACKED_PETS_MENU + (page - 1));
+    if (offset + PET_TRACKED_PAGE_SIZE < total)
+        AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "Next Page", GOSSIP_SENDER_MAIN, PET_TRACKED_PETS_MENU + (page + 1));
+
+    AddGossipItemFor(player, GOSSIP_ICON_TALK, "Back..", GOSSIP_SENDER_MAIN, PET_MAIN_MENU);
+    SendGossipMenuFor(player, PET_GOSSIP_HELLO, creature->GetGUID());
 }
 
-void NpcBeastmaster::PlayerUpdate(Player* player)
+// Keeps the pet happy if the config option is enabled.
+void NpcBeastmaster::PlayerUpdate(Player *player)
 {
-    if (BeastMasterKeepPetHappy && player->GetPet())
+    if (beastmasterConfig.keepPetHappy && player->GetPet())
     {
-        Pet* pet = player->GetPet();
-
+        Pet *pet = player->GetPet();
         if (pet->getPetType() == HUNTER_PET)
             pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
     }
+}
+
+// Handles the rename prompt for pets
+void NpcBeastmaster::HandleRenamePet(Player *player, Creature *creature, uint32 entry)
+{
+    // Store the entry in a player variable for the next step
+    player->CustomData.SetDefault<uint32>("BeastmasterRenamePetEntry", entry);
+
+    // Prompt the player for a new name
+    player->GetSession()->SendNotification("Please type the new name for your pet in chat. (Type .cancel to abort)");
+    creature->Whisper("Please type the new name for your pet in chat. (Type .cancel to abort)", LANG_UNIVERSAL, player);
+
+    // Set a flag or state to expect the next chat message as the new name
+    player->CustomData.SetDefault<bool>("BeastmasterExpectRename", true);
+}
+
+// Handles the delete confirmation for pets
+void NpcBeastmaster::HandleDeletePet(Player *player, Creature *creature, uint32 entry)
+{
+    player->CustomData.SetDefault<uint32>("BeastmasterDeletePetEntry", entry);
+    player->CustomData.SetDefault<bool>("BeastmasterExpectDeleteConfirm", true);
+    creature->Whisper("Are you sure you want to delete this tracked pet? Type .yes to confirm or .cancel to abort.", LANG_UNIVERSAL, player);
+}
+
+// Chat handler to process the rename and delete confirmations
+class BeastmasterRenameChatHandler : public PlayerScript
+{
+public:
+    BeastmasterRenameChatHandler() : PlayerScript("BeastmasterRenameChatHandler") {}
+
+    void OnChat(Player *player, uint32 /*type*/, uint32 /*lang*/, std::string &msg) override
+    {
+        if (player->CustomData.GetDefault<bool>("BeastmasterExpectRename", false))
+        {
+            if (msg == ".cancel")
+            {
+                player->CustomData.SetDefault<bool>("BeastmasterExpectRename", false);
+                player->CustomData.SetDefault<uint32>("BeastmasterRenamePetEntry", 0);
+                player->GetSession()->SendNotification("Pet renaming cancelled.");
+                TC_LOG_INFO("module", "Beastmaster: Player %u cancelled pet rename.", player->GetGUID().GetCounter());
+                return;
+            }
+
+            // Validate name (length, allowed chars, profanity)
+            if (msg.length() < 2 || msg.length() > 16)
+            {
+                player->GetSession()->SendNotification("Pet name must be between 2 and 16 characters.");
+                return;
+            }
+            if (IsProfane(msg))
+            {
+                player->GetSession()->SendNotification("That name is not allowed.");
+                TC_LOG_INFO("module", "Beastmaster: Player %u attempted profane pet name: %s", player->GetGUID().GetCounter(), msg.c_str());
+                return;
+            }
+            if (!IsValidPetName(msg))
+            {
+                player->GetSession()->SendNotification("Invalid name (use 2–16 letters, spaces/dashes allowed).");
+                return;
+            }
+
+            uint32 entry = player->CustomData.GetDefault<uint32>("BeastmasterRenamePetEntry", 0);
+            if (!entry)
+                return;
+
+            // Update DB
+            CharacterDatabase.PExecute(
+                "UPDATE beastmaster_tamed_pets SET name = '%s' WHERE owner_guid = %u AND entry = %u",
+                msg.c_str(), player->GetGUID().GetCounter(), entry);
+
+            // Clear cache so menu updates instantly
+            ClearTrackedPetsCache(player);
+
+            player->CustomData.SetDefault<bool>("BeastmasterExpectRename", false);
+            player->CustomData.SetDefault<uint32>("BeastmasterRenamePetEntry", 0);
+
+            player->GetSession()->SendNotification("Pet renamed to %s.", msg.c_str());
+            TC_LOG_INFO("module", "Beastmaster: Player %u renamed pet (entry %u) to %s.",
+                        player->GetGUID().GetCounter(), entry, msg.c_str());
+            return;
+        }
+
+        // now handle delete confirm
+        if (player->CustomData.GetDefault<bool>("BeastmasterExpectDeleteConfirm", false))
+        {
+            if (msg == ".cancel")
+            {
+                player->CustomData.SetDefault<bool>("BeastmasterExpectDeleteConfirm", false);
+                player->CustomData.SetDefault<uint32>("BeastmasterDeletePetEntry", 0);
+                player->GetSession()->SendNotification("Pet deletion cancelled.");
+                TC_LOG_INFO("module", "Beastmaster: Player %u cancelled pet deletion.", player->GetGUID().GetCounter());
+                return;
+            }
+            if (msg == ".yes")
+            {
+                uint32 delEntry = player->CustomData.GetDefault<uint32>("BeastmasterDeletePetEntry", 0);
+                CharacterDatabase.PExecute(
+                    "DELETE FROM beastmaster_tamed_pets WHERE owner_guid = %u AND entry = %u",
+                    player->GetGUID().GetCounter(), delEntry);
+                player->GetSession()->SendNotification("Tracked pet deleted.");
+                TC_LOG_INFO("module", "Beastmaster: Player %u deleted tracked pet (entry %u).",
+                            player->GetGUID().GetCounter(), delEntry);
+
+                player->CustomData.SetDefault<bool>("BeastmasterExpectDeleteConfirm", false);
+                player->CustomData.SetDefault<uint32>("BeastmasterDeletePetEntry", 0);
+
+                // Clear cache after delete
+                ClearTrackedPetsCache(player);
+            }
+            else
+            {
+                player->GetSession()->SendNotification("Type .yes to confirm deletion or .cancel to abort.");
+            }
+            return;
+        }
+    }
+};
+
+// Register the chat handler
+void Addmod_npc_beastmasterScripts()
+{
+    new BeastmasterRenameChatHandler();
 }

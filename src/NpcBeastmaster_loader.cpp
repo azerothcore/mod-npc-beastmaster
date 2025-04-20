@@ -16,11 +16,25 @@
  */
 
 #include "Config.h"
+#include "NpcBeastmaster.h"
+#include "ScriptMgr.h"
 
-void AddBeastMasterScripts();
+// forward‐declare your chat handler (if not already in header)
+class BeastmasterRenameChatHandler;
 
-void Addmod_npc_beastmasterScripts()
+// register all scripts & handlers
+static void AddBeastMasterScripts()
 {
+    // register the NPC gossip/player‐update script
+    ScriptMgr::AddScript(new NpcBeastmaster());
+    // register the chat handler for rename/delete confirmations
+    ScriptMgr::AddScript(new BeastmasterRenameChatHandler());
+}
+
+// this is the one function that SC loader will call
+void AddSC_mod_npc_beastmaster()
+{
+    // respect the enable flag
     if (!sConfigMgr->GetOption<bool>("BeastMaster.Enable", true))
         return;
 

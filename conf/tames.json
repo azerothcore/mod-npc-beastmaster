@@ -1,0 +1,6366 @@
+{
+	"table": "creature_template",
+	"rows":
+	[
+		{
+			"entry": 24133,
+			"name": "Ancient Grimtotem Spirit Guide",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2753,
+			"name": "Barnabus",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 30320,
+			"name": "Battlescarred Frostworg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24516,
+			"name": "Bjomolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 628,
+			"name": "Black Ravager",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1258,
+			"name": "Black Ravager Mastiff",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7055,
+			"name": "Blackrock Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3861,
+			"name": "Bleak Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19423,
+			"name": "Bleeding Hollow Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9696,
+			"name": "Bloodaxe Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10221,
+			"name": "Bloodaxe Worg Pup",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20330,
+			"name": "Bloodmaul Battle Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20058,
+			"name": "Bloodmaul Dire Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1923,
+			"name": "Bloodsnout Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26672,
+			"name": "Bloodthirsty Tundra Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24475,
+			"name": "Bloodthirsty Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16926,
+			"name": "Bonechewer War Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 30164,
+			"name": "Cavedweller Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 834,
+			"name": "Coyote",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 833,
+			"name": "Coyote Packleader",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2727,
+			"name": "Crag Coyote",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18033,
+			"name": "Dark Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14339,
+			"name": "Death Howl",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10077,
+			"name": "Deathmaw",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21340,
+			"name": "Detrafila",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17854,
+			"name": "Dire Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 69,
+			"name": "Diseased Timber Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1817,
+			"name": "Diseased Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 299,
+			"name": "Diseased Young Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 27408,
+			"name": "Duskhowl Prowler",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2729,
+			"name": "Elder Crag Coyote",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9690,
+			"name": "Ember Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2275,
+			"name": "Enraged Stanley",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24026,
+			"name": "Fanggore Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8961,
+			"name": "Felpaw Ravager",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8960,
+			"name": "Felpaw Scavenger",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8959,
+			"name": "Felpaw Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19459,
+			"name": "Feng",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2728,
+			"name": "Feral Crag Coyote",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29993,
+			"name": "Frostfang",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10981,
+			"name": "Frostwolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 30455,
+			"name": "Frostworg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29358,
+			"name": "Frostworg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3825,
+			"name": "Ghostpaw Alpha",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3824,
+			"name": "Ghostpaw Howler",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3823,
+			"name": "Ghostpaw Runner",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9697,
+			"name": "Giant Ember Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 12431,
+			"name": "Gorefang",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 27578,
+			"name": "Goremaw",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1922,
+			"name": "Gray Forest Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26592,
+			"name": "Graymist Hunter",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 27523,
+			"name": "Grizzlesnout",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26586,
+			"name": "Hungry Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18670,
+			"name": "Ironjaw",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21952,
+			"name": "Lobo",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5287,
+			"name": "Longtooth Howler",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5286,
+			"name": "Longtooth Runner",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 521,
+			"name": "Lupos",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2923,
+			"name": "Mangy Silvermane",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 525,
+			"name": "Mangy Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10644,
+			"name": "Mist Howler",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1766,
+			"name": "Mottled Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 995,
+			"name": "Nahr'ek's Pack",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 25791,
+			"name": "Oil-stained Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8211,
+			"name": "Old Cliff Jumper",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 30456,
+			"name": "Oloh",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2959,
+			"name": "Prairie Stalker",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2958,
+			"name": "Prairie Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2960,
+			"name": "Prairie Wolf Alpha",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 118,
+			"name": "Prowler",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24206,
+			"name": "Prowling Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2730,
+			"name": "Rabid Crag Coyote",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 565,
+			"name": "Rabid Dire Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3826,
+			"name": "Rabid Ghostpaw",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5288,
+			"name": "Rabid Longtooth",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17669,
+			"name": "Rabid Warhound",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1509,
+			"name": "Ragged Scavenger",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 704,
+			"name": "Ragged Timber Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 705,
+			"name": "Ragged Young Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3939,
+			"name": "Razormane Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21956,
+			"name": "Rema",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19458,
+			"name": "Ripp",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29735,
+			"name": "Savage Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9416,
+			"name": "Scarshield Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 30430,
+			"name": "Sentry Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17280,
+			"name": "Shattered Hand Warhound",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2925,
+			"name": "Silvermane Howler",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2926,
+			"name": "Silvermane Stalker",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2924,
+			"name": "Silvermane Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 31233,
+			"name": "Sinewy Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9694,
+			"name": "Slavering Ember Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3862,
+			"name": "Slavering Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24726,
+			"name": "Sled Dog",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5356,
+			"name": "Snarler",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1138,
+			"name": "Snow Tracker Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24677,
+			"name": "Spearfang Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4950,
+			"name": "Spot",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 213,
+			"name": "Starving Dire Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1133,
+			"name": "Starving Winter Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26016,
+			"name": "Tamable Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1979,
+			"name": "TEST WOLF (ALPHA FIRST)",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1980,
+			"name": "TEST WOLF (ALPHA SECOND)",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20748,
+			"name": "Thunderlord Dire Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1132,
+			"name": "Timber",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18476,
+			"name": "Timber Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18477,
+			"name": "Timber Worg Alpha",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17548,
+			"name": "Tito",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 25675,
+			"name": "Tundra Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5596,
+			"name": "Twain Test Prop",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22353,
+			"name": "Twilight Ridge Worg [PH]",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24517,
+			"name": "Varg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29452,
+			"name": "Vargul Blighthound",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29889,
+			"name": "Vargul Blighthound",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2681,
+			"name": "Vilebranch Raiding Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4482,
+			"name": "Vilebranch Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2680,
+			"name": "Vilebranch Wolf Pup",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 25447,
+			"name": "Warsong Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24128,
+			"name": "Wild Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1131,
+			"name": "Winter Wolf",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24076,
+			"name": "Winterskorn Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1765,
+			"name": "Worg",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 923,
+			"name": "Young Black Ravager",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1508,
+			"name": "Young Scavenger",
+			"family": 1,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24530,
+			"name": "Amani Elder Lynx",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24043,
+			"name": "Amani Lynx",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24064,
+			"name": "Amani Lynx Cub",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14222,
+			"name": "Araga",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 728,
+			"name": "Bhag'thera",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21723,
+			"name": "Blackwind Sabercat",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 700,
+			"name": "Bloodscalp Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 698,
+			"name": "Bloodscalp Tiger",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2850,
+			"name": "Broken Tooth",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4126,
+			"name": "Crag Stalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28404,
+			"name": "Cursed Offspring of Har'koa",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20615,
+			"name": "Darkmaw Cub",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23014,
+			"name": "Designer Island Sabercat",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5865,
+			"name": "Dishu",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28001,
+			"name": "Dreadsaber",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3121,
+			"name": "Durotar Tiger",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14430,
+			"name": "Duskstalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3475,
+			"name": "Echeyakee",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2033,
+			"name": "Elder Nightsaber",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1713,
+			"name": "Elder Shadowmaw Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15652,
+			"name": "Elder Springpaw",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1085,
+			"name": "Elder Stranglethorn Tiger",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2385,
+			"name": "Feral Mountain Lion",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2034,
+			"name": "Feral Nightsaber",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3035,
+			"name": "Flatland Cougar",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3566,
+			"name": "Flatland Prowler",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29327,
+			"name": "Frost Leopard",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7431,
+			"name": "Frostsaber",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7430,
+			"name": "Frostsaber Cub",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7433,
+			"name": "Frostsaber Huntress",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7434,
+			"name": "Frostsaber Pride Watcher",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7432,
+			"name": "Frostsaber Stalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3619,
+			"name": "Ghost Saber",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16348,
+			"name": "Ghostclaw Lynx",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16349,
+			"name": "Ghostclaw Ravager",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21022,
+			"name": "Grovestalker Lynx",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21724,
+			"name": "Hawkbane",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2407,
+			"name": "Hulking Mountain Lion",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5828,
+			"name": "Humar the Pridelord",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17202,
+			"name": "Infected Nightstalker Runt",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2522,
+			"name": "Jaguero Stalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 31636,
+			"name": "Jungle Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1199,
+			"name": "Juvenile Snow Leopard",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 731,
+			"name": "King Bangalash",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 977,
+			"name": "Kurzen War Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 976,
+			"name": "Kurzen War Tiger",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2032,
+			"name": "Mangy Nightsaber",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2069,
+			"name": "Moonstalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2071,
+			"name": "Moonstalker Matriarch",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2070,
+			"name": "Moonstalker Runt",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2237,
+			"name": "Moonstalker Sire",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2961,
+			"name": "Mountain Cougar",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2406,
+			"name": "Mountain Lion",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4124,
+			"name": "Needles Cougar",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2042,
+			"name": "Nightsaber",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2043,
+			"name": "Nightsaber Stalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17203,
+			"name": "Nightstalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 736,
+			"name": "Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28097,
+			"name": "Pitch",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10200,
+			"name": "Rak'shiri",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2732,
+			"name": "Ridge Huntress",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2731,
+			"name": "Ridge Stalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2734,
+			"name": "Ridge Stalker Patriarch",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20671,
+			"name": "Ripfang Lynx",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18982,
+			"name": "Sable Jaguar",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5766,
+			"name": "Savannah Cub",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3243,
+			"name": "Savannah Highmane",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3415,
+			"name": "Savannah Huntress",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3416,
+			"name": "Savannah Matriarch",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3241,
+			"name": "Savannah Patriarch",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3425,
+			"name": "Savannah Prowler",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 768,
+			"name": "Shadow Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2175,
+			"name": "Shadowclaw",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17411,
+			"name": "Shadowmaw Alpha Transform",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 684,
+			"name": "Shadowmaw Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28297,
+			"name": "Shango",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10737,
+			"name": "Shy-Rotam",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10741,
+			"name": "Sian-Rotam",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 729,
+			"name": "Sin'Dall",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 756,
+			"name": "Skullsplitter Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 758,
+			"name": "Skullsplitter Tiger",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1201,
+			"name": "Snow Leopard",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15366,
+			"name": "Springpaw Cub",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15372,
+			"name": "Springpaw Lynx",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15653,
+			"name": "Springpaw Matriarch",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15651,
+			"name": "Springpaw Stalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16347,
+			"name": "Starving Ghostclaw",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2384,
+			"name": "Starving Mountain Lion",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 682,
+			"name": "Stranglethorn Tiger",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 772,
+			"name": "Stranglethorn Tigress",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 767,
+			"name": "Swamp Jaguar",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26021,
+			"name": "Tamable Cat",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22005,
+			"name": "Tem",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20412,
+			"name": "Test Gem Tiger",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5807,
+			"name": "The Rake",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4067,
+			"name": "Twilight Runner",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2031,
+			"name": "Young Nightsaber",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 683,
+			"name": "Young Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 681,
+			"name": "Young Stranglethorn Tiger",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11360,
+			"name": "Zulian Cub",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15068,
+			"name": "Zulian Guardian",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11365,
+			"name": "Zulian Panther",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15101,
+			"name": "Zulian Prowler",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15067,
+			"name": "Zulian Stalker",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11361,
+			"name": "Zulian Tiger",
+			"family": 2,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11921,
+			"name": "Besseleth",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 930,
+			"name": "Black Widow Hatchling",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18983,
+			"name": "Blackfang Tarantula",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20027,
+			"name": "Blackfang Tarantula Specimen",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 30206,
+			"name": "Carrion Fleshstripper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1821,
+			"name": "Carrion Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 949,
+			"name": "Carrion Recluse",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15975,
+			"name": "Carrion Spinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8933,
+			"name": "Cave Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4040,
+			"name": "Cave Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22044,
+			"name": "Cavern Crawler",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 616,
+			"name": "Chatter",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1184,
+			"name": "Cliff Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16170,
+			"name": "Coldmist Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16171,
+			"name": "Coldmist Widow",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14279,
+			"name": "Creepthess",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4412,
+			"name": "Darkfang Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4411,
+			"name": "Darkfang Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4413,
+			"name": "Darkfang Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4414,
+			"name": "Darkfang Venomspitter",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4377,
+			"name": "Darkmist Hatchling",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4378,
+			"name": "Darkmist Recluse",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4379,
+			"name": "Darkmist Silkspinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4376,
+			"name": "Darkmist Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4380,
+			"name": "Darkmist Widow",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26625,
+			"name": "Darkweb Recluse",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18647,
+			"name": "Deathskitter",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 769,
+			"name": "Deathstrike Tarantula",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4005,
+			"name": "Deepmoss Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4263,
+			"name": "Deepmoss Hatchling",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4264,
+			"name": "Deepmoss Matriarch",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4007,
+			"name": "Deepmoss Venomspitter",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4006,
+			"name": "Deepmoss Webspinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15974,
+			"name": "Dread Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18466,
+			"name": "Dreadfang Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18467,
+			"name": "Dreadfang Widow",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2348,
+			"name": "Elder Moss Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1195,
+			"name": "Forest Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2350,
+			"name": "Forest Moss Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 30,
+			"name": "Forest Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 120,
+			"name": "Forest Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4415,
+			"name": "Giant Darkfang Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2349,
+			"name": "Giant Moss Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2565,
+			"name": "Giant Plains Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2001,
+			"name": "Giant Webwood Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1994,
+			"name": "Githyiss the Vile",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5856,
+			"name": "Glassweb Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5858,
+			"name": "Greater Lava Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16352,
+			"name": "Greater Spindleweb",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 505,
+			"name": "Greater Tarantula",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 569,
+			"name": "Green Recluse",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14472,
+			"name": "Gretheer",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 12433,
+			"name": "Krethis Shadowspinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7319,
+			"name": "Lady Sathrah",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1111,
+			"name": "Leech Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1112,
+			"name": "Leech Widow",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22132,
+			"name": "Mature Cavern Crawler",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 43,
+			"name": "Mine Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1781,
+			"name": "Mist Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1780,
+			"name": "Moss Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 471,
+			"name": "Mother Fang",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17523,
+			"name": "Myst Leecher",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17522,
+			"name": "Myst Spinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 574,
+			"name": "Naraxis",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16453,
+			"name": "Necro Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 31747,
+			"name": "Necrotic Webspinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1688,
+			"name": "Night Web Matriarch",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1505,
+			"name": "Night Web Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1824,
+			"name": "Plague Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2563,
+			"name": "Plains Creeper",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 539,
+			"name": "Pygmy Venom Web Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11370,
+			"name": "Razzashi Broodwidow",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14532,
+			"name": "Razzashi Venombrood",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8277,
+			"name": "Rekk'tilac",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20998,
+			"name": "Ridgespine Horror",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20714,
+			"name": "Ridgespine Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23958,
+			"name": "Riven Widow",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11739,
+			"name": "Rock Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11738,
+			"name": "Sand Skitterer",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5857,
+			"name": "Searing Lava Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2707,
+			"name": "Shadra",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14266,
+			"name": "Shanda the Spinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 858,
+			"name": "Sorrow Spinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15041,
+			"name": "Spawn of Mar'li",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16351,
+			"name": "Spindleweb Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16350,
+			"name": "Spindleweb Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10375,
+			"name": "Spire Spiderling",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10359,
+			"name": "Sri'skulk",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26033,
+			"name": "Tamable Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 442,
+			"name": "Tarantula",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17236,
+			"name": "Tcha'kaz",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20682,
+			"name": "Terokkarantula",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 32475,
+			"name": "Terror Spinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8762,
+			"name": "Timberweb Recluse",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28342,
+			"name": "Trapdoor Ambusher",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28221,
+			"name": "Trapdoor Crawler",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1822,
+			"name": "Venom Mist Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15976,
+			"name": "Venom Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 217,
+			"name": "Venom Web Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1555,
+			"name": "Vicious Night Web Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1998,
+			"name": "Webwood Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2000,
+			"name": "Webwood Silkspinner",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1986,
+			"name": "Webwood Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1999,
+			"name": "Webwood Venomfang",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3821,
+			"name": "Wildthorn Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3819,
+			"name": "Wildthorn Stalker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3820,
+			"name": "Wildthorn Venomspitter",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2686,
+			"name": "Witherbark Broodguard",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1185,
+			"name": "Wood Lurker",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1504,
+			"name": "Young Night Web Spider",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17683,
+			"name": "Zarakh",
+			"family": 3,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8956,
+			"name": "Angerclaw Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8957,
+			"name": "Angerclaw Grizzly",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8958,
+			"name": "Angerclaw Mauler",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26482,
+			"name": "Arctic Grizzly",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3809,
+			"name": "Ashenvale Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14280,
+			"name": "Big Samras",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1130,
+			"name": "Bjarn",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1129,
+			"name": "Black Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1189,
+			"name": "Black Bear Patriarch",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17345,
+			"name": "Brown Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17661,
+			"name": "Deathclaw",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6788,
+			"name": "Den Mother",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1815,
+			"name": "Diseased Black Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1816,
+			"name": "Diseased Grizzly",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3810,
+			"name": "Elder Ashenvale Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1186,
+			"name": "Elder Black Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17348,
+			"name": "Elder Brown Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2356,
+			"name": "Elder Gray Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7445,
+			"name": "Elder Shardtooth",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1778,
+			"name": "Ferocious Grizzled Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3811,
+			"name": "Giant Ashenvale Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1797,
+			"name": "Giant Grizzled Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2351,
+			"name": "Gray Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1188,
+			"name": "Grizzled Black Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17347,
+			"name": "Grizzled Brown Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5272,
+			"name": "Grizzled Ironfur Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2165,
+			"name": "Grizzled Thistle Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 27131,
+			"name": "Grizzly Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34178,
+			"name": "Grylls",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24547,
+			"name": "Hozzer",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1196,
+			"name": "Ice Claw Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29319,
+			"name": "Icepaw Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26706,
+			"name": "Infected Grizzly Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5268,
+			"name": "Ironfur Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5274,
+			"name": "Ironfur Patriarch",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1961,
+			"name": "Mangeclaw",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14344,
+			"name": "Mongress",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1225,
+			"name": "Ol' Sooty",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5352,
+			"name": "Old Grizzlegut",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 12432,
+			"name": "Old Vicejaw",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24633,
+			"name": "Rabid Brown Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26643,
+			"name": "Rabid Grizzly",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7446,
+			"name": "Rabid Shardtooth",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29994,
+			"name": "Shardtooth",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7444,
+			"name": "Shardtooth Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7443,
+			"name": "Shardtooth Mauler",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 32752,
+			"name": "Tabitha",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34025,
+			"name": "Tamable Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2163,
+			"name": "Thistle Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10806,
+			"name": "Ursius",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 12037,
+			"name": "Ursol'lok",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26644,
+			"name": "Ursus Mauler",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2354,
+			"name": "Vicious Gray Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1128,
+			"name": "Young Black Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 822,
+			"name": "Young Forest Bear",
+			"family": 4,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4511,
+			"name": "Agam'ar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5992,
+			"name": "Ashmane Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2966,
+			"name": "Battleboar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 345,
+			"name": "Bellygrub",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2954,
+			"name": "Bristleback Battleboar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3225,
+			"name": "Corrupted Mottled Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1125,
+			"name": "Crag Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3099,
+			"name": "Dire Mottled Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1127,
+			"name": "Elder Crag Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3100,
+			"name": "Elder Mottled Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1192,
+			"name": "Elder Mountain Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 157,
+			"name": "Goretusk",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 547,
+			"name": "Great Goretusk",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8303,
+			"name": "Grunter",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1126,
+			"name": "Large Crag Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 119,
+			"name": "Longsnout",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1191,
+			"name": "Mangy Mountain Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3098,
+			"name": "Mottled Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1190,
+			"name": "Mountain Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16117,
+			"name": "Plagued Swine",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 390,
+			"name": "Porcine Entourage",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 330,
+			"name": "Princess",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4514,
+			"name": "Raging Agam'ar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 524,
+			"name": "Rockhide Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4512,
+			"name": "Rotting Agam'ar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1689,
+			"name": "Scarred Crag Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 708,
+			"name": "Small Crag Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29996,
+			"name": "Snorts",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 113,
+			"name": "Stonetusk Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26020,
+			"name": "Tamable Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4535,
+			"name": "Tamed Battleboar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1985,
+			"name": "Thistle Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 454,
+			"name": "Young Goretusk",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1984,
+			"name": "Young Thistle Boar",
+			"family": 5,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24047,
+			"name": "Amani Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20773,
+			"name": "Barbscale Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3231,
+			"name": "Corrupted Dreadmaw Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17952,
+			"name": "Darkwater Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20075,
+			"name": "Darkwater Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4841,
+			"name": "Deadmire",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5053,
+			"name": "Deviate Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3110,
+			"name": "Dreadmaw Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4341,
+			"name": "Drywallow Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4345,
+			"name": "Drywallow Daggermaw",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4343,
+			"name": "Drywallow Snapper",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4342,
+			"name": "Drywallow Vicejaw",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2635,
+			"name": "Elder Saltwater Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2089,
+			"name": "Giant Wetlands Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17144,
+			"name": "Goretooth",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2476,
+			"name": "Large Loch Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1693,
+			"name": "Loch Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28002,
+			"name": "Mangal Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4344,
+			"name": "Mottled Drywallow Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28325,
+			"name": "Ravenous Mangal Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14233,
+			"name": "Ripscale",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1150,
+			"name": "River Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1151,
+			"name": "Saltwater Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1082,
+			"name": "Sawtooth Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1087,
+			"name": "Sawtooth Snapper",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3581,
+			"name": "Sewer Beast",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1152,
+			"name": "Snapjaw Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34027,
+			"name": "Tamable Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24138,
+			"name": "Tamed Amani Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1400,
+			"name": "Wetlands Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1084,
+			"name": "Young Sawtooth Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1417,
+			"name": "Young Wetlands Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15043,
+			"name": "Zulian Crocolisk",
+			"family": 6,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23206,
+			"name": "Akkarai Hatchling",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 25963,
+			"name": "Arctic Condor (Northrend)",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5982,
+			"name": "Black Slayer",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18470,
+			"name": "Bonelasher",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5983,
+			"name": "Bonepicker",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16972,
+			"name": "Bonestripper Buzzard",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16973,
+			"name": "Bonestripper Vulture",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2830,
+			"name": "Buzzard",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26174,
+			"name": "Carrion Condor",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4695,
+			"name": "Carrion Horror",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1809,
+			"name": "Carrion Vulture",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24172,
+			"name": "Daggercap Hawk",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 428,
+			"name": "Dire Condor",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21042,
+			"name": "Dire Raven",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26483,
+			"name": "Dragonbone Condor",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4693,
+			"name": "Dread Flyer",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4694,
+			"name": "Dread Ripper",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4692,
+			"name": "Dread Swoop",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26838,
+			"name": "Dreadtalon",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2580,
+			"name": "Elder Mesa Buzzard",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5429,
+			"name": "Fire Roc",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23945,
+			"name": "Fjord Crow",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1109,
+			"name": "Fleshripper",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2831,
+			"name": "Giant Buzzard",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8207,
+			"name": "Greater Firebird",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 154,
+			"name": "Greater Fleshripper",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14268,
+			"name": "Lord Condar",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2579,
+			"name": "Mesa Buzzard",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1194,
+			"name": "Mountain Buzzard",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1811,
+			"name": "Plaguewing Vulture",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5428,
+			"name": "Roc",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1810,
+			"name": "Rotting Condor",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4154,
+			"name": "Salt Flats Scavenger",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4158,
+			"name": "Salt Flats Vulture",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5430,
+			"name": "Searing Roc",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7376,
+			"name": "Sky Shadow",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8299,
+			"name": "Spiteflayer",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2829,
+			"name": "Starving Buzzard",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2970,
+			"name": "Swoop",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2971,
+			"name": "Taloned Swoop",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26019,
+			"name": "Tamable Carrion Bird",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17042,
+			"name": "Test Name 2",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21515,
+			"name": "Trachela",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 462,
+			"name": "Vultros",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6013,
+			"name": "Wayward Buzzard",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2969,
+			"name": "Wiry Swoop",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 199,
+			"name": "Young Fleshripper",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2578,
+			"name": "Young Mesa Buzzard",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2931,
+			"name": "Zaricotl",
+			"family": 7,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17217,
+			"name": "Barbed Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4823,
+			"name": "Barbed Crustacean",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24287,
+			"name": "Caldemere Snapper",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3812,
+			"name": "Clattering Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3228,
+			"name": "Corrupted Surf Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6250,
+			"name": "Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18241,
+			"name": "Crusty",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3108,
+			"name": "Encrusted Surf Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2233,
+			"name": "Encrusted Tide Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 12347,
+			"name": "Enraged Reef Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24478,
+			"name": "Fjord Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23929,
+			"name": "Giant Tidecrawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 33712,
+			"name": "Golden Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24479,
+			"name": "Ice Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26521,
+			"name": "Kili'ua",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 25481,
+			"name": "Landing Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1088,
+			"name": "Monstrous Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3460,
+			"name": "Mud Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3106,
+			"name": "Pygmy Surf Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2231,
+			"name": "Pygmy Tide Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2236,
+			"name": "Raging Reef Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2235,
+			"name": "Reef Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 33713,
+			"name": "Rotting Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 830,
+			"name": "Sand Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 831,
+			"name": "Sea Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1216,
+			"name": "Shore Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 922,
+			"name": "Silt Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17216,
+			"name": "Skittering Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4821,
+			"name": "Skittering Crustacean",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4822,
+			"name": "Snapping Crustacean",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2544,
+			"name": "Southern Sand Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3814,
+			"name": "Spined Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3107,
+			"name": "Surf Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34026,
+			"name": "Tamable Crab",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2232,
+			"name": "Tide Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2234,
+			"name": "Young Reef Crawler",
+			"family": 8,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1557,
+			"name": "Elder Mistvale Gorilla",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1511,
+			"name": "Enraged Silverback Gorilla",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5260,
+			"name": "Groddoc Ape",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5264,
+			"name": "Groddoc Chestpounder",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5262,
+			"name": "Groddoc Thunderer",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28096,
+			"name": "Hardknuckle Charger",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28098,
+			"name": "Hardknuckle Forager",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28213,
+			"name": "Hardknuckle Matriarch",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1114,
+			"name": "Jungle Thunderer",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1559,
+			"name": "King Mukla",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1516,
+			"name": "Konda",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14491,
+			"name": "Kurmokk",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1108,
+			"name": "Mistvale Gorilla",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1558,
+			"name": "Silverback Patriarch",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2521,
+			"name": "Skymane Gorilla",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34028,
+			"name": "Tamable Gorilla",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9622,
+			"name": "U'cha",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6585,
+			"name": "Uhk'loc",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6514,
+			"name": "Un'Goro Gorilla",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6513,
+			"name": "Un'Goro Stomper",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6516,
+			"name": "Un'Goro Thunderer",
+			"family": 9,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20728,
+			"name": "Bladespire Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20729,
+			"name": "Bladespire Ravager",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4357,
+			"name": "Bloodfen Lashtail",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4351,
+			"name": "Bloodfen Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4356,
+			"name": "Bloodfen Razormaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4352,
+			"name": "Bloodfen Screecher",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4355,
+			"name": "Bloodfen Scytheclaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3123,
+			"name": "Bloodtalon Scythemaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3122,
+			"name": "Bloodtalon Taillasher",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3227,
+			"name": "Corrupted Bloodtalon Scythemaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22052,
+			"name": "Daggermaw Blackhide",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20754,
+			"name": "Daggermaw Devourer",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20751,
+			"name": "Daggermaw Lashtail",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20734,
+			"name": "Daggermaw Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14232,
+			"name": "Dart",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3632,
+			"name": "Deviate Creeper",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3637,
+			"name": "Deviate Guardian",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3636,
+			"name": "Deviate Ravager",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3633,
+			"name": "Deviate Slayer",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3634,
+			"name": "Deviate Stalker",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26641,
+			"name": "Drakkari Gutripper",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26628,
+			"name": "Drakkari Scytheclaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29698,
+			"name": "Drakuru Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1019,
+			"name": "Elder Razormaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21124,
+			"name": "Felsworn Daggermaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23873,
+			"name": "Goreclaw the Ravenous",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29334,
+			"name": "Gundrak Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2561,
+			"name": "Highland Fleshstalker",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1016,
+			"name": "Highland Lashtail",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1015,
+			"name": "Highland Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1018,
+			"name": "Highland Razormaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1017,
+			"name": "Highland Scytheclaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2559,
+			"name": "Highland Strider",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2560,
+			"name": "Highland Thrasher",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3257,
+			"name": "Ishamuhale",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 687,
+			"name": "Jungle Stalker",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9684,
+			"name": "Lar'korwi",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9683,
+			"name": "Lar'korwi Mate",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 686,
+			"name": "Lashtail Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1020,
+			"name": "Mottled Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1023,
+			"name": "Mottled Razormaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1021,
+			"name": "Mottled Screecher",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1022,
+			"name": "Mottled Scytheclaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 107,
+			"name": "Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6505,
+			"name": "Ravasaur",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6507,
+			"name": "Ravasaur Hunter",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6506,
+			"name": "Ravasaur Runner",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1140,
+			"name": "Razormaw Matriarch",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14821,
+			"name": "Razzashi Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1353,
+			"name": "Sarltooth",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20634,
+			"name": "Scythetooth Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 685,
+			"name": "Stranglethorn Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3254,
+			"name": "Sunscale Lashtail",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3255,
+			"name": "Sunscale Screecher",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3256,
+			"name": "Sunscale Scytheclaw",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5842,
+			"name": "Takk the Leaper",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26029,
+			"name": "Tamable Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 730,
+			"name": "Tethis",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6508,
+			"name": "Venomhide Ravasaur",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 854,
+			"name": "Young Jungle Stalker",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 856,
+			"name": "Young Lashtail Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 855,
+			"name": "Young Stranglethorn Raptor",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34158,
+			"name": "Young Venomhide Ravasaur",
+			"family": 11,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2956,
+			"name": "Adult Plainstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21635,
+			"name": "Afrazi Forest Strider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4725,
+			"name": "Crazed Sandstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2957,
+			"name": "Elder Plainstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3246,
+			"name": "Fleeting Plainstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21634,
+			"name": "Forest Strider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2322,
+			"name": "Foreststrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2321,
+			"name": "Foreststrider Fledgling",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2323,
+			"name": "Giant Foreststrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24740,
+			"name": "Goodie",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3244,
+			"name": "Greater Plainstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17374,
+			"name": "Greater Timberstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22807,
+			"name": "Lost Torranche",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3068,
+			"name": "Mazzranache",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3245,
+			"name": "Ornery Plainstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2955,
+			"name": "Plainstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4724,
+			"name": "Sandstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2172,
+			"name": "Strider Clutchmother",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34022,
+			"name": "Tamable Tallstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17373,
+			"name": "Timberstrider",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17372,
+			"name": "Timberstrider Fledgling",
+			"family": 12,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22193,
+			"name": "Armored Blade Stinger",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3126,
+			"name": "Armored Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 30613,
+			"name": "Bloodsting",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8301,
+			"name": "Clack the Reaver",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3125,
+			"name": "Clattering Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7078,
+			"name": "Cleft Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3226,
+			"name": "Corrupted Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7405,
+			"name": "Deadly Cleft Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5823,
+			"name": "Death Flayer",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9695,
+			"name": "Deathlash Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22257,
+			"name": "Deathlash Stinger",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8926,
+			"name": "Deep Stinger",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9698,
+			"name": "Firetail Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14476,
+			"name": "Krellack",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3281,
+			"name": "Sarkoth",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21864,
+			"name": "Scorchshell Pincer",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4697,
+			"name": "Scorpashi Lasher",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4696,
+			"name": "Scorpashi Snapper",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4699,
+			"name": "Scorpashi Venomlash",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22100,
+			"name": "Scorpid Bonecrawler",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7803,
+			"name": "Scorpid Duneburrower",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5424,
+			"name": "Scorpid Dunestalker",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5422,
+			"name": "Scorpid Hunter",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4140,
+			"name": "Scorpid Reaver",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5423,
+			"name": "Scorpid Tail Lasher",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4139,
+			"name": "Scorpid Terror",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3124,
+			"name": "Scorpid Worker",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5989,
+			"name": "Scorpok Lasher",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5987,
+			"name": "Scorpok Snapper",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5988,
+			"name": "Scorpok Stinger",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3250,
+			"name": "Silithid Creeper",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3252,
+			"name": "Silithid Swarmer",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11737,
+			"name": "Stonelash Flayer",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11736,
+			"name": "Stonelash Pincer",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11735,
+			"name": "Stonelash Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26031,
+			"name": "Tamable Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7022,
+			"name": "Venomlash Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3127,
+			"name": "Venomtail Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9691,
+			"name": "Venomtip Scorpid",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5937,
+			"name": "Vile Sting",
+			"family": 20,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4824,
+			"name": "Aku'mai Fisher",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4825,
+			"name": "Aku'mai Snapjaw",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6352,
+			"name": "Coralshell Lurker",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6369,
+			"name": "Coralshell Tortoise",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14223,
+			"name": "Cranky Benj",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7977,
+			"name": "Gammerita",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4887,
+			"name": "Ghamoo-ra",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5432,
+			"name": "Giant Surf Glider",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8213,
+			"name": "Ironback",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3653,
+			"name": "Kresh",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 33710,
+			"name": "Lake Snapper",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4399,
+			"name": "Mudrock Borer",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4398,
+			"name": "Mudrock Burrower",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4400,
+			"name": "Mudrock Snapjaw",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4397,
+			"name": "Mudrock Spikeshell",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4396,
+			"name": "Mudrock Tortoise",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3461,
+			"name": "Oasis Snapjaw",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 33711,
+			"name": "Plagued Snapper",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2505,
+			"name": "Saltwater Snapjaw",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 25482,
+			"name": "Sand Turtle",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 13896,
+			"name": "Scalebeard",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 2408,
+			"name": "Snapjaw",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4144,
+			"name": "Sparkleshell Borer",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4143,
+			"name": "Sparkleshell Snapper",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4142,
+			"name": "Sparkleshell Tortoise",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14123,
+			"name": "Steeljaw Snapper",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 13599,
+			"name": "Stolid Snapjaw",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5431,
+			"name": "Surf Glider",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34029,
+			"name": "Tamable Turtle",
+			"family": 21,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4425,
+			"name": "Blind Hunter",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3868,
+			"name": "Blood Seeker",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11368,
+			"name": "Bloodseeker Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8927,
+			"name": "Dark Screecher",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23959,
+			"name": "Darkclaw Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26622,
+			"name": "Drakkari Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1512,
+			"name": "Duskbat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 9521,
+			"name": "Enraged Felbat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14965,
+			"name": "Frenzied Bloodseeker Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1553,
+			"name": "Greater Duskbat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4539,
+			"name": "Greater Kraul Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16174,
+			"name": "Greater Shadowbat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4538,
+			"name": "Kraul Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16355,
+			"name": "Lesser Scourgebat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1513,
+			"name": "Mangy Duskbat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16353,
+			"name": "Mistbat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8602,
+			"name": "Monstrous Plaguebat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8601,
+			"name": "Noxious Plaguebat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8600,
+			"name": "Plaguebat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4862,
+			"name": "Rabid Shrike Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10357,
+			"name": "Ressan the Needler",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16173,
+			"name": "Shadowbat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4861,
+			"name": "Shrike Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26017,
+			"name": "Tamable Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1554,
+			"name": "Vampiric Duskbat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16354,
+			"name": "Vampiric Mistbat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17221,
+			"name": "Vampiric Tracker",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3866,
+			"name": "Vile Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28233,
+			"name": "Zul'Drak Bat",
+			"family": 24,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5426,
+			"name": "Blisterpaw Hyena",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4688,
+			"name": "Bonepaw Hyena",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4250,
+			"name": "Galak Packhound",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14228,
+			"name": "Giggler",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 12418,
+			"name": "Gordok Hyena",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 13036,
+			"name": "Gordok Mastiff",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4127,
+			"name": "Hecklefang Hyena",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4129,
+			"name": "Hecklefang Snarler",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4128,
+			"name": "Hecklefang Stalker",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4316,
+			"name": "Kolkar Packhound",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4662,
+			"name": "Magram Bonepaw",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4660,
+			"name": "Maraudine Bonepaw",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8208,
+			"name": "Murderous Blisterpaw",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4691,
+			"name": "Murderous Bonepaw",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 27329,
+			"name": "Onslaught Bloodhound",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4248,
+			"name": "Pesterhide Hyena",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4249,
+			"name": "Pesterhide Snarler",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5427,
+			"name": "Rabid Blisterpaw",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4690,
+			"name": "Rabid Bonepaw",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5986,
+			"name": "Rabid Snickerfang",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8300,
+			"name": "Ravage",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10979,
+			"name": "Scarlet Hound",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4304,
+			"name": "Scarlet Tracking Hound",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5985,
+			"name": "Snickerfang Hyena",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5829,
+			"name": "Snort the Heckler",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5425,
+			"name": "Starving Blisterpaw",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4689,
+			"name": "Starving Bonepaw",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5984,
+			"name": "Starving Snickerfang",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4548,
+			"name": "Steelsnap",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34019,
+			"name": "Tamable Hyena",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4534,
+			"name": "Tamed Hyena",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 6867,
+			"name": "Tracking Hound",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 27294,
+			"name": "Tundra Scavenger",
+			"family": 25,
+			"rarity": "normal"
+		},
+		{
+			"entry": 27249,
+			"name": "Alystros the Verdant Keeper",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21470,
+			"name": "Angered Arakkoa Protector",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 35293,
+			"name": "Anmarie",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 32481,
+			"name": "Aotona",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19429,
+			"name": "Avian Darkhawk",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21891,
+			"name": "Avian Ripper",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21904,
+			"name": "Avian Warhawk",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23693,
+			"name": "Duskwing Eagle",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 27244,
+			"name": "Emerald Skytalon",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17034,
+			"name": "Female Kaliri Hatchling",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24747,
+			"name": "Fjord Hawk",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24787,
+			"name": "Fjord Hawk Matriarch",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29044,
+			"name": "Goretalon Matriarch",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28004,
+			"name": "Goretalon Roc",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17129,
+			"name": "Greater Windroc",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18257,
+			"name": "Gutripper",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26369,
+			"name": "Imperial Eagle",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7099,
+			"name": "Ironbeak Hunter",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7097,
+			"name": "Ironbeak Owl",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7098,
+			"name": "Ironbeak Screecher",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17035,
+			"name": "Kaliri Matriarch",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17053,
+			"name": "Kaliri Swooper",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21468,
+			"name": "Kaliri Totem",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17039,
+			"name": "Male Kaliri Hatchling",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 25817,
+			"name": "Oiled Fledgeling",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14343,
+			"name": "Olm the Wise",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21495,
+			"name": "Raven Vision",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18220,
+			"name": "Ravenous Windroc",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22265,
+			"name": "Shadowwing Owl",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21804,
+			"name": "Skettis Kaliri",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14283,
+			"name": "Stormpike Owl",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1997,
+			"name": "Strigid Hunter",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1995,
+			"name": "Strigid Owl",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 1996,
+			"name": "Strigid Screecher",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26028,
+			"name": "Tamable Bird of Prey",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 38154,
+			"name": "Warhawk",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17128,
+			"name": "Windroc",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18996,
+			"name": "Windroc Hunter",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18963,
+			"name": "Windroc Huntress",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19055,
+			"name": "Windroc Matriarch",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7455,
+			"name": "Winterspring Owl",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7456,
+			"name": "Winterspring Screecher",
+			"family": 26,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5349,
+			"name": "Arash-ethis",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10882,
+			"name": "Arikara",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5834,
+			"name": "Azzere the Skyblade",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4117,
+			"name": "Cloud Serpent",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19428,
+			"name": "Cobalt Serpent",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3630,
+			"name": "Deviate Coiler",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20797,
+			"name": "Deviate Coiler Hatchling",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5056,
+			"name": "Deviate Dreadfang",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3631,
+			"name": "Deviate Stinglash",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5756,
+			"name": "Deviate Venomwing",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4119,
+			"name": "Elder Cloud Serpent",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21123,
+			"name": "Felsworn Scalewing",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3249,
+			"name": "Greater Thunderhawk",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26806,
+			"name": "Guardian Serpent",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5291,
+			"name": "Hakkari Frostwing",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 8336,
+			"name": "Hakkari Sapper",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 14234,
+			"name": "Hayoc",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26446,
+			"name": "Ice Serpent",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4346,
+			"name": "Noxious Flayer",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4347,
+			"name": "Noxious Reaver",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4348,
+			"name": "Noxious Shredder",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5308,
+			"name": "Rogue Vale Screecher",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20749,
+			"name": "Scalewing Serpent",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20999,
+			"name": "Scalewing Soarer",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28477,
+			"name": "Scion of Quetz'lun",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 29693,
+			"name": "Serpent Defender",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11357,
+			"name": "Son of Hakkar",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11359,
+			"name": "Soulflayer",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5708,
+			"name": "Spawn of Hakkar",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20673,
+			"name": "Swiftwing Shredder",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26038,
+			"name": "Tamable Wind Serpent",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3424,
+			"name": "Thunderhawk Cloudscraper",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3247,
+			"name": "Thunderhawk Hatchling",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5307,
+			"name": "Vale Screecher",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 4118,
+			"name": "Venomous Cloud Serpent",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 3472,
+			"name": "Washte Pawne",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 10581,
+			"name": "Young Arikara",
+			"family": 27,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18155,
+			"name": "Bloodfalcon",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15650,
+			"name": "Crazed Dragonhawk",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18851,
+			"name": "Dragonhawk Protector",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20502,
+			"name": "Eclipsion Dragonhawk",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20517,
+			"name": "Eclipsion Dragonhawk Hatchling",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 15649,
+			"name": "Feral Dragonhawk Hatchling",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20039,
+			"name": "Phoenix-Hawk",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20038,
+			"name": "Phoenix-Hawk Hatchling",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26024,
+			"name": "Tamable Dragonhawk",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18854,
+			"name": "Unstable Dragonhawk",
+			"family": 30,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17525,
+			"name": "Bloodmyst Hatchling",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17526,
+			"name": "Bloodmyst Ravager",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16900,
+			"name": "Captive Ravager Hatchling",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17527,
+			"name": "Enraged Ravager",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23326,
+			"name": "Nethermine Ravager",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16934,
+			"name": "Quillfang Ravager",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19189,
+			"name": "Quillfang Skitterer",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17620,
+			"name": "Ravager Ambusher",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17198,
+			"name": "Ravager Hatchling",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17199,
+			"name": "Ravager Specimen",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16932,
+			"name": "Razorfang Hatchling",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16933,
+			"name": "Razorfang Ravager",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22123,
+			"name": "Rip-Blade Ravager",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26030,
+			"name": "Tamable Ravager",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19349,
+			"name": "Thornfang Ravager",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19350,
+			"name": "Thornfang Venomspitter",
+			"family": 31,
+			"rarity": "normal"
+		},
+		{
+			"entry": 32751,
+			"name": "Backbiter",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23219,
+			"name": "Blackwind Warp Chaser",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22191,
+			"name": "Bladestalker",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22255,
+			"name": "Daggertail Lizard",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 35292,
+			"name": "Froggle",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23163,
+			"name": "Gezzarak the Huntress",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19771,
+			"name": "Greater Snap Dragon",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21015,
+			"name": "Outland Warp Stalker Black",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21014,
+			"name": "Outland Warp Stalker Blue",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21012,
+			"name": "Outland Warp Stalker Green",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21016,
+			"name": "Outland Warp Stalker Red",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21013,
+			"name": "Outland Warp Stalker Turquoise",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21017,
+			"name": "Outland Warp Stalker White",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19770,
+			"name": "Ravening Snap Dragon",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26037,
+			"name": "Tamable Warp Stalker",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18878,
+			"name": "Warp Beast",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18884,
+			"name": "Warp Chaser",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18465,
+			"name": "Warp Hunter",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18464,
+			"name": "Warp Stalker",
+			"family": 32,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22120,
+			"name": "Fathom Sporebat",
+			"family": 33,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18129,
+			"name": "Greater Sporebat",
+			"family": 33,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21246,
+			"name": "Serpentshrine Sporebat",
+			"family": 33,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18128,
+			"name": "Sporebat",
+			"family": 33,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18280,
+			"name": "Sporewing",
+			"family": 33,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34018,
+			"name": "Tamable Sporebat",
+			"family": 33,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17724,
+			"name": "Underbat",
+			"family": 33,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17736,
+			"name": "Underbat Swarmer",
+			"family": 33,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20387,
+			"name": "Young Sporebat",
+			"family": 33,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18285,
+			"name": "\"Count\" Ungula",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20196,
+			"name": "Bloodthirsty Marshfang",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21128,
+			"name": "Coilfang Ray",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17731,
+			"name": "Fen Ray",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18130,
+			"name": "Marshfang Ripper",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18131,
+			"name": "Marshfang Slicer",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18880,
+			"name": "Nether Ray",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20681,
+			"name": "Nether Skimmer",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21901,
+			"name": "Netherskate",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 23501,
+			"name": "Netherwing Ray",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26027,
+			"name": "Tamable Nether Ray",
+			"family": 34,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19784,
+			"name": "Coilskar Cobra",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5048,
+			"name": "Deviate Adder",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5762,
+			"name": "Deviate Moccasin",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5755,
+			"name": "Deviate Viper",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28011,
+			"name": "Emperor Cobra",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5224,
+			"name": "Murk Slitherer",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 5225,
+			"name": "Murk Spitter",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11372,
+			"name": "Razzashi Adder",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11373,
+			"name": "Razzashi Cobra",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 11371,
+			"name": "Razzashi Serpent",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 7268,
+			"name": "Sandfury Guardian",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 26032,
+			"name": "Tamable Serpent",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19785,
+			"name": "Venomcowl Cobra",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28358,
+			"name": "Venomtip",
+			"family": 35,
+			"rarity": "normal"
+		},
+		{
+			"entry": 25498,
+			"name": "Aspatha the Broodmother",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 25464,
+			"name": "Bloodspore Moth",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17349,
+			"name": "Blue Flutterer",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 27421,
+			"name": "Fern Feeder Moth",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20752,
+			"name": "Grand Silkwing",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21839,
+			"name": "Mature Silkwing",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17350,
+			"name": "Royal Blue Flutterer",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18469,
+			"name": "Royal Teromoth",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21372,
+			"name": "Rubicund Silkwing",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20611,
+			"name": "Shimmerwing Moth",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 21373,
+			"name": "Silkwing",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34021,
+			"name": "Tamable Moth",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18468,
+			"name": "Teromoth",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 16520,
+			"name": "Vale Moth",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18437,
+			"name": "Vicious Teromoth",
+			"family": 37,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18283,
+			"name": "Blacksting",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20197,
+			"name": "Bogflare Needler",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 20198,
+			"name": "Fenglow Stinger",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 31871,
+			"name": "Lighting Wasp (Underbelly Elixer Shapeshift)",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 22182,
+			"name": "Lightning Wasp",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 19632,
+			"name": "Lykul Stinger",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 17732,
+			"name": "Lykul Wasp",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18133,
+			"name": "Marshlight Bleeder",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 24731,
+			"name": "Mud Wasp",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28085,
+			"name": "Sapphire Hive Drone",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 28086,
+			"name": "Sapphire Hive Wasp",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 34024,
+			"name": "Tamable Wasp",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 18132,
+			"name": "Umbraglow Stinger",
+			"family": 44,
+			"rarity": "normal"
+		},
+		{
+			"entry": 12801,
+			"name": "Arcane Chimaerok",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 21033,
+			"name": "Bladewing Bloodletter",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 10807,
+			"name": "Brumeran",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 7448,
+			"name": "Chillwind Chimaera",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 7449,
+			"name": "Chillwind Ravager",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 6167,
+			"name": "Chimaera Matriarch",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 12800,
+			"name": "Chimaerok",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 12802,
+			"name": "Chimaerok Devourer",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 7447,
+			"name": "Fledgling Chillwind",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 4031,
+			"name": "Fledgling Chimaera",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 24673,
+			"name": "Frostwing Chimaera",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 12803,
+			"name": "Lord Lakmaeran",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 8764,
+			"name": "Mistwing Ravager",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 8763,
+			"name": "Mistwing Rogue",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 20932,
+			"name": "Nuramoc",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 33504,
+			"name": "Tamable Chimaera",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 8660,
+			"name": "The Evalcharr",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11497,
+			"name": "The Razza",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 21879,
+			"name": "Vilewing Chimaera",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 4032,
+			"name": "Young Chimaera",
+			"family": 38,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 6498,
+			"name": "Devilsaur",
+			"family": 39,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 6499,
+			"name": "Ironhide Devilsaur",
+			"family": 39,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 27483,
+			"name": "King Dred",
+			"family": 39,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 32485,
+			"name": "King Krush",
+			"family": 39,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 6584,
+			"name": "King Mosh",
+			"family": 39,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 33505,
+			"name": "Tamable Devilsaur",
+			"family": 39,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 6500,
+			"name": "Tyrant Devilsaur",
+			"family": 39,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 20931,
+			"name": "Tyrantus",
+			"family": 39,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 5460,
+			"name": "Centipaar Sandreaver",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 6582,
+			"name": "Clutchmother Zavas",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 10040,
+			"name": "Gorishi Hive Guard",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 6553,
+			"name": "Gorishi Reaver",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 8205,
+			"name": "Haarka the Ravenous",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 5454,
+			"name": "Hazzali Sandreaver",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11723,
+			"name": "Hive'Ashi Sandstalker",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11730,
+			"name": "Hive'Regal Ambusher",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11734,
+			"name": "Hive'Regal Hive Lord",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 15323,
+			"name": "Hive'Zara Sandstalker",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 15320,
+			"name": "Hive'Zara Soldier",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11728,
+			"name": "Hive'Zora Reaver",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 14473,
+			"name": "Lapress",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 4132,
+			"name": "Silithid Ravager",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 8204,
+			"name": "Soriid the Devourer",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 33508,
+			"name": "Tamable Silithid",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 15622,
+			"name": "Vekniss Borer",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 15233,
+			"name": "Vekniss Guardian",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 15230,
+			"name": "Vekniss Warrior",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 15286,
+			"name": "Xil'xix",
+			"family": 41,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11789,
+			"name": "Deep Borer",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 30423,
+			"name": "Disembodied Jormungar",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11741,
+			"name": "Dredge Crusher",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11740,
+			"name": "Dredge Striker",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 8925,
+			"name": "Dredge Worm",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11320,
+			"name": "Earthborer",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 14477,
+			"name": "Grubthor",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 26293,
+			"name": "Hulking Jormungar",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 26358,
+			"name": "Ice Heart Jormungar Feeder",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 26359,
+			"name": "Ice Heart Jormungar Spawn",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 30148,
+			"name": "Infesting Jormungar",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 5226,
+			"name": "Murk Worm",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 14237,
+			"name": "Oozeworm",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 29605,
+			"name": "Ravenous Jormungar",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 30291,
+			"name": "Ravenous Jormungar",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 30422,
+			"name": "Roaming Jormungar",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11787,
+			"name": "Rock Borer",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11788,
+			"name": "Rock Worm",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 29390,
+			"name": "Snowdrift Jormungar",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 33511,
+			"name": "Tamable Worm",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 25454,
+			"name": "Tundra Crawler",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 30093,
+			"name": "Yggdras Worm",
+			"family": 42,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 30445,
+			"name": "Ice Steppe Bull",
+			"family": 43,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 29469,
+			"name": "Ice Steppe Rhino",
+			"family": 43,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 32361,
+			"name": "Icehorn",
+			"family": 43,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 30447,
+			"name": "Romping Rhino",
+			"family": 43,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 28009,
+			"name": "Shardhorn Rhino",
+			"family": 43,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 33506,
+			"name": "Tamable Rhino",
+			"family": 43,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 25489,
+			"name": "Wooly Rhino Bull",
+			"family": 43,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 25488,
+			"name": "Wooly Rhino Calf",
+			"family": 43,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 25487,
+			"name": "Wooly Rhino Matriarch",
+			"family": 43,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11673,
+			"name": "Ancient Core Hound",
+			"family": 45,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 11672,
+			"name": "Core Rager",
+			"family": 45,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 19207,
+			"name": "Infernal Hound",
+			"family": 45,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 21108,
+			"name": "Spawn of Uvuros",
+			"family": 45,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 33502,
+			"name": "Tamable Core Hound",
+			"family": 45,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 10430,
+			"name": "The Beast",
+			"family": 45,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 17447,
+			"name": "The Kurken",
+			"family": 45,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 21102,
+			"name": "Uvuros",
+			"family": 45,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 38453,
+			"name": "Arcturis",
+			"family": 46,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 33776,
+			"name": "Gondria",
+			"family": 46,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 32517,
+			"name": "Loque'nahak",
+			"family": 46,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 35189,
+			"name": "Skoll",
+			"family": 46,
+			"rarity": "exotic"
+		},
+		{
+			"entry": 33510,
+			"name": "Tamable Spirit Beast",
+			"family": 46,
+			"rarity": "exotic"
+		}
+	]
+}
