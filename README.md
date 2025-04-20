@@ -19,6 +19,7 @@ This module allows **all classes** (not just hunters) to adopt and use hunter pe
 - The config file (`npc_beastmaster.conf.dist`) controls rare and rare exotic pet highlighting by entry ID.
 - Tracked pets are stored in the `beastmaster_tamed_pets` table in your world database.
 - Profanity filtering for pet names uses `conf/profanity.txt` (reloads automatically if changed).
+- Tracked pets cache is session-based, thread-safe, and updates instantly after rename/delete.
 
 ## Tracked Pets Feature
 

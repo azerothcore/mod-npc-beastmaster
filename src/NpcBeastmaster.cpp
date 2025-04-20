@@ -29,7 +29,7 @@
 #include <vector>
 #include <sstream>
 #include <fstream>
-#include <nlohmann/json.hpp> // You must add this header-only library to your module
+#include <nlohmann/json.hpp>
 #include <regex>
 #include <unordered_set>
 #include <locale>
@@ -128,6 +128,10 @@ namespace
 
     // Mutex for thread safety when accessing/modifying global pet lists/maps
     std::mutex petsMutex;
+
+    // Cache for tracked pets
+    std::unordered_map<uint64, std::vector<std::tuple<uint32, std::string, std::string>>> trackedPetsCache;
+    std::mutex trackedPetsCacheMutex;
 }
 
 // Add these new actions for tracked pets
@@ -148,15 +152,6 @@ enum
 // Global profanity list and last modification time
 static std::unordered_set<std::string> sProfanityList;
 static time_t sProfanityListMTime = 0;
-
-// --- Session cache for tracked pets (optional, clear on update) ---
-static std::unordered_map<uint64, std::vector<std::tuple<uint32, std::string, std::string>>> trackedPetsCache;
-
-// Utility to clear tracked pets cache for a player
-static void ClearTrackedPetsCache(Player *player)
-{
-    trackedPetsCache.erase(player->GetGUID().GetRawValue());
-}
 
 // Helper to get file modification time
 static time_t GetFileMTime(const std::string &path)
@@ -622,6 +617,13 @@ void NpcBeastmaster::AddPetsToGossip(Player *player, PetList const &pets, uint32
     }
 }
 
+// Clears the tracked pets cache for a specific player
+void NpcBeastmaster::ClearTrackedPetsCache(Player *player)
+{
+    std::lock_guard<std::mutex> lock(trackedPetsCacheMutex);
+    trackedPetsCache.erase(player->GetGUID().GetRawValue());
+}
+
 // Show the tracked pets menu for the player, with pagination and actions
 void NpcBeastmaster::ShowTrackedPetsMenu(Player *player, Creature *creature, uint32 page /*= 1*/)
 {
@@ -630,12 +632,16 @@ void NpcBeastmaster::ShowTrackedPetsMenu(Player *player, Creature *creature, uin
     uint64 guid = player->GetGUID().GetRawValue();
     std::vector<std::tuple<uint32, std::string, std::string>> *trackedPetsPtr = nullptr;
 
-    auto it = trackedPetsCache.find(guid);
-    if (it != trackedPetsCache.end())
     {
-        trackedPetsPtr = &it->second;
+        std::lock_guard<std::mutex> lock(trackedPetsCacheMutex);
+        auto it = trackedPetsCache.find(guid);
+        if (it != trackedPetsCache.end())
+        {
+            trackedPetsPtr = &it->second;
+        }
     }
-    else
+
+    if (!trackedPetsPtr)
     {
         std::vector<std::tuple<uint32, std::string, std::string>> trackedPets;
         QueryResult result = CharacterDatabase.PQuery(
@@ -653,8 +659,11 @@ void NpcBeastmaster::ShowTrackedPetsMenu(Player *player, Creature *creature, uin
                 trackedPets.emplace_back(entry, name, date);
             } while (result->NextRow());
         }
-        trackedPetsCache[guid] = std::move(trackedPets);
-        trackedPetsPtr = &trackedPetsCache[guid];
+        {
+            std::lock_guard<std::mutex> lock(trackedPetsCacheMutex);
+            trackedPetsCache[guid] = std::move(trackedPets);
+            trackedPetsPtr = &trackedPetsCache[guid];
+        }
     }
 
     const auto &trackedPets = *trackedPetsPtr;
@@ -770,11 +779,11 @@ public:
                 "UPDATE beastmaster_tamed_pets SET name = '%s' WHERE owner_guid = %u AND entry = %u",
                 msg.c_str(), player->GetGUID().GetCounter(), entry);
 
-            // Clear cache so menu updates instantly
-            ClearTrackedPetsCache(player);
-
             player->CustomData.SetDefault<bool>("BeastmasterExpectRename", false);
             player->CustomData.SetDefault<uint32>("BeastmasterRenamePetEntry", 0);
+
+            // Clear cache
+            sNpcBeastMaster->ClearTrackedPetsCache(player);
 
             player->GetSession()->SendNotification("Pet renamed to %s.", msg.c_str());
             TC_LOG_INFO("module", "Beastmaster: Player %u renamed pet (entry %u) to %s.",
@@ -799,15 +808,16 @@ public:
                 CharacterDatabase.PExecute(
                     "DELETE FROM beastmaster_tamed_pets WHERE owner_guid = %u AND entry = %u",
                     player->GetGUID().GetCounter(), delEntry);
+
+                // Clear cache
+                sNpcBeastMaster->ClearTrackedPetsCache(player);
+
                 player->GetSession()->SendNotification("Tracked pet deleted.");
                 TC_LOG_INFO("module", "Beastmaster: Player %u deleted tracked pet (entry %u).",
                             player->GetGUID().GetCounter(), delEntry);
 
                 player->CustomData.SetDefault<bool>("BeastmasterExpectDeleteConfirm", false);
                 player->CustomData.SetDefault<uint32>("BeastmasterDeletePetEntry", 0);
-
-                // Clear cache after delete
-                ClearTrackedPetsCache(player);
             }
             else
             {
