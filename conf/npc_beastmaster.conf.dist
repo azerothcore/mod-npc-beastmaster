@@ -4,6 +4,9 @@
 #	BEASTMASTER NPC
 ###################################################################################################
 
+# Enable or disable the Beastmaster module (default: 1)
+BeastMaster.Enable = 1
+
 # Enable only for the hunter class?
 
 BeastMaster.HunterOnly = 1
