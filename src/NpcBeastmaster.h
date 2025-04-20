@@ -4,7 +4,7 @@
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by the
  * Free Software Foundation; either version 3 of the License, or (at your
- * option) any later version.
+ * option any later version.
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -20,38 +20,46 @@
 
 #include "Common.h"
 #include <map>
+#include <algorithm> // Added for std::sort
 
 class Player;
 class Creature;
 
-using PetsStore = std::map<std::string, uint32>;
+using PetStore = std::map<std::string, uint32>;
 
 class NpcBeastmaster
 {
     NpcBeastmaster() = default;
     ~NpcBeastmaster() = default;
 
-    NpcBeastmaster(NpcBeastmaster const&) = delete;
-    NpcBeastmaster(NpcBeastmaster&&) = delete;
-    NpcBeastmaster& operator= (NpcBeastmaster const&) = delete;
-    NpcBeastmaster& operator= (NpcBeastmaster&&) = delete;
+    NpcBeastmaster(NpcBeastmaster const &) = delete;
+    NpcBeastmaster(NpcBeastmaster &&) = delete;
+    NpcBeastmaster &operator=(NpcBeastmaster const &) = delete;
+    NpcBeastmaster &operator=(NpcBeastmaster &&) = delete;
 
 public:
-    static NpcBeastmaster* instance();
+    static NpcBeastmaster *instance();
 
     void LoadSystem(bool reload = false);
 
     // Gossip
-    void ShowMainMenu(Player* player, Creature* creature);
-    void GossipSelect(Player* player, Creature* creature, uint32 action);
+    void ShowMainMenu(Player *player, Creature *creature);
+    void GossipSelect(Player *player, Creature *creature, uint32 action);
 
     // Player
-    void PlayerUpdate(Player* player);
+    void PlayerUpdate(Player *player);
 
 private:
-    void CreatePet(Player* player, Creature* creature, uint32 action);
-    void AddPetsToGossip(Player* player, PetsStore const& petsStore, uint32 page);
-    void LoadPets(std::string pets, PetsStore& petsStore);
+    void CreatePet(Player *player, Creature *creature, uint32 action);
+    void AddPetsToGossip(Player *player, std::vector<struct PetInfo> const &pets, uint32 page);
+    void ShowTrackedPetsMenu(Player *player, Creature *creature, uint32 page = 1); // Updated: add page param for pagination
+    void HandleRenamePet(Player *player, Creature *creature, uint32 entry);        // Added: for rename prompt
+
+    void SortPetsByName(std::vector<struct PetInfo> &normalPets)
+    {
+        std::sort(normalPets.begin(), normalPets.end(), [](const PetInfo &a, const PetInfo &b)
+                  { return a.name < b.name; });
+    }
 };
 
 #define sNpcBeastMaster NpcBeastmaster::instance()

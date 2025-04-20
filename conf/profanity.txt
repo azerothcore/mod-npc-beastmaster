@@ -1,0 +1,3 @@
+badword1
+badword2 nasty
+// etc.

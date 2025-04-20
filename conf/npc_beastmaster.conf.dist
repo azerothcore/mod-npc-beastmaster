@@ -4,38 +4,39 @@
 #	BEASTMASTER NPC
 ###################################################################################################
 
-# Enable only for the hunter class?
+# Enable or disable the Beastmaster module (default: 1)
+BeastMaster.Enable = 1
 
+# Enable only for the hunter class (default: 1)
 BeastMaster.HunterOnly = 1
 
 # Required level to adopt pets. (default: 10, 0 = disable)
-
 BeastMaster.MinLevel = 10
 
-# Hunters are required to have Beast Mastery to adopt exotic pets. (default: 0)
-
+# Hunters are required to have Beast Mastery to adopt exotic pets. (default: 1)
 BeastMaster.HunterBeastMasteryRequired = 1
 
-# Allow exotic pets for non-hunters (default: 1)
-
+# Allow exotic pets for non-hunters (default: 0)
 BeastMaster.AllowExotic = 0
 
 # Keep pet always happy (default: 0)
-
 BeastMaster.KeepPetHappy = 0
 
-# Normal pets
+# Enable tracking of all tamed pets for hunters (default: 0)
+BeastMaster.TrackTamedPets = 0
 
-BeastMaster.Pets="Bat,10357,Bear,12037,Boar,29996,Cat,2175,Carrion Bird,2931,Crab,18241,Crocolisk,1417,Dragonhawk,18155,Gorilla,1559,Hound,29452,Hyena,5829,Moth,25498,Nether Ray,18285,Owl,14343,Raptor,9684,Ravager,22123,Scorpid,14476,Serpent,28011,Spider,12433,Spore Bat,18280,Tallstrider,22807,Turtle,14223,Warp Stalker,23163,Wasp,18283,Wind Serpent,5834,Wolf,3825,Worg,24128"
+# Normal pets
+# (Now loaded from tames.json, this list is ignored)
+BeastMaster.Pets=""
 
 # Exotic pets
-
-BeastMaster.ExoticPets="Chimaera,20932,Core Hound,33502,Devilsaur,32485,Rhino,25487,Silithid,6582,Jormungar Worm,30422,Arcturis (Spirit Bear),38453,Gondria (Spirit Tiger),33776,Loque'nahak (Spirit Leopard),32517,Skoll (Spirit Worg),35189"
+# (Now loaded from tames.json, this list is ignored)
+BeastMaster.ExoticPets=""
 
 # Rare pets
-
-BeastMaster.RarePets="Mazzranache (Tallstrider),3068,Aotona (Bird),32481"
+# List only Entry IDs, used to highlight rare pets in menu
+BeastMaster.RarePets="3068,32481,27483,11497,12803,16179,17882"
 
 # Rare Exotic pets
-
-BeastMaster.RareExoticPets="Kurken,17447"
+# List only Entry IDs, used to highlight rare exotic pets in menu
+BeastMaster.RareExoticPets="32517,33776,35189,17447,38453,6585"
