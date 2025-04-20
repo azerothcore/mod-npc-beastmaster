@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS `beastmaster_tamed_pets` (
     `date_tamed` TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`owner_guid`, `entry`),
     KEY `idx_beastmaster_tamed_pets_owner_guid` (`owner_guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
