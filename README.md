@@ -15,8 +15,7 @@ This module allows **all classes** (not just hunters) to adopt and use hunter pe
 
 ## Important Notes
 
-- All tameable pets are loaded from `conf/tames.json`. Missing or malformed entries are skipped and logged.
-- The config file (`npc_beastmaster.conf.dist`) controls rare and rare exotic pet highlighting by entry ID.
+- The config file (`mod_npc_beastmaster.conf.dist`) controls rare and rare exotic pet highlighting by entry ID.
 - Tracked pets are stored in the `beastmaster_tamed_pets` table in your world database.
 - Profanity filtering for pet names uses `conf/profanity.txt` (reloads automatically if changed).
 - Tracked pets cache is session-based, thread-safe, and updates instantly after rename/delete.
@@ -77,7 +76,7 @@ Creatures.CustomIDs = "190010,55005,999991,25462,98888,601026"
 
 ## Configuration
 
-See `conf/npc_beastmaster.conf.dist` for all options.
+See `conf/mod_npc_beastmaster.conf.dist` for all options.
 
 ## SQL
 
@@ -112,9 +111,9 @@ mysql -P <DBport> -u <DPuser> --password=<DBpassword> world <env/dist/sql/world_
 
 ## Edit module configuration (optional)
 
-If you need to change the module configuration, go to your server configuration folder (where your `worldserver` or `worldserver.exe` is), copy `npc_beastmaster.conf.dist` to `npc_beastmaster.conf` and edit that new file.
+If you need to change the module configuration, go to your server configuration folder (where your `worldserver` or `worldserver.exe` is), copy `mod_npc_beastmaster.conf.dist` to `mod_npc_beastmaster.conf` and edit that new file.
 
-(If using Docker, place the `npc_beastmaster.conf` file into your `azerothcore-wotlk\docker\worldserver\etc` folder.)
+(If using Docker, place the `mod_npc_beastmaster.conf` file into your `azerothcore-wotlk\docker\worldserver\etc` folder.)
 
 ## Credits
 

@@ -21,49 +21,38 @@
 #include "Player.h"
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
-#include "StringConvert.h"
-#include "StringFormat.h"
-#include "DatabaseEnv.h"
+#include "ScriptMgr.h"
+#include "WorldSession.h"
 #include "Chat.h"
 #include <map>
 #include <vector>
 #include <sstream>
 #include <fstream>
-#include <nlohmann/json.hpp>
 #include <regex>
 #include <unordered_set>
 #include <locale>
 #include <unordered_map>
 #include <mutex>
 #include <sys/stat.h>
-
-using json = nlohmann::json;
+#include "Common.h"
 
 namespace BeastmasterDB
 {
     // Handles all database operations related to the Beastmaster module.
     bool TrackTamedPet(Player *player, uint32 creatureEntry, std::string const &petName)
     {
-        // Prevent duplicate entries for the same player and pet entry
-        QueryResult result = CharacterDatabase.PQuery(
-            "SELECT 1 FROM beastmaster_tamed_pets WHERE owner_guid = %u AND entry = %u AND name = '%s' LIMIT 1",
-            player->GetGUID().GetCounter(), creatureEntry, petName.c_str());
+        // Check if already tracked
+        QueryResult result = CharacterDatabase.Query(
+            "SELECT 1 FROM beastmaster_tamed_pets WHERE owner_guid = {} AND entry = {}",
+            player->GetGUID().GetCounter(), creatureEntry);
 
         if (result)
             return false; // Already tracked
 
-        if (CharacterDatabase.PExecute(
-                "INSERT INTO beastmaster_tamed_pets (owner_guid, entry, name) VALUES (%u, %u, '%s')",
-                player->GetGUID().GetCounter(), creatureEntry, petName.c_str()))
-        {
-            return true;
-        }
-        else
-        {
-            // Log error if needed
-            TC_LOG_ERROR("module", "BeastmasterDB: Failed to insert tamed pet for player %u", player->GetGUID().GetCounter());
-            return false;
-        }
+        CharacterDatabase.Execute(
+            "INSERT INTO beastmaster_tamed_pets (owner_guid, entry, name) VALUES ({}, {}, '{}')",
+            player->GetGUID().GetCounter(), creatureEntry, petName.c_str());
+        return true;
     }
 }
 
@@ -71,14 +60,6 @@ namespace
 {
     // List of hunter spells to grant/remove for non-hunters adopting pets.
     std::vector<uint32> HunterSpells = {883, 982, 2641, 6991, 48990, 1002, 1462, 6197};
-
-    struct PetInfo
-    {
-        std::string name;
-        uint32 entry;
-        uint32 family;
-        std::string rarity;
-    };
 
     using PetList = std::vector<PetInfo>;
 
@@ -134,6 +115,11 @@ namespace
     std::mutex trackedPetsCacheMutex;
 }
 
+enum BeastmasterEvents
+{
+    BEASTMASTER_EVENT_EAT = 1
+};
+
 // Add these new actions for tracked pets
 enum TrackedPetActions
 {
@@ -158,7 +144,7 @@ static time_t GetFileMTime(const std::string &path)
 {
     struct stat statbuf;
     if (stat(path.c_str(), &statbuf) == 0)
-        return statbuf.st_mtime;
+        return statbuf.st_mtime; // <-- use st_mtime
     return 0;
 }
 
@@ -177,7 +163,7 @@ static void LoadProfanityListIfNeeded()
     std::ifstream f(path);
     if (!f.is_open())
     {
-        TC_LOG_WARN("module", "Beastmaster: Could not open profanity.txt, skipping profanity filter.");
+        LOG_WARN("module", "Beastmaster: Could not open profanity.txt, skipping profanity filter.");
         return;
     }
     std::string word;
@@ -189,7 +175,7 @@ static void LoadProfanityListIfNeeded()
     }
     sProfanityListMTime = mtime;
     // Only log once per reload, not per word
-    TC_LOG_INFO("module", "Beastmaster: Loaded %zu profane words (mtime=%ld)", sProfanityList.size(), long(mtime));
+    LOG_INFO("module", "Beastmaster: Loaded %zu profane words (mtime=%ld)", sProfanityList.size(), long(mtime));
 }
 
 // Enhanced profanity check: any profane substring, always up-to-date
@@ -248,16 +234,31 @@ static const PetInfo *FindPetInfo(uint32 entry)
     return it != allPetsByEntry.end() ? &it->second : nullptr;
 }
 
-/*static*/ NpcBeastmaster *NpcBeastmaster::instance()
+class BeastmasterBool : public DataMap::Base
+{
+public:
+    explicit BeastmasterBool(bool v) : value(v) {}
+    bool value;
+};
+
+class BeastmasterUInt32 : public DataMap::Base
+{
+public:
+    explicit BeastmasterUInt32(uint32 v) : value(v) {}
+    uint32 value;
+};
+
+/*static*/ NpcBeastmaster *
+NpcBeastmaster::instance()
 {
     static NpcBeastmaster instance;
     return &instance;
 }
 
-// Loads all configuration options and pets from JSON and config.
+// Loads all configuration options and pets from SQL and config.
 void NpcBeastmaster::LoadSystem(bool /*reload = false*/)
 {
-    std::lock_guard<std::mutex> lock(petsMutex); // Lock during reload
+    std::lock_guard<std::mutex> lock(petsMutex);
 
     beastmasterConfig.hunterOnly = sConfigMgr->GetOption<bool>("BeastMaster.HunterOnly", true);
     beastmasterConfig.allowExotic = sConfigMgr->GetOption<bool>("BeastMaster.AllowExotic", false);
@@ -270,7 +271,7 @@ void NpcBeastmaster::LoadSystem(bool /*reload = false*/)
     rarePetEntries = ParseEntryList(sConfigMgr->GetOption<std::string>("BeastMaster.RarePets", ""));
     rareExoticPetEntries = ParseEntryList(sConfigMgr->GetOption<std::string>("BeastMaster.RareExoticPets", ""));
 
-    // Load pets from tames.json
+    // Load pets from SQL
     allPets.clear();
     normalPets.clear();
     exoticPets.clear();
@@ -278,60 +279,21 @@ void NpcBeastmaster::LoadSystem(bool /*reload = false*/)
     rareExoticPets.clear();
     allPetsByEntry.clear();
 
-    std::ifstream file("modules/mod-npc-beastmaster/conf/tames.json");
-    if (!file.is_open())
+    QueryResult result = WorldDatabase.Query("SELECT entry, name, family, rarity FROM beastmaster_tames");
+    if (!result)
     {
-        TC_LOG_ERROR("module", "Beastmaster: Could not open tames.json!");
+        LOG_ERROR("module", "Beastmaster: Could not load tames from beastmaster_tames table!");
         return;
     }
 
-    json j;
-    try
+    do
     {
-        file >> j;
-    }
-    catch (const std::exception &e)
-    {
-        TC_LOG_ERROR("module", "Beastmaster: Failed to parse tames.json: %s", e.what());
-        return;
-    }
-
-    if (!j.contains("rows") || !j["rows"].is_array())
-    {
-        TC_LOG_ERROR("module", "Beastmaster: tames.json missing 'rows' array.");
-        return;
-    }
-
-    const auto &rows = j["rows"];
-    size_t petCount = rows.size();
-
-    allPets.clear();
-    normalPets.clear();
-    exoticPets.clear();
-    rarePets.clear();
-    rareExoticPets.clear();
-    allPetsByEntry.clear();
-
-    // Reserve vector capacity for efficiency
-    allPets.reserve(petCount);
-    normalPets.reserve(petCount);
-    exoticPets.reserve(petCount);
-    rarePets.reserve(petCount);
-    rareExoticPets.reserve(petCount);
-
-    for (const auto &pet : rows)
-    {
-        if (!pet.contains("entry") || !pet.contains("name") || !pet.contains("family") || !pet.contains("rarity"))
-        {
-            TC_LOG_WARN("module", "Beastmaster: Skipping pet with missing fields in tames.json");
-            continue;
-        }
-
+        Field *fields = result->Fetch();
         PetInfo info;
-        info.entry = pet["entry"].get<uint32_t>();
-        info.name = pet["name"].get<std::string>();
-        info.family = pet["family"].get<uint32_t>();
-        info.rarity = pet["rarity"].get<std::string>();
+        info.entry = fields[0].Get<uint32>();
+        info.name = fields[1].Get<std::string>();
+        info.family = fields[2].Get<uint32>();
+        info.rarity = fields[3].Get<std::string>();
 
         allPets.push_back(info);
         allPetsByEntry[info.entry] = info;
@@ -345,7 +307,7 @@ void NpcBeastmaster::LoadSystem(bool /*reload = false*/)
             exoticPets.push_back(info);
         else
             normalPets.push_back(info);
-    }
+    } while (result->NextRow());
 }
 
 // Shows the main gossip menu to the player.
@@ -545,14 +507,18 @@ void NpcBeastmaster::GossipSelect(Player *player, Creature *creature, uint32 act
     else if (action >= PET_TRACKED_RENAME && action < PET_TRACKED_DELETE)
     {
         uint32 entry = action - PET_TRACKED_RENAME;
-        HandleRenamePet(player, creature, entry);
+        player->CustomData.Set("BeastmasterRenamePetEntry", new BeastmasterUInt32(entry));
+        player->CustomData.Set("BeastmasterExpectRename", new BeastmasterBool(true));
+        this->HandleRenamePet(player, creature, entry);
         CloseGossipMenuFor(player);
         return;
     }
     else if (action >= PET_TRACKED_DELETE && action < PET_TRACKED_DELETE + 1000)
     {
         uint32 entry = action - PET_TRACKED_DELETE;
-        HandleDeletePet(player, creature, entry);
+        player->CustomData.Set("BeastmasterDeletePetEntry", new BeastmasterUInt32(entry));
+        player->CustomData.Set("BeastmasterExpectDeleteConfirm", new BeastmasterBool(true));
+        this->HandleDeletePet(player, creature, entry);
         CloseGossipMenuFor(player);
         return;
     }
@@ -606,7 +572,7 @@ void NpcBeastmaster::CreatePet(Player *player, Creature *creature, uint32 action
 }
 
 // Adds pets to the gossip menu for the given page.
-void NpcBeastmaster::AddPetsToGossip(Player *player, PetList const &pets, uint32 page)
+void NpcBeastmaster::AddPetsToGossip(Player *player, std::vector<PetInfo> const &pets, uint32 page)
 {
     uint32 count = 1;
     for (const auto &pet : pets)
@@ -644,8 +610,8 @@ void NpcBeastmaster::ShowTrackedPetsMenu(Player *player, Creature *creature, uin
     if (!trackedPetsPtr)
     {
         std::vector<std::tuple<uint32, std::string, std::string>> trackedPets;
-        QueryResult result = CharacterDatabase.PQuery(
-            "SELECT entry, name, date_tamed FROM beastmaster_tamed_pets WHERE owner_guid = %u ORDER BY date_tamed DESC",
+        QueryResult result = CharacterDatabase.Query(
+            "SELECT entry, name, date_tamed FROM beastmaster_tamed_pets WHERE owner_guid = {} ORDER BY date_tamed DESC",
             player->GetGUID().GetCounter());
 
         if (result)
@@ -653,9 +619,9 @@ void NpcBeastmaster::ShowTrackedPetsMenu(Player *player, Creature *creature, uin
             do
             {
                 Field *fields = result->Fetch();
-                uint32 entry = fields[0].GetUInt32();
-                std::string name = fields[1].GetString();
-                std::string date = fields[2].GetString();
+                uint32 entry = fields[0].Get<uint32>();
+                std::string name = fields[1].Get<std::string>();
+                std::string date = fields[2].Get<std::string>();
                 trackedPets.emplace_back(entry, name, date);
             } while (result->NextRow());
         }
@@ -715,21 +681,22 @@ void NpcBeastmaster::PlayerUpdate(Player *player)
 void NpcBeastmaster::HandleRenamePet(Player *player, Creature *creature, uint32 entry)
 {
     // Store the entry in a player variable for the next step
-    player->CustomData.SetDefault<uint32>("BeastmasterRenamePetEntry", entry);
+    player->CustomData.Set("BeastmasterRenamePetEntry", new BeastmasterUInt32(entry));
+    player->CustomData.Set("BeastmasterExpectRename", new BeastmasterBool(true));
 
     // Prompt the player for a new name
-    player->GetSession()->SendNotification("Please type the new name for your pet in chat. (Type .cancel to abort)");
+    ChatHandler(player->GetSession()).PSendSysMessage("Please type the new name for your pet in chat. (Type .cancel to abort)");
     creature->Whisper("Please type the new name for your pet in chat. (Type .cancel to abort)", LANG_UNIVERSAL, player);
 
     // Set a flag or state to expect the next chat message as the new name
-    player->CustomData.SetDefault<bool>("BeastmasterExpectRename", true);
+    player->CustomData.Set("BeastmasterExpectRename", new BeastmasterBool(true));
 }
 
 // Handles the delete confirmation for pets
 void NpcBeastmaster::HandleDeletePet(Player *player, Creature *creature, uint32 entry)
 {
-    player->CustomData.SetDefault<uint32>("BeastmasterDeletePetEntry", entry);
-    player->CustomData.SetDefault<bool>("BeastmasterExpectDeleteConfirm", true);
+    player->CustomData.Set("BeastmasterDeletePetEntry", new BeastmasterUInt32(entry));
+    player->CustomData.Set("BeastmasterExpectDeleteConfirm", new BeastmasterBool(true));
     creature->Whisper("Are you sure you want to delete this tracked pet? Type .yes to confirm or .cancel to abort.", LANG_UNIVERSAL, player);
 }
 
@@ -739,97 +706,205 @@ class BeastmasterRenameChatHandler : public PlayerScript
 public:
     BeastmasterRenameChatHandler() : PlayerScript("BeastmasterRenameChatHandler") {}
 
-    void OnChat(Player *player, uint32 /*type*/, uint32 /*lang*/, std::string &msg) override
+    void OnChat(Player *player, uint32 /*type*/, uint32 /*lang*/, std::string &msg)
     {
-        if (player->CustomData.GetDefault<bool>("BeastmasterExpectRename", false))
+        bool expectRename = false;
+        if (auto ptr = player->CustomData.Get<BeastmasterBool>("BeastmasterExpectRename"))
+            expectRename = ptr->value;
+
+        uint32 entry = 0;
+        if (auto entryPtr = player->CustomData.Get<BeastmasterUInt32>("BeastmasterRenamePetEntry"))
+            entry = entryPtr->value;
+
+        if (expectRename)
         {
             if (msg == ".cancel")
             {
-                player->CustomData.SetDefault<bool>("BeastmasterExpectRename", false);
-                player->CustomData.SetDefault<uint32>("BeastmasterRenamePetEntry", 0);
-                player->GetSession()->SendNotification("Pet renaming cancelled.");
-                TC_LOG_INFO("module", "Beastmaster: Player %u cancelled pet rename.", player->GetGUID().GetCounter());
+                player->CustomData.Set("BeastmasterExpectRename", new BeastmasterBool(false));
+                player->CustomData.Set("BeastmasterRenamePetEntry", new BeastmasterUInt32(0));
+                ChatHandler(player->GetSession()).PSendSysMessage("Pet renaming cancelled.");
+                LOG_INFO("module", "Beastmaster: Player %u cancelled pet rename.", player->GetGUID().GetCounter());
                 return;
             }
 
             // Validate name (length, allowed chars, profanity)
             if (msg.length() < 2 || msg.length() > 16)
             {
-                player->GetSession()->SendNotification("Pet name must be between 2 and 16 characters.");
+                ChatHandler(player->GetSession()).PSendSysMessage("Pet name must be between 2 and 16 characters.");
                 return;
             }
             if (IsProfane(msg))
             {
-                player->GetSession()->SendNotification("That name is not allowed.");
-                TC_LOG_INFO("module", "Beastmaster: Player %u attempted profane pet name: %s", player->GetGUID().GetCounter(), msg.c_str());
+                ChatHandler(player->GetSession()).PSendSysMessage("That name is not allowed.");
+                LOG_INFO("module", "Beastmaster: Player %u attempted profane pet name: %s", player->GetGUID().GetCounter(), msg.c_str());
                 return;
             }
             if (!IsValidPetName(msg))
             {
-                player->GetSession()->SendNotification("Invalid name (use 2–16 letters, spaces/dashes allowed).");
+                ChatHandler(player->GetSession()).PSendSysMessage("Invalid name (use 2–16 letters, spaces/dashes allowed).");
                 return;
             }
 
-            uint32 entry = player->CustomData.GetDefault<uint32>("BeastmasterRenamePetEntry", 0);
             if (!entry)
                 return;
 
             // Update DB
-            CharacterDatabase.PExecute(
-                "UPDATE beastmaster_tamed_pets SET name = '%s' WHERE owner_guid = %u AND entry = %u",
-                msg.c_str(), player->GetGUID().GetCounter(), entry);
+            CharacterDatabase.Execute(
+                "UPDATE beastmaster_tamed_pets SET name = '{}' WHERE owner_guid = {} AND entry = {}",
+                msg, player->GetGUID().GetCounter(), entry);
 
-            player->CustomData.SetDefault<bool>("BeastmasterExpectRename", false);
-            player->CustomData.SetDefault<uint32>("BeastmasterRenamePetEntry", 0);
+            player->CustomData.Set("BeastmasterExpectRename", new BeastmasterBool(false));
+            player->CustomData.Set("BeastmasterRenamePetEntry", new BeastmasterUInt32(0));
 
             // Clear cache
             sNpcBeastMaster->ClearTrackedPetsCache(player);
 
-            player->GetSession()->SendNotification("Pet renamed to %s.", msg.c_str());
-            TC_LOG_INFO("module", "Beastmaster: Player %u renamed pet (entry %u) to %s.",
-                        player->GetGUID().GetCounter(), entry, msg.c_str());
+            ChatHandler(player->GetSession()).PSendSysMessage("Pet renamed to %s.", msg.c_str());
+            LOG_INFO("module", "Beastmaster: Player %u renamed pet (entry %u) to %s.",
+                     player->GetGUID().GetCounter(), entry, msg.c_str());
             return;
         }
 
         // now handle delete confirm
-        if (player->CustomData.GetDefault<bool>("BeastmasterExpectDeleteConfirm", false))
+        bool expectDelete = false;
+        if (auto ptr = player->CustomData.Get<BeastmasterBool>("BeastmasterExpectDeleteConfirm"))
+            expectDelete = ptr->value;
+
+        uint32 delEntry = 0;
+        if (auto delEntryPtr = player->CustomData.Get<BeastmasterUInt32>("BeastmasterDeletePetEntry"))
+            delEntry = delEntryPtr->value;
+
+        if (expectDelete)
         {
             if (msg == ".cancel")
             {
-                player->CustomData.SetDefault<bool>("BeastmasterExpectDeleteConfirm", false);
-                player->CustomData.SetDefault<uint32>("BeastmasterDeletePetEntry", 0);
-                player->GetSession()->SendNotification("Pet deletion cancelled.");
-                TC_LOG_INFO("module", "Beastmaster: Player %u cancelled pet deletion.", player->GetGUID().GetCounter());
+                player->CustomData.Set("BeastmasterExpectDeleteConfirm", new BeastmasterBool(false));
+                player->CustomData.Set("BeastmasterDeletePetEntry", new BeastmasterUInt32(0));
+                ChatHandler(player->GetSession()).PSendSysMessage("Pet deletion cancelled.");
+                LOG_INFO("module", "Beastmaster: Player %u cancelled pet deletion.", player->GetGUID().GetCounter());
                 return;
             }
             if (msg == ".yes")
             {
-                uint32 delEntry = player->CustomData.GetDefault<uint32>("BeastmasterDeletePetEntry", 0);
-                CharacterDatabase.PExecute(
-                    "DELETE FROM beastmaster_tamed_pets WHERE owner_guid = %u AND entry = %u",
+                if (!delEntry)
+                    return;
+
+                CharacterDatabase.Execute(
+                    "DELETE FROM beastmaster_tamed_pets WHERE owner_guid = {} AND entry = {}",
                     player->GetGUID().GetCounter(), delEntry);
 
                 // Clear cache
                 sNpcBeastMaster->ClearTrackedPetsCache(player);
 
-                player->GetSession()->SendNotification("Tracked pet deleted.");
-                TC_LOG_INFO("module", "Beastmaster: Player %u deleted tracked pet (entry %u).",
-                            player->GetGUID().GetCounter(), delEntry);
+                ChatHandler(player->GetSession()).PSendSysMessage("Tracked pet deleted.");
+                LOG_INFO("module", "Beastmaster: Player %u deleted tracked pet (entry %u).",
+                         player->GetGUID().GetCounter(), delEntry);
 
-                player->CustomData.SetDefault<bool>("BeastmasterExpectDeleteConfirm", false);
-                player->CustomData.SetDefault<uint32>("BeastmasterDeletePetEntry", 0);
+                player->CustomData.Set("BeastmasterExpectDeleteConfirm", new BeastmasterBool(false));
+                player->CustomData.Set("BeastmasterDeletePetEntry", new BeastmasterUInt32(0));
             }
             else
             {
-                player->GetSession()->SendNotification("Type .yes to confirm deletion or .cancel to abort.");
+                ChatHandler(player->GetSession()).PSendSysMessage("Type .yes to confirm deletion or .cancel to abort.");
             }
             return;
         }
     }
 };
 
-// Register the chat handler
+// --- Begin moved script classes from NpcBeastmaster_SC.cpp ---
+
+class BeastMaster_CreatureScript : public CreatureScript
+{
+public:
+    BeastMaster_CreatureScript() : CreatureScript("BeastMaster") {}
+
+    bool OnGossipHello(Player *player, Creature *creature) override
+    {
+        LOG_INFO("module", "BeastMaster OnGossipHello called!");
+        sNpcBeastMaster->ShowMainMenu(player, creature);
+        return true;
+    }
+
+    bool OnGossipSelect(Player *player, Creature *creature, uint32 /*sender*/, uint32 action) override
+    {
+        sNpcBeastMaster->GossipSelect(player, creature, action);
+        return true;
+    }
+
+    struct beastmasterAI : public ScriptedAI
+    {
+        beastmasterAI(Creature *creature) : ScriptedAI(creature) {}
+
+        void Reset() override
+        {
+            events.ScheduleEvent(BEASTMASTER_EVENT_EAT, urand(30000, 90000));
+        }
+
+        void UpdateAI(uint32 diff) override
+        {
+            events.Update(diff);
+
+            switch (events.ExecuteEvent())
+            {
+            case BEASTMASTER_EVENT_EAT:
+                me->HandleEmoteCommand(EMOTE_ONESHOT_EAT_NO_SHEATHE);
+                events.ScheduleEvent(BEASTMASTER_EVENT_EAT, urand(30000, 90000));
+                break;
+            }
+        }
+
+    private:
+        EventMap events;
+    };
+
+    CreatureAI *GetAI(Creature *creature) const override
+    {
+        return new beastmasterAI(creature);
+    }
+};
+
+class BeastMaster_WorldScript : public WorldScript
+{
+public:
+    BeastMaster_WorldScript() : WorldScript("BeastMaster_WorldScript", {WORLDHOOK_ON_BEFORE_CONFIG_LOAD}) {}
+
+    void OnBeforeConfigLoad(bool /*reload*/) override
+    {
+        sNpcBeastMaster->LoadSystem();
+    }
+};
+
+class BeastMaster_PlayerScript : public PlayerScript
+{
+public:
+    BeastMaster_PlayerScript() : PlayerScript("BeastMaster_PlayerScript", {PLAYERHOOK_ON_BEFORE_UPDATE,
+                                                                           PLAYERHOOK_ON_BEFORE_LOAD_PET_FROM_DB,
+                                                                           PLAYERHOOK_ON_BEFORE_GUARDIAN_INIT_STATS_FOR_LEVEL}) {}
+
+    void OnPlayerBeforeUpdate(Player *player, uint32 /*p_time*/) override
+    {
+        sNpcBeastMaster->PlayerUpdate(player);
+    }
+
+    void OnPlayerBeforeLoadPetFromDB(Player * /*player*/, uint32 & /*petentry*/, uint32 & /*petnumber*/, bool & /*current*/, bool &forceLoadFromDB) override
+    {
+        forceLoadFromDB = true;
+    }
+
+    void OnPlayerBeforeGuardianInitStatsForLevel(Player * /*player*/, Guardian * /*guardian*/, CreatureTemplate const *cinfo, PetType &petType) override
+    {
+        if (cinfo->IsTameable(true))
+            petType = HUNTER_PET;
+    }
+};
+
+// --- End moved script classes ---
+
+// AzerothCore module loader entry point
 void Addmod_npc_beastmasterScripts()
 {
-    new BeastmasterRenameChatHandler();
+    new BeastMaster_WorldScript();
+    new BeastMaster_CreatureScript();
+    new BeastMaster_PlayerScript();
 }

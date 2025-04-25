@@ -25,14 +25,6 @@ BeastMaster.KeepPetHappy = 0
 # Enable tracking of all tamed pets for hunters (default: 0)
 BeastMaster.TrackTamedPets = 0
 
-# Normal pets
-# (Now loaded from tames.json, this list is ignored)
-BeastMaster.Pets=""
-
-# Exotic pets
-# (Now loaded from tames.json, this list is ignored)
-BeastMaster.ExoticPets=""
-
 # Rare pets
 # List only Entry IDs, used to highlight rare pets in menu
 BeastMaster.RarePets="3068,32481,27483,11497,12803,16179,17882"
