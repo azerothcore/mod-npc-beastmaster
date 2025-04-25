@@ -17,10 +17,11 @@ class Creature;
  */
 struct PetInfo
 {
-    std::string name;
     uint32 entry;
+    std::string name;
     uint32 family;
     std::string rarity;
+    uint32 icon; // e.g. "Ability_Hunter_Pet_Wolf"
 };
 
 /**
@@ -63,15 +64,15 @@ public:
      */
     void ClearTrackedPetsCache(Player *player);
 
+    // Shows the tracked pets menu for the player, with pagination and actions.
+    void ShowTrackedPetsMenu(Player *player, Creature *creature, uint32 page = 1);
+
 private:
     // Handles pet creation/adoption for the player.
     void CreatePet(Player *player, Creature *creature, uint32 action);
 
     // Adds pets to the gossip menu for the given page.
     void AddPetsToGossip(Player *player, std::vector<PetInfo> const &pets, uint32 page);
-
-    // Shows the tracked pets menu for the player, with pagination and actions.
-    void ShowTrackedPetsMenu(Player *player, Creature *creature, uint32 page = 1);
 
     // Handles the rename prompt for pets.
     void HandleRenamePet(Player *player, Creature *creature, uint32 entry);
