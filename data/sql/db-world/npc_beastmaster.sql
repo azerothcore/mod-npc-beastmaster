@@ -146,7 +146,7 @@ UPDATE item_template
 SET
     name = "Beastmaster's Whistle",
     description = "Summons the Beastmaster menu.",
-    displayid = 133706,      -- Whistle icon
+    displayid = 132161,      -- Whistle icon
     flags = 64,              -- Usable
     spellid_1 = 0,           -- No spell
     spelltrigger_1 = 0,      -- No spell trigger
