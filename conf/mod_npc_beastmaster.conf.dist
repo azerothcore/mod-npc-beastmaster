@@ -1,7 +1,9 @@
 [worldserver]
 
 ###################################################################################################
-#	BEASTMASTER NPC
+#	BEASTMASTER NPC MODULE CONFIGURATION
+#	This file controls the Beastmaster NPC module, allowing players to adopt and manage pets.
+#	Copy this file to mod_npc_beastmaster.conf and adjust settings as needed.
 ###################################################################################################
 
 # Enable or disable the Beastmaster module (default: 1)
@@ -26,9 +28,9 @@ BeastMaster.KeepPetHappy = 0
 BeastMaster.TrackTamedPets = 0
 
 # Rare pets
-# List only Entry IDs, used to highlight rare pets in menu
+# List only Entry IDs, comma-separated with no spaces (e.g. 123,456,789)
 BeastMaster.RarePets="3068,32481,27483,11497,12803,16179,17882"
 
 # Rare Exotic pets
-# List only Entry IDs, used to highlight rare exotic pets in menu
+# List only Entry IDs, comma-separated with no spaces (e.g. 123,456,789)
 BeastMaster.RareExoticPets="32517,33776,35189,17447,38453,6585"

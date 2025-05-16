@@ -1,3 +1,9 @@
+-- ############################################################
+-- Beastmaster: Pet Data Inserts
+-- Inserts all available tameable pets for the Beastmaster module.
+-- Table: beastmaster_tames
+-- ############################################################
+
 INSERT INTO beastmaster_tames (entry, name, family, rarity) VALUES
 (24133, 'Ancient Grimtotem Spirit Guide', 1, 'normal'),
 (2753, 'Barnabus', 1, 'normal'),

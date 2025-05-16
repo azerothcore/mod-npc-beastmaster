@@ -44,7 +44,11 @@ As GM:
  .npc add temp 601026
  ```
 
-The NPC will appear as "White Fang" (entry: 601026).
+The NPC will appear as "White Fang" (entry: **601026**).
+
+> **Note:**  
+> The value `601026` is the default Beastmaster NPC entry used by this module.  
+> If you wish to use a different NPC entry, update the `BEASTMASTER_NPC_ENTRY` constant in `NpcBeastmaster.cpp` and adjust your database and configuration accordingly.
 
 ## Notice:
 
@@ -53,7 +57,7 @@ It is due to the npc not exactly having a gossip menu in the database, the scrip
 
 ![image](https://user-images.githubusercontent.com/16887899/154327532-612b03d8-64f0-460e-8f4b-7cbfd31a7381.png)
 
-Please add the adjustment to the conf to have that error message not show up:
+To suppress this warning, add the following to your worldserver config:
 ```
 #    Creatures.CustomIDs
 #        Description: The list of custom creatures with gossip dialogues hardcoded in core,
@@ -106,14 +110,24 @@ bash apps/db_assembler/db_assembler.sh
 choose 4)
 ```
 cd <ACdir>
-mysql -P <DBport> -u <DPuser> --password=<DBpassword> world <env/dist/sql/world_custom.sql
+mysql -P <DBport> -u <DBuser> --password=<DBpassword> world <env/dist/sql/world_custom.sql
 ```
 
 ## Edit module configuration (optional)
 
 If you need to change the module configuration, go to your server configuration folder (where your `worldserver` or `worldserver.exe` is), copy `mod_npc_beastmaster.conf.dist` to `mod_npc_beastmaster.conf` and edit that new file.
 
-(If using Docker, place the `mod_npc_beastmaster.conf` file into your `azerothcore-wotlk\docker\worldserver\etc` folder.)
+(If using Docker, place the `mod_npc_beastmaster.conf` file into your `azerothcore-wotlk/docker/worldserver/etc` folder.)
+
+## Customization
+
+- **NPC Entry:**  
+  The default Beastmaster NPC entry is `601026`.  
+  To use a different entry, update the `BEASTMASTER_NPC_ENTRY` constant in `src/NpcBeastmaster.cpp` and adjust your database and configuration as needed.
+
+- **Whistle Item:**  
+  The default Beastmaster Whistle item entry is `21744`.  
+  To use a different item, update the `BEASTMASTER_WHISTLE_ITEM` constant in `src/NpcBeastmaster.cpp`.
 
 ## Credits
 

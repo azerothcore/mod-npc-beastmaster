@@ -64,7 +64,9 @@ public:
      */
     void ClearTrackedPetsCache(Player *player);
 
-    // Shows the tracked pets menu for the player, with pagination and actions.
+    /**
+     * Shows the tracked pets menu for the player, with pagination and actions.
+     */
     void ShowTrackedPetsMenu(Player *player, Creature *creature, uint32 page = 1);
 
 private:
