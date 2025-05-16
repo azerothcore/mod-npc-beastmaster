@@ -15,6 +15,8 @@ This module allows **all classes** (not just hunters) to adopt and use hunter pe
 
 ## Important Notes
 
+- You have to use at least AzerothCore commit [3f0739f](https://github.com/azerothcore/azerothcore-wotlk/commit/3f0739f1c9a5289444ff9d62834b7ceb38879ba9).
+
 - The config file (`mod_npc_beastmaster.conf.dist`) controls rare and rare exotic pet highlighting by entry ID.
 - Tracked pets are stored in the `beastmaster_tamed_pets` table in your world database.
 - Profanity filtering for pet names uses `conf/profanity.txt` (reloads automatically if changed).
