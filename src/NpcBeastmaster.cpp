@@ -657,9 +657,17 @@ void NpcBeastmaster::GossipSelect(Player *player, Creature *creature,
             Pet *pet = player->CreatePet(entry, PET_SPELL_CALL_PET);
             if (pet)
             {
+                // Fetch the custom name from beastmaster_tamed_pets
+                QueryResult nameResult = CharacterDatabase.Query(
+                    "SELECT name FROM beastmaster_tamed_pets WHERE owner_guid = {} AND entry = {}",
+                    player->GetGUID().GetCounter(), entry);
+                if (nameResult)
+                {
+                    std::string customName = (*nameResult)[0].Get<std::string>();
+                    pet->SetName(customName);
+                }
                 pet->SetPower(POWER_HAPPINESS, PET_MAX_HAPPINESS);
-                creature->Whisper("Your tracked pet has been summoned!", LANG_UNIVERSAL,
-                                  player);
+                creature->Whisper("Your tracked pet has been summoned!", LANG_UNIVERSAL, player);
             }
             else
             {
@@ -683,9 +691,9 @@ void NpcBeastmaster::GossipSelect(Player *player, Creature *creature,
         player->CustomData.Set("BeastmasterExpectRename",
                                new BeastmasterBool(true));
         ChatHandler(player->GetSession())
-            .PSendSysMessage("Type the new name for your pet in chat.");
+            .PSendSysMessage("To rename your pet, type: .petname <newname> in chat. To cancel, type: .cancel");
         if (creature)
-            creature->Whisper("Type the new name for your pet in chat.",
+            creature->Whisper("To rename your pet, type: .petname <newname> in chat. To cancel, type: .cancel",
                               LANG_UNIVERSAL, player);
         CloseGossipMenuFor(player);
         return;
@@ -1053,8 +1061,7 @@ public:
         : PlayerScript("BeastMaster_PlayerScript",
                        {PLAYERHOOK_ON_BEFORE_UPDATE,
                         PLAYERHOOK_ON_BEFORE_LOAD_PET_FROM_DB,
-                        PLAYERHOOK_ON_BEFORE_GUARDIAN_INIT_STATS_FOR_LEVEL,
-                        PLAYERHOOK_ON_CHAT}) {}
+                        PLAYERHOOK_ON_BEFORE_GUARDIAN_INIT_STATS_FOR_LEVEL}) {}
 
     void OnPlayerBeforeUpdate(Player *player, uint32 /*p_time*/) override
     {
@@ -1076,41 +1083,77 @@ public:
         if (cinfo->IsTameable(true))
             petType = HUNTER_PET;
     }
+};
 
-    void OnChat(Player *player, uint32 /*type*/, uint32 /*lang*/,
-                std::string &msg)
+// Rename and cancel commands for pet renaming
+class petname_CommandScript : public CommandScript
+{
+public:
+    petname_CommandScript() : CommandScript("petname_CommandScript") {}
+
+    Acore::ChatCommands::ChatCommandTable GetCommands() const override
     {
-        // Check if expecting a rename
-        auto *expectRename =
-            player->CustomData.Get<BeastmasterBool>("BeastmasterExpectRename");
-        auto *renameEntry =
-            player->CustomData.Get<BeastmasterUInt32>("BeastmasterRenamePetEntry");
-        if (!expectRename || !expectRename->value || !renameEntry)
-            return;
+        using namespace Acore::ChatCommands;
+        static ChatCommandTable commandTable = {
+            {"petname", HandlePetnameCommand, SEC_PLAYER, Console::No},
+            {"cancel", HandleCancelCommand, SEC_PLAYER, Console::No}};
+        return commandTable;
+    }
 
-        // Validate name
-        if (!IsValidPetName(msg) || IsProfane(msg))
+    static bool HandlePetnameCommand(ChatHandler *handler, std::string_view args)
+    {
+        Player *player = handler->GetSession()->GetPlayer();
+        auto *expectRename = player->CustomData.Get<BeastmasterBool>("BeastmasterExpectRename");
+        auto *renameEntry = player->CustomData.Get<BeastmasterUInt32>("BeastmasterRenamePetEntry");
+        if (!expectRename || !expectRename->value || !renameEntry)
         {
-            ChatHandler(player->GetSession())
-                .PSendSysMessage("Invalid or profane pet name. Please try again.");
-            return;
+            handler->PSendSysMessage("You are not renaming a pet right now. Use the Beastmaster NPC to start renaming.");
+            return true;
         }
 
-        // Update the pet name in the DB
-        CharacterDatabase.Execute("UPDATE beastmaster_tamed_pets SET name = '{}' "
-                                  "WHERE owner_guid = {} AND entry = {}",
-                                  msg, player->GetGUID().GetCounter(),
-                                  renameEntry->value);
+        std::string newName(args);
+        while (!newName.empty() && std::isspace(newName.front()))
+            newName.erase(newName.begin());
+        while (!newName.empty() && std::isspace(newName.back()))
+            newName.pop_back();
 
-        // Clear rename state
+        if (newName.empty())
+        {
+            handler->PSendSysMessage("Usage: .petname <newname>");
+            return true;
+        }
+
+        if (!IsValidPetName(newName) || IsProfane(newName))
+        {
+            handler->PSendSysMessage("Invalid or profane pet name. Please try again with .petname <newname>.");
+            return true;
+        }
+
+        CharacterDatabase.Execute(
+            "UPDATE beastmaster_tamed_pets SET name = '{}' WHERE owner_guid = {} AND entry = {}",
+            newName, player->GetGUID().GetCounter(), renameEntry->value);
+
         player->CustomData.Erase("BeastmasterExpectRename");
         player->CustomData.Erase("BeastmasterRenamePetEntry");
 
-        ChatHandler(player->GetSession())
-            .PSendSysMessage("Pet renamed to '{}'.", msg);
-
-        // Optionally, refresh the menu
+        handler->PSendSysMessage("Pet renamed to '{}'.", newName);
         sNpcBeastMaster->ClearTrackedPetsCache(player);
+        return true;
+    }
+
+    static bool HandleCancelCommand(ChatHandler *handler, std::string_view /*args*/)
+    {
+        Player *player = handler->GetSession()->GetPlayer();
+        auto *expectRename = player->CustomData.Get<BeastmasterBool>("BeastmasterExpectRename");
+        if (!expectRename || !expectRename->value)
+        {
+            handler->PSendSysMessage("You are not renaming a pet right now.");
+            return true;
+        }
+        player->CustomData.Erase("BeastmasterExpectRename");
+        player->CustomData.Erase("BeastmasterRenamePetEntry");
+        handler->PSendSysMessage("Pet renaming cancelled.");
+        return true;
     }
 };
 
@@ -1154,4 +1197,5 @@ void Addmod_npc_beastmasterScripts()
     new BeastMaster_CreatureScript();
     new BeastMaster_PlayerScript();
     new BeastmasterWhistle_ItemScript();
+    new petname_CommandScript(); // Register the .petname and .cancel commands
 }

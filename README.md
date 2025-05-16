@@ -26,11 +26,19 @@ This module allows **all classes** (not just hunters) to adopt and use hunter pe
 - You can view your tracked pets from the BeastMaster NPC menu (all classes supported).
 - For each tracked pet, you can:
   - **Summon**: Instantly summon the pet if you do not already have one out.
-  - **Rename**: Select "Rename" and then type the new name in chat. Type `.cancel` to abort.
+  - **Rename**: Select "Rename" and then type the new name in chat using the `.petname` command. Type `.cancel` to abort.
   - **Delete**: Remove the pet from your tracked list (with confirmation).
 - The tracked pets menu supports pagination if you have many pets.
 - The menu displays each pet's name, date tamed, family, and rarity.
 - Tracked pets update instantly after rename or delete.
+
+## Pet Rename Commands
+
+When you choose to rename a pet, you must use the following chat commands:
+- `.petname <newname>` — Renames your selected pet to `<newname>`.
+- `.cancel` — Cancels the renaming process.
+
+If you type anything else, you will be reminded of these commands.
 
 ## How to use ingame
 
