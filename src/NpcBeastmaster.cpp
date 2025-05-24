@@ -1069,7 +1069,7 @@ public:
   BeastmasterLoginNotice_PlayerScript()
       : PlayerScript("BeastmasterLoginNotice_PlayerScript") {}
 
-  void OnLogin(Player *player) override {
+  void OnLogin(Player *player) {
     if (!sConfigMgr->GetOption<bool>("BeastMaster.ShowLoginNotice", true))
       return;
 
