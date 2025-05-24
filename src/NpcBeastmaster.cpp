@@ -1044,7 +1044,7 @@ bool BeastMaster_CommandScript::HandleBeastmasterCommand(
       sConfigMgr->GetOption<uint32>("BeastMaster.SummonCooldown", 120);
   if (lastSummonTime.count(guid) && now - lastSummonTime[guid] < cooldown) {
     handler->PSendSysMessage(
-        "You must wait %u seconds before summoning the Beastmaster again.",
+        "You must wait {} seconds before summoning the Beastmaster again.",
         cooldown - (now - lastSummonTime[guid]));
     return true;
   }
@@ -1067,10 +1067,9 @@ bool BeastMaster_CommandScript::HandleBeastmasterCommand(
 class BeastmasterLoginNotice_PlayerScript : public PlayerScript {
 public:
   BeastmasterLoginNotice_PlayerScript()
-      : PlayerScript("BeastmasterLoginNotice_PlayerScript",
-                     {PLAYERHOOK_ON_LOGIN}) {}
+      : PlayerScript("BeastmasterLoginNotice_PlayerScript") {}
 
-  void OnLogin(Player *player) {
+  void OnLogin(Player *player) override {
     if (!sConfigMgr->GetOption<bool>("BeastMaster.ShowLoginNotice", true))
       return;
 
@@ -1097,8 +1096,7 @@ public:
       ch.PSendSysMessage(
           "|cffffa500[GM Notice]|r You can also use |cff00ffff.npc add "
           "601026|r to spawn the Beastmaster NPC anywhere, and "
-          "|cff00ffff.npc "
-          "save|r to make it permanent.");
+          "|cff00ffff.npc save|r to make it permanent.");
     }
   }
 };
@@ -1109,6 +1107,7 @@ void Addmod_npc_beastmasterScripts() {
   new BeastMaster_CreatureScript();
   new BeastMaster_WorldScript();
   new BeastMaster_PlayerScript();
-  LOG_INFO("module", "Beastmaster: Registered commands: .petname, .cancel, "
-                     ".beastmaster, .bm");
+  LOG_INFO(
+      "module",
+      "Beastmaster: Registered commands: .petname, .cancel, .beastmaster, .bm");
 }
