@@ -39,8 +39,6 @@
 
 // Beastmaster NPC entry (change if you use a different NPC)
 constexpr uint32 BEASTMASTER_NPC_ENTRY = 601026;
-// Beastmaster Whistle item entry (change if you use a different item)
-constexpr uint32 BEASTMASTER_WHISTLE_ITEM = 21744;
 
 namespace BeastmasterDB {
 // Handles all database operations related to the Beastmaster module.
@@ -420,10 +418,6 @@ void NpcBeastmaster::ShowMainMenu(Player *player, Creature *creature) {
   AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, "Buy Pet Food",
                    GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
 
-  // Add option to receive the Beastmaster Whistle
-  AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, "Get Beastmaster Whistle",
-                   GOSSIP_SENDER_MAIN, 90010);
-
   if (creature)
     SendGossipMenuFor(player, PET_GOSSIP_HELLO, creature->GetGUID());
   else
@@ -645,18 +639,6 @@ void NpcBeastmaster::GossipSelect(Player *player, Creature *creature,
       page = 1;
 
     ShowTrackedPetsMenu(player, creature, page);
-    return;
-  } else if (action == 90010) // Give Beastmaster Whistle
-  {
-    if (!player->HasItemCount(BEASTMASTER_WHISTLE_ITEM, 1)) {
-      player->AddItem(BEASTMASTER_WHISTLE_ITEM, 1);
-      creature->Whisper("You have received a Beastmaster Whistle!",
-                        LANG_UNIVERSAL, player);
-    } else {
-      creature->Whisper("You already have a Beastmaster Whistle.",
-                        LANG_UNIVERSAL, player);
-    }
-    ShowMainMenu(player, creature);
     return;
   }
 
@@ -1019,39 +1001,4 @@ public:
   }
 };
 
-class BeastmasterWhistle_ItemScript : public ItemScript {
-public:
-  BeastmasterWhistle_ItemScript()
-      : ItemScript("BeastmasterWhistle_ItemScript") {}
-
-  bool OnUse(Player *player, Item *, SpellCastTargets const &) override {
-    // Summon invisible Beastmaster NPC at player's location
-    float x = player->GetPositionX();
-    float y = player->GetPositionY();
-    float z = player->GetPositionZ();
-    float o = player->GetOrientation();
-    Creature *tempNpc = player->SummonCreature(
-        BEASTMASTER_NPC_ENTRY, // Your Beastmaster NPC entry
-        x, y, z, o, TEMPSUMMON_TIMED_DESPAWN, 120000 // 2 minute
-    );
-    if (tempNpc) {
-      player->TalkedToCreature(tempNpc->GetEntry(), tempNpc->GetGUID());
-    } else {
-      ChatHandler(player->GetSession())
-          .PSendSysMessage(
-              "Failed to summon the Beastmaster. Please contact an admin.");
-      LOG_ERROR("module", "BeastmasterWhistle: Failed to summon NPC {}.",
-                BEASTMASTER_NPC_ENTRY);
-    }
-    return true;
-  }
-};
-
-// Register the script in your module loader:
-void Addmod_npc_beastmasterScripts() {
-  new BeastMaster_WorldScript();
-  new BeastMaster_CreatureScript();
-  new BeastMaster_PlayerScript();
-  new BeastmasterWhistle_ItemScript();
-  new petname_CommandScript(); // Register the .petname and .cancel commands
-}
+void Addmod_npc_beastmasterScripts() { new petname_CommandScript(); }
