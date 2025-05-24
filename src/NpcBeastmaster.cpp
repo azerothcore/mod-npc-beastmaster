@@ -115,7 +115,6 @@ std::mutex petsMutex;
 std::unordered_map<uint64,
                    std::vector<std::tuple<uint32, std::string, std::string>>>
     trackedPetsCache;
-std::mutex trackedPetsCacheMutex;
 } // namespace
 
 enum BeastmasterEvents { BEASTMASTER_EVENT_EAT = 1 };
