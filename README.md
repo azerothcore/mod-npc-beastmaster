@@ -8,17 +8,18 @@
 
 This module allows **all classes** (not just hunters) to adopt and use hunter pets by interacting with a special NPC. The NPC provides:
 - Hunter skills (for non-hunters)
-- Adoption of normal, rare, and exotic pets (all loaded from `conf/tames.json`)
+- Adoption of normal, rare, and exotic pets (all loaded from `beastmaster_tames` table)
 - Pet food vendor
 - Stables (for hunters)
 - **Tracked pets system**: view, summon, rename, and delete your adopted pets
 
+Players can also summon the Beastmaster NPC anywhere using chat commands.
+
 ## Important Notes
 
 - You have to use at least AzerothCore commit [3f0739f](https://github.com/azerothcore/azerothcore-wotlk/commit/3f0739f1c9a5289444ff9d62834b7ceb38879ba9).
-
 - The config file (`mod_npc_beastmaster.conf.dist`) controls rare and rare exotic pet highlighting by entry ID.
-- Tracked pets are stored in the `beastmaster_tamed_pets` table in your world database.
+- Tracked pets are stored in the `beastmaster_tamed_pets` table in your characters database.
 - Profanity filtering for pet names uses `conf/profanity.txt` (reloads automatically if changed).
 - Tracked pets cache is session-based, thread-safe, and updates instantly after rename/delete.
 
@@ -44,6 +45,11 @@ If you type anything else, you will be reminded of these commands.
 
 ## How to use ingame
 
+### Option 1: Chat Commands (Recommended)
+Players can summon the Beastmaster anywhere using chat commands:
+- `.beastmaster` or `.bm` — Summons the Beastmaster NPC at your location for 2 minutes
+
+### Option 2: Spawn NPC Permanently
 As GM:
 - Add NPC permanently:
  ```
@@ -58,7 +64,15 @@ The NPC will appear as "White Fang" (entry: **601026**).
 
 > **Note:**  
 > The value `601026` is the default Beastmaster NPC entry used by this module.  
-> If you wish to use a different NPC entry, update the `BEASTMASTER_NPC_ENTRY` constant in `NpcBeastmaster.cpp` and adjust your database and configuration accordingly.
+> If you wish to use a different NPC entry, update the `BeastMaster.NpcEntry` value in your `mod_npc_beastmaster.conf` file and adjust your database and configuration accordingly.
+
+## Player Login Notice
+
+When players log in, they will see a helpful message:
+> **BeastMaster Commands Available!**  
+> Type `.beastmaster` or `.bm` to summon the Beastmaster and adopt pets!
+
+This notice can be disabled in the configuration file if desired.
 
 ## Notice:
 
@@ -87,14 +101,26 @@ Creatures.CustomIDs = "190010,55005,999991,25462,98888,601026"
 - Configurable restrictions (class, level, etc.)
 - Optional tracking of all tamed pets (with menu)
 - Pet food vendor and stable access
+- Chat commands for easy access (`.beastmaster` or `.bm`)
+- Login notification for new players
+- **Tracked pets cache is session-based, thread-safe, and updates instantly after rename/delete**
+- **Profanity filter for pet names auto-reloads if the file changes**
+- **Rare and rare exotic pet highlighting is configurable by entry ID**
+- **Tracked pets menu supports pagination for large collections**
+- **Works with Docker deployments**
 
 ## Configuration
 
-See `conf/mod_npc_beastmaster.conf.dist` for all options.
+See `conf/mod_npc_beastmaster.conf.dist` for all options, including:
+- Enable/disable login notifications
+- Class restrictions
+- Level requirements
+- Exotic pet settings
+- Pet tracking features
 
 ## SQL
 
-Import the SQL files in `data/sql/db-world/` to enable tracked pets and the NPC.
+Import the SQL files in `data/sql/db-world/` and `data/sql/db-characters/` to enable the NPC and tracked pets.
 
 ## Installation
 
@@ -133,14 +159,14 @@ If you need to change the module configuration, go to your server configuration 
 
 - **NPC Entry:**  
   The default Beastmaster NPC entry is `601026`.  
-  To use a different entry, update the `BEASTMASTER_NPC_ENTRY` constant in `src/NpcBeastmaster.cpp` and adjust your database and configuration as needed.
+  To use a different entry, set the `BeastMaster.NpcEntry` option in your `mod_npc_beastmaster.conf` file and update your database if needed.
 
-- **Whistle Item:**  
-  The default Beastmaster Whistle item entry is `21744`.  
-  To use a different item, update the `BEASTMASTER_WHISTLE_ITEM` constant in `src/NpcBeastmaster.cpp`.
+- **Login Notifications:**  
+  Login notifications can be enabled/disabled via the `BeastMaster.ShowLoginNotice` configuration option.
 
 ## Credits
 
+* [BoiseComputer](https://github.com/BoiseComputer): further development
 * [Stoabrogga](https://github.com/Stoabrogga): further development
 * [Talamortis](https://github.com/talamortis): further development
 * [BarbzYHOOL](https://github.com/barbzyhool): support
