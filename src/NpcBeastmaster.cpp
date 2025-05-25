@@ -606,12 +606,13 @@ void NpcBeastmaster::GossipSelect(Player *player, Creature *creature,
     player->CustomData.Set("BeastmasterExpectRename",
                            new BeastmasterBool(true));
     ChatHandler(player->GetSession())
-        .PSendSysMessage("To rename your pet, type: .petname <newname> in "
-                         "chat. To cancel, type: .cancel");
+        .PSendSysMessage("To rename your pet, type: .petname rename <newname> "
+                         "in chat. To cancel, type: .petname cancel");
     if (creature)
-      creature->Whisper("To rename your pet, type: .petname <newname> in chat. "
-                        "To cancel, type: .cancel",
-                        LANG_UNIVERSAL, player);
+      creature->Whisper(
+          "To rename your pet, type: .petname rename <newname> in chat. "
+          "To cancel, type: .petname cancel",
+          LANG_UNIVERSAL, player);
     CloseGossipMenuFor(player);
     return;
   } else if (action >= PET_TRACKED_DELETE &&
@@ -951,9 +952,16 @@ public:
 
   Acore::ChatCommands::ChatCommandTable GetCommands() const override;
 
-  // Declare handlers as static
-  static bool HandlePetnameCommand(ChatHandler *handler, std::string_view args);
-  static bool HandleCancelCommand(ChatHandler *handler, std::string_view args);
+  // Remove old handler declarations:
+  // static bool HandlePetnameCommand(ChatHandler *handler, std::string_view
+  // args); static bool HandleCancelCommand(ChatHandler *handler,
+  // std::string_view args);
+
+  // Use only the new handlers:
+  static bool HandlePetnameRenameCommand(ChatHandler *handler,
+                                         std::string_view args);
+  static bool HandlePetnameCancelCommand(ChatHandler *handler,
+                                         std::string_view args);
   static bool HandleBeastmasterCommand(ChatHandler *handler, const char *args);
 };
 
@@ -961,15 +969,16 @@ public:
 Acore::ChatCommands::ChatCommandTable
 BeastMaster_CommandScript::GetCommands() const {
   using namespace Acore::ChatCommands;
-  return {{"petname", HandlePetnameCommand, SEC_PLAYER, Console::No},
-          {"cancel", HandleCancelCommand, SEC_PLAYER, Console::No},
-          {"beastmaster", HandleBeastmasterCommand, SEC_PLAYER, Console::No},
-          {"bm", HandleBeastmasterCommand, SEC_PLAYER, Console::No}};
+  static ChatCommandTable petnameTable = {
+      {"rename", HandlePetnameRenameCommand, SEC_PLAYER, Console::No},
+      {"cancel", HandlePetnameCancelCommand, SEC_PLAYER, Console::No}};
+  return {{"beastmaster", HandleBeastmasterCommand, SEC_PLAYER, Console::No},
+          {"petname", petnameTable}};
 }
 
-// Now define the static handler functions outside the class
-bool BeastMaster_CommandScript::HandlePetnameCommand(ChatHandler *handler,
-                                                     std::string_view args) {
+// Implement the new handlers:
+bool BeastMaster_CommandScript::HandlePetnameRenameCommand(
+    ChatHandler *handler, std::string_view args) {
   Player *player = handler->GetSession()->GetPlayer();
   auto *expectRename =
       player->CustomData.Get<BeastmasterBool>("BeastmasterExpectRename");
@@ -988,13 +997,13 @@ bool BeastMaster_CommandScript::HandlePetnameCommand(ChatHandler *handler,
     newName.pop_back();
 
   if (newName.empty()) {
-    handler->PSendSysMessage("Usage: .petname <newname>");
+    handler->PSendSysMessage("Usage: .petname rename <newname>");
     return true;
   }
 
   if (!IsValidPetName(newName) || IsProfane(newName)) {
     handler->PSendSysMessage("Invalid or profane pet name. Please try again "
-                             "with .petname <newname>.");
+                             "with .petname rename <newname>.");
     return true;
   }
 
@@ -1011,8 +1020,8 @@ bool BeastMaster_CommandScript::HandlePetnameCommand(ChatHandler *handler,
   return true;
 }
 
-bool BeastMaster_CommandScript::HandleCancelCommand(ChatHandler *handler,
-                                                    std::string_view /*args*/) {
+bool BeastMaster_CommandScript::HandlePetnameCancelCommand(
+    ChatHandler *handler, std::string_view /*args*/) {
   Player *player = handler->GetSession()->GetPlayer();
   auto *expectRename =
       player->CustomData.Get<BeastmasterBool>("BeastmasterExpectRename");
@@ -1107,7 +1116,6 @@ void Addmod_npc_beastmasterScripts() {
   new BeastMaster_CreatureScript();
   new BeastMaster_WorldScript();
   new BeastMaster_PlayerScript();
-  LOG_INFO(
-      "module",
-      "Beastmaster: Registered commands: .petname, .cancel, .beastmaster, .bm");
+  LOG_INFO("module", "Beastmaster: Registered commands: .beastmaster, .petname "
+                     "rename, .petname cancel");
 }
