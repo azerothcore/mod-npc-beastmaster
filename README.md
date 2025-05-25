@@ -29,7 +29,7 @@ Players can also summon the Beastmaster NPC anywhere using chat commands.
 - You can view your tracked pets from the BeastMaster NPC menu (all classes supported).
 - For each tracked pet, you can:
   - **Summon**: Instantly summon the pet if you do not already have one out.
-  - **Rename**: Select "Rename" and then type the new name in chat using the `.petname` command. Type `.cancel` to abort.
+  - **Rename**: Select "Rename" and then type the new name in chat using the `.petname rename <name>` command. Type `.petname cancel` to abort.
   - **Delete**: Remove the pet from your tracked list (with confirmation).
 - The tracked pets menu supports pagination if you have many pets.
 - The menu displays each pet's name, date tamed, family, and rarity.
@@ -38,16 +38,16 @@ Players can also summon the Beastmaster NPC anywhere using chat commands.
 ## Pet Rename Commands
 
 When you choose to rename a pet, you must use the following chat commands:
-- `.petname <newname>` — Renames your selected pet to `<newname>`.
-- `.cancel` — Cancels the renaming process.
+- `.petname rename <newname>` — Renames your selected pet to `<newname>`.
+- `.petname cancel` — Cancels the renaming process.
 
 If you type anything else, you will be reminded of these commands.
 
 ## How to use ingame
 
 ### Option 1: Chat Commands (Recommended)
-Players can summon the Beastmaster anywhere using chat commands:
-- `.beastmaster` or `.bm` — Summons the Beastmaster NPC at your location for 2 minutes
+Players can summon the Beastmaster anywhere using a chat command:
+- `.beastmaster` — Summons the Beastmaster NPC at your location for 2 minutes
 
 ### Option 2: Spawn NPC Permanently
 As GM:
@@ -70,7 +70,7 @@ The NPC will appear as "White Fang" (entry: **601026**).
 
 When players log in, they will see a helpful message:
 > **BeastMaster Commands Available!**  
-> Type `.beastmaster` or `.bm` to summon the Beastmaster and adopt pets!
+> Type `.beastmaster` to summon the Beastmaster and adopt pets!
 
 This notice can be disabled in the configuration file if desired.
 
@@ -101,7 +101,7 @@ Creatures.CustomIDs = "190010,55005,999991,25462,98888,601026"
 - Configurable restrictions (class, level, etc.)
 - Optional tracking of all tamed pets (with menu)
 - Pet food vendor and stable access
-- Chat commands for easy access (`.beastmaster` or `.bm`)
+- Chat commands for easy access (`.beastmaster`)
 - Login notification for new players
 - **Tracked pets cache is session-based, thread-safe, and updates instantly after rename/delete**
 - **Profanity filter for pet names auto-reloads if the file changes**
