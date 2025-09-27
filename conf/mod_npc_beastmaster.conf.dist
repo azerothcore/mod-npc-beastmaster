@@ -9,6 +9,9 @@
 # Enable or disable the Beastmaster module (default: 1)
 BeastMaster.Enable = 1
 
+# Enable or disable the howl sound effect on interact (default: 1)
+BeastMaster.Howls = 1
+
 # Show login notice about Beastmaster commands (default: 1)
 BeastMaster.ShowLoginNotice = 1
 
