@@ -441,7 +441,10 @@ void NpcBeastmaster::ShowMainMenu(Player *player, Creature *creature) {
   else
     SendGossipMenuFor(player, PET_GOSSIP_HELLO, ObjectGuid::Empty);
 
-  player->PlayDirectSound(PET_BEASTMASTER_HOWL);
+  if (sConfigMgr->GetOption<bool>("BeastMaster.Howls", true))
+  {
+      player->PlayDirectSound(PET_BEASTMASTER_HOWL);
+  }
 }
 
 void NpcBeastmaster::GossipSelect(Player *player, Creature *creature,
