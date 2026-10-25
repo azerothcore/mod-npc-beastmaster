@@ -1086,8 +1086,10 @@ public:
     if (sConfigMgr->GetOption<bool>("BeastMaster.Enable", true)) {
       // Fix for non-hunters losing pet spells on login due to core spell validation
       if (player->getClass() != CLASS_HUNTER) {
+        // Class pets (demon, ghoul, elemental) are SUMMON_PET, not tamed.
         QueryResult res = CharacterDatabase.Query(
-            "SELECT 1 FROM character_pet WHERE owner = {}", player->GetGUID().GetCounter());
+            "SELECT 1 FROM character_pet WHERE owner = {} AND PetType = {}",
+            player->GetGUID().GetCounter(), uint8(HUNTER_PET));
         
         bool trackTamed = sConfigMgr->GetOption<bool>("BeastMaster.TrackTamedPets", false);
         QueryResult res2;
